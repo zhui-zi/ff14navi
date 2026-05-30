@@ -101,6 +101,9 @@ export const categories = [
       { name: '绝枪单刷天宫攻略',         style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=20876403' },
       { name: '绝枪&DK单刷天宫攻略',     style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=21431324' },
       { name: '5v5水晶冲突PVP指北',      style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=32454519' },
+      { name: '导随记录',               style: 'basic',  url: 'https://dlog.luyulight.cn/' },
+      { name: '招募查询',               style: 'basic',  url: 'https://xivpf.ff14.xin/' },
+      { name: '高难进度查询 酥卷 SuMeMo', style: 'basic', url: 'https://sumemo.dev/' },
     ],
   },
   {
@@ -201,6 +204,7 @@ export const categories = [
       { name: 'NGA幻想科技',                style: 'basic',  url: 'https://bbs.nga.cn/thread.php?stid=20425950' },
       { name: '獭窝',               icon: 'otter',  style: 'brown',  url: 'http://xn--v9x.net/' },
       { name: 'XIVLauncher',         style: 'basic',  url: 'https://ottercorp.github.io/' },
+      { name: 'ACT日志解析',         style: 'orange', url: 'https://parser.ffxiv.cyou/' },
       { name: '探索笔记时钟',               style: 'basic',  url: 'https://annangela.github.io/FFXIVSightseeingGuide/#/' },
       { name: 'PostNamazu',                 style: 'basic',  url: 'https://github.com/Natsukage/PostNamazu' },
       { name: '国际服服务器实时状况',        style: 'basic',  url: 'https://arrstatus.com/' },
