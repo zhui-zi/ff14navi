@@ -1,15 +1,33 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import Header from './components/Header'
 import SearchBar from './components/SearchBar'
 import GameInfo from './components/GameInfo'
 import TabNav from './components/TabNav'
 import LinksSection from './components/LinksSection'
+import AddLinkModal from './components/AddLinkModal'
 import { tabs } from './data/links'
+
+const STORAGE_KEY = 'ff14navi-custom-links'
+
+function loadCustomLinks() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY)
+    return raw ? JSON.parse(raw) : []
+  } catch {
+    return []
+  }
+}
 
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchMode, setSearchMode] = useState('site')
   const [activeTab, setActiveTab] = useState('all')
+  const [customLinks, setCustomLinks] = useState(loadCustomLinks)
+  const [showModal, setShowModal] = useState(false)
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(customLinks))
+  }, [customLinks])
 
   const handleExternalSearch = useCallback((query) => {
     if (!query.trim()) return
@@ -23,12 +41,20 @@ export default function App() {
     }
   }, [searchMode])
 
+  const handleAddLink = useCallback((link) => {
+    setCustomLinks(prev => [link, ...prev])
+  }, [])
+
+  const handleDeleteLink = useCallback((id) => {
+    setCustomLinks(prev => prev.filter(l => l.id !== id))
+  }, [])
+
   const isFiltering = searchMode === 'site' && searchQuery.trim().length > 0
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--md-surface)', color: 'var(--md-on-surface)' }}>
       <Header />
-      <main className="pb-20">
+      <main className="pb-28">
         <SearchBar
           query={searchQuery}
           setQuery={setSearchQuery}
@@ -43,9 +69,59 @@ export default function App() {
         <LinksSection
           activeTab={isFiltering ? 'all' : activeTab}
           searchQuery={searchMode === 'site' ? searchQuery : ''}
+          customLinks={customLinks}
+          onDeleteCustomLink={handleDeleteLink}
         />
       </main>
+
+      {/* FAB — add custom link */}
+      <button
+        onClick={() => setShowModal(true)}
+        className="fixed bottom-6 right-6 flex items-center gap-2 px-5 py-3.5 rounded-full text-sm font-bold shadow-2xl z-40"
+        style={{
+          background: 'var(--md-primary)',
+          color: 'var(--md-on-primary)',
+          boxShadow: '0 6px 24px rgba(206,180,248,0.35)',
+          transition: 'transform 0.2s, filter 0.2s',
+        }}
+        onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.06)'; e.currentTarget.style.filter = 'brightness(1.1)' }}
+        onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.filter = 'brightness(1)' }}
+        aria-label="添加自定义链接"
+      >
+        <span className="text-lg leading-none">+</span>
+        <span>添加自定义链接</span>
+      </button>
+
+      {showModal && (
+        <AddLinkModal
+          onAdd={handleAddLink}
+          onClose={() => setShowModal(false)}
+        />
+      )}
+
       <footer className="text-center py-10 px-4" style={{ borderTop: '1px solid #201E25', color: 'var(--md-outline)' }}>
+        {/* GitHub links */}
+        <div className="flex gap-3 justify-center flex-wrap mb-5">
+          <a
+            href="https://github.com/zhui-zi/ff14navi"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105"
+            style={{ background: 'var(--md-surface-container-high)', color: 'var(--md-on-surface-variant)' }}
+          >
+            <span>⭐</span> GitHub 仓库
+          </a>
+          <a
+            href="https://github.com/zhui-zi/ff14navi/pulls"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105"
+            style={{ background: 'var(--md-primary-container)', color: 'var(--md-on-primary-container)' }}
+          >
+            <span>🔀</span> 通过 PR 贡献链接
+          </a>
+        </div>
+
         <p className="text-sm font-medium mb-2" style={{ color: 'var(--md-on-surface-variant)' }}>
           固执己见的最终幻想14导航站。其中 100% 的代码由 LLM 生成。
         </p>
