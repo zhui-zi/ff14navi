@@ -28,17 +28,17 @@ export default function Header({ isDark, toggleTheme }) {
         </span>
       </button>
 
-      <div className="relative max-w-7xl mx-auto px-4 py-14 text-center">
-        <div className="text-4xl mb-4 opacity-90" style={{ color: 'var(--header-crystal)' }}>✦</div>
+      <div className="relative max-w-7xl mx-auto px-4 py-6 sm:py-10 text-center">
+        <div className="text-3xl mb-2 sm:mb-3">🐷</div>
 
         <h1 className="font-black tracking-tight mb-1" style={{
-          fontSize: 'clamp(2rem, 6vw, 4rem)',
+          fontSize: 'clamp(1.6rem, 5vw, 3.2rem)',
           background: 'linear-gradient(135deg, var(--md-primary) 0%, var(--md-tertiary) 60%, var(--md-primary) 100%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text',
         }}>
-          背水咖啡厅
+          波奇（piggy）咖啡厅
         </h1>
 
         <p className="text-lg font-medium mb-1" style={{
@@ -46,7 +46,7 @@ export default function Header({ isDark, toggleTheme }) {
           opacity: 0.75,
           letterSpacing: '0.05em',
         }}>
-          The Last Stand
+          Piggy Café
         </p>
 
         <p className="text-xs font-medium tracking-[0.2em] uppercase mt-2"
