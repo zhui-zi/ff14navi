@@ -1,14 +1,16 @@
 import { useRef } from 'react'
 
 const MODES = [
-  { id: 'site',   label: '站内搜索' },
-  { id: 'google', label: 'Google' },
-  { id: 'bing',   label: 'Bing' },
-  { id: 'baidu',  label: '百度' },
+  { id: 'site',   label: '站内搜索', icon: '🔍' },
+  { id: 'nga',    label: 'NGA',      icon: '📋' },
+  { id: 'google', label: 'Google',   icon: '🌐' },
+  { id: 'bing',   label: 'Bing',     icon: '🔷' },
+  { id: 'baidu',  label: '百度',     icon: '🔵' },
 ]
 
 export default function SearchBar({ query, setQuery, mode, setMode, onSearch }) {
   const inputRef = useRef(null)
+  const currentMode = MODES.find(m => m.id === mode) || MODES[0]
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -23,7 +25,7 @@ export default function SearchBar({ query, setQuery, mode, setMode, onSearch }) 
 
   const placeholder = mode === 'site'
     ? '搜索站内链接名称…'
-    : `在 ${MODES.find(m => m.id === mode)?.label} 中搜索，按回车确认`
+    : `在 ${currentMode.label} 中搜索，按回车确认`
 
   return (
     <div className="max-w-2xl mx-auto px-4 pt-8 pb-4">
@@ -38,9 +40,8 @@ export default function SearchBar({ query, setQuery, mode, setMode, onSearch }) 
         onFocusCapture={e => e.currentTarget.style.borderColor = 'var(--md-primary)'}
         onBlurCapture={e => e.currentTarget.style.borderColor = 'var(--md-outline-variant)'}
       >
-        {/* Search icon */}
         <span className="pl-5 text-lg" style={{ color: 'var(--md-outline)' }}>
-          {mode === 'site' ? '🔍' : mode === 'google' ? '🌐' : mode === 'bing' ? '🔷' : '🔵'}
+          {currentMode.icon}
         </span>
 
         <input
@@ -54,7 +55,6 @@ export default function SearchBar({ query, setQuery, mode, setMode, onSearch }) 
           style={{ color: 'var(--md-on-surface)' }}
         />
 
-        {/* Clear button */}
         {query && (
           <button
             onClick={() => { setQuery(''); inputRef.current?.focus() }}
@@ -66,7 +66,6 @@ export default function SearchBar({ query, setQuery, mode, setMode, onSearch }) 
           </button>
         )}
 
-        {/* External search button */}
         {mode !== 'site' && (
           <button
             onClick={() => onSearch(query)}

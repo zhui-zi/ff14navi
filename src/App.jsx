@@ -63,8 +63,9 @@ export default function App() {
     if (!query.trim()) return
     const urls = {
       google: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
-      bing: `https://www.bing.com/search?q=${encodeURIComponent(query)}`,
-      baidu: `https://www.baidu.com/s?wd=${encodeURIComponent(query)}`,
+      bing:   `https://www.bing.com/search?q=${encodeURIComponent(query)}`,
+      baidu:  `https://www.baidu.com/s?wd=${encodeURIComponent(query)}`,
+      nga:    `https://nga.178.com/thread.php?key=${encodeURIComponent(query)}&fid=-362960&content=4`,
     }
     if (urls[searchMode]) {
       window.open(urls[searchMode], '_blank', 'noopener,noreferrer')
