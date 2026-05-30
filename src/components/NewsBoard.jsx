@@ -10,7 +10,7 @@ const get = (el, tag) => el.getElementsByTagName(tag)[0]?.textContent?.trim() ||
 function parseRSS(xml) {
   const doc = new DOMParser().parseFromString(xml, 'application/xml')
   if (doc.querySelector('parsererror')) throw new Error('RSS 解析失败')
-  return [...doc.getElementsByTagName('item')].slice(0, 5).map(item => {
+  return [...doc.getElementsByTagName('item')].slice(0, 4).map(item => {
     const title   = get(item, 'title')
     const link    = get(item, 'link') || get(item, 'guid')
     const pubDate = get(item, 'pubDate')

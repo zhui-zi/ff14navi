@@ -96,7 +96,7 @@ export default function App() {
           onSearch={handleExternalSearch}
         />
         {!isFiltering && (
-          <div className="max-w-7xl mx-auto px-4 mb-6 flex flex-col lg:flex-row gap-4 items-start">
+          <div className="max-w-7xl mx-auto px-4 mb-6 flex flex-col lg:flex-row gap-4 items-stretch lg:items-start">
             <div className="flex-1 min-w-0">
               <GameInfo noWrap />
             </div>
