@@ -97,9 +97,6 @@ export const categories = [
       { name: 'PVP入门指南',              style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=15134226' },
       { name: '青魔法师技能学习攻略',     style: 'basic',  url: 'https://thewakingsands.github.io/blue-mage/' },
       { name: '死灵术士心得攻略',         style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=22630278' },
-      { name: '赤魔单刷死宫攻略',         style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=20163536' },
-      { name: '绝枪单刷天宫攻略',         style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=20876403' },
-      { name: '绝枪&DK单刷天宫攻略',     style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=21431324' },
       { name: '5v5水晶冲突PVP指北',      style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=32454519' },
       { name: '导随记录',               style: 'basic',  url: 'https://dlog.luyulight.cn/' },
       { name: '招募查询',               style: 'basic',  url: 'https://xivpf.ff14.xin/' },
@@ -112,7 +109,6 @@ export const categories = [
     name: '成长型武器',
     links: [
       { name: '古武&魂武流程攻略', style: 'basic', url: 'https://bbs.nga.cn/read.php?tid=13014248' },
-      { name: 'ULK史官平台',       style: 'basic', url: 'https://eureka.ffxivsc.cn/' },
       { name: 'Eureka Tracker',    style: 'basic', url: 'https://ffxiv-eureka.com/' },
       { name: '博兹雅监控板',      style: 'basic', url: 'https://bzy.mocca-works.site/#/' },
       { name: '义军武器攻略',      style: 'basic', url: 'https://bbs.nga.cn/read.php?tid=21672716' },
