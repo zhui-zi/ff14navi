@@ -5,6 +5,7 @@ import GameInfo from './components/GameInfo'
 import TabNav from './components/TabNav'
 import LinksSection from './components/LinksSection'
 import AddLinkModal from './components/AddLinkModal'
+import NewsBoard from './components/NewsBoard'
 import { tabs } from './data/links'
 
 const STORAGE_KEY = 'ff14navi-custom-links'
@@ -95,6 +96,7 @@ export default function App() {
           onSearch={handleExternalSearch}
         />
         {!isFiltering && <GameInfo />}
+        {!isFiltering && <NewsBoard />}
         {!isFiltering && (
           <TabNav
             tabs={tabs}
