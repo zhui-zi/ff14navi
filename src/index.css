@@ -2,96 +2,68 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Dark theme (default) ── */
+/* ══════════════════════════════════════════════
+   M3 Dark Scheme  (default)
+   Seed: purple / tertiary: FF14 gold
+   ══════════════════════════════════════════════ */
 :root {
-  --md-primary: #CEB4F8;
-  --md-on-primary: #3D1B72;
-  --md-primary-container: #553387;
-  --md-on-primary-container: #EDD9FF;
-  --md-tertiary: #F4C161;
-  --md-on-tertiary: #3D2A00;
-  --md-tertiary-container: #5C3F00;
-  --md-surface: #141218;
-  --md-on-surface: #E7E0EB;
-  --md-surface-container: #201E25;
-  --md-surface-container-high: #2B282F;
-  --md-surface-container-highest: #36333B;
-  --md-on-surface-variant: #CCC5CF;
-  --md-outline: #978E9B;
-  --md-outline-variant: #4A454E;
+  --md-primary:                  #CEB4F8;
+  --md-on-primary:               #3D1B72;
+  --md-primary-container:        #553387;
+  --md-on-primary-container:     #EDD9FF;
+  --md-tertiary:                 #F4C161;
+  --md-on-tertiary:              #3D2A00;
+  --md-tertiary-container:       #5C3F00;
+  --md-surface:                  #141218;
+  --md-on-surface:               #E7E0EB;
+  --md-surface-container:        #201E25;
+  --md-surface-container-high:   #2B282F;
+  --md-surface-container-highest:#36333B;
+  --md-on-surface-variant:       #CCC5CF;
+  --md-outline:                  #978E9B;
+  --md-outline-variant:          #4A454E;
 
-  /* Header */
-  --header-bg: linear-gradient(135deg, #0D0F2A 0%, #1C1042 45%, #0F1635 100%);
-  --header-glow-1: rgba(206,180,248,0.20);
-  --header-glow-2: rgba(244,193,97,0.15);
-  --header-glow-3: rgba(126,203,232,0.15);
-  --header-subtitle: #9B95B0;
-  --header-crystal: #CEB4F8;
-
-  /* Info cards */
-  --card-version-bg: linear-gradient(135deg, #3D1B72, #553387);
-  --card-version-text: #EDD9FF;
-  --card-patch-bg: linear-gradient(135deg, #00414F, #005E6E);
-  --card-patch-text: #A2EEF9;
-  --card-gold-bg: linear-gradient(135deg, #5C3F00, #7A5500);
-  --card-gold-text: #FFDEA5;
-  --card-star-bg: linear-gradient(135deg, #4C2436, #673A4D);
-  --card-star-text: #FFD8E4;
-  --card-trial-bg: linear-gradient(135deg, #3E1A00, #5A2A00);
-  --card-trial-text: #FFD5B0;
-
-  /* Chip overlay in dark */
-  --chip-border: none;
+  --header-bg:        linear-gradient(135deg,#0D0F2A 0%,#1C1042 45%,#0F1635 100%);
+  --header-glow-1:    rgba(206,180,248,0.20);
+  --header-glow-2:    rgba(244,193,97,0.15);
+  --header-glow-3:    rgba(126,203,232,0.15);
+  --header-subtitle:  #9B95B0;
+  --header-crystal:   #CEB4F8;
 }
 
-/* ── Light theme ── */
+/* ══════════════════════════════════════════════
+   M3 Light Scheme
+   ══════════════════════════════════════════════ */
 .theme-light {
-  --md-primary: #6750A4;
-  --md-on-primary: #FFFFFF;
-  --md-primary-container: #EADDFF;
-  --md-on-primary-container: #21005D;
-  --md-tertiary: #7D5700;
-  --md-on-tertiary: #FFFFFF;
-  --md-tertiary-container: #FFD8A8;
-  --md-surface: #FFFBFF;
-  --md-on-surface: #1C1B1F;
-  --md-surface-container: #F3EDF7;
-  --md-surface-container-high: #ECE6F0;
-  --md-surface-container-highest: #E6E0EA;
-  --md-on-surface-variant: #49454F;
-  --md-outline: #79747E;
-  --md-outline-variant: #CAC4D0;
+  --md-primary:                  #6750A4;
+  --md-on-primary:               #FFFFFF;
+  --md-primary-container:        #EADDFF;
+  --md-on-primary-container:     #21005D;
+  --md-tertiary:                 #7D5700;
+  --md-on-tertiary:              #FFFFFF;
+  --md-tertiary-container:       #FFD8A8;
+  --md-surface:                  #FFFBFF;
+  --md-on-surface:               #1C1B1F;
+  --md-surface-container:        #F3EDF7;
+  --md-surface-container-high:   #ECE6F0;
+  --md-surface-container-highest:#E6E0EA;
+  --md-on-surface-variant:       #49454F;
+  --md-outline:                  #79747E;
+  --md-outline-variant:          #CAC4D0;
 
-  --header-bg: linear-gradient(135deg, #EDE7F6 0%, #D1C4E9 45%, #E8EAF6 100%);
-  --header-glow-1: rgba(103,80,164,0.12);
-  --header-glow-2: rgba(125,87,0,0.10);
-  --header-glow-3: rgba(0,96,115,0.10);
+  --header-bg:       linear-gradient(135deg,#EDE7F6 0%,#D1C4E9 45%,#E8EAF6 100%);
+  --header-glow-1:   rgba(103,80,164,0.12);
+  --header-glow-2:   rgba(125,87,0,0.10);
+  --header-glow-3:   rgba(0,96,115,0.10);
   --header-subtitle: #49454F;
-  --header-crystal: #6750A4;
-
-  --card-version-bg: linear-gradient(135deg, #EDE7F6, #D1C4E9);
-  --card-version-text: #21005D;
-  --card-patch-bg: linear-gradient(135deg, #E0F7FA, #B2EBF2);
-  --card-patch-text: #00363D;
-  --card-gold-bg: linear-gradient(135deg, #FFFDE7, #FFE082);
-  --card-gold-text: #261900;
-  --card-star-bg: linear-gradient(135deg, #FCE4EC, #F8BBD0);
-  --card-star-text: #370B1E;
-  --card-trial-bg: linear-gradient(135deg, #FFF3E0, #FFE0B2);
-  --card-trial-text: #341100;
-
-  --chip-border: 1.5px solid currentColor;
+  --header-crystal:  #6750A4;
 }
 
-/* ── Global ── */
+/* ══════════════════════════════════════════════
+   Global
+   ══════════════════════════════════════════════ */
 * { box-sizing: border-box; }
-
-html {
-  scroll-behavior: smooth;
-  /* theme transition */
-  transition: background-color 0.25s, color 0.25s;
-}
-
+html { scroll-behavior: smooth; transition: background-color 0.25s, color 0.25s; }
 body {
   background-color: var(--md-surface);
   color: var(--md-on-surface);
@@ -102,32 +74,62 @@ body {
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--md-surface); }
-::-webkit-scrollbar-thumb { background: var(--md-outline-variant); border-radius: 3px; }
+::-webkit-scrollbar-track  { background: var(--md-surface); }
+::-webkit-scrollbar-thumb  { background: var(--md-outline-variant); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--md-outline); }
-
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
 /* ── Multi-column layout ── */
-.category-block {
-  break-inside: avoid;
-  margin-bottom: 2rem;
-}
-@media (max-width: 639px) { .columns-layout { columns: 1 !important; } }
-@media (min-width: 640px) and (max-width: 1023px) { .columns-layout { columns: min(var(--cols, 2), 2) !important; } }
+.category-block { break-inside: avoid; margin-bottom: 2rem; }
+@media (max-width: 639px)                      { .columns-layout { columns: 1 !important; } }
+@media (min-width: 640px) and (max-width: 1023px) { .columns-layout { columns: min(2, var(--cols,2)) !important; } }
 
-/* ── Link chip ── */
+/* ══════════════════════════════════════════════
+   Link Chip  —  M3 Assist/Filter chip
+   Dark default + Light override
+   Color tokens follow M3 tonal container pattern:
+     dark  → semi-transparent overlay + light text
+     light → tonal container bg + on-container text
+   ══════════════════════════════════════════════ */
 .link-chip {
   transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
-  border: var(--chip-border);
 }
-.link-chip:hover {
-  filter: brightness(1.3) saturate(1.15);
-  transform: scale(1.04);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-}
-.link-chip:active {
-  transform: scale(0.97);
-  transition-duration: 0.08s;
-}
+.link-chip:hover  { filter: brightness(1.25) saturate(1.1); transform: scale(1.04); }
+.link-chip:active { transform: scale(0.97); transition-duration: 0.08s; }
+
+/* ── Dark chip colours ── */
+.chip-blue   { background: rgba(33,150,243,0.18);  color: #90CAF9; }
+.chip-green  { background: rgba(76,175,80,0.18);   color: #A5D6A7; }
+.chip-red    { background: rgba(244,67,54,0.18);   color: #EF9A9A; }
+.chip-pink   { background: rgba(233,30,99,0.18);   color: #F48FB1; }
+.chip-orange { background: rgba(255,152,0,0.18);   color: #FFCC80; }
+.chip-teal   { background: rgba(0,188,212,0.18);   color: #80DEEA; }
+.chip-violet { background: rgba(156,39,176,0.20);  color: #CE93D8; }
+.chip-olive  { background: rgba(139,195,74,0.18);  color: #DCE775; }
+.chip-yellow { background: rgba(255,235,59,0.15);  color: #FFF59D; }
+.chip-wheat  { background: rgba(255,193,7,0.18);   color: #FFE082; }
+.chip-brown  { background: rgba(121,85,72,0.28);   color: #BCAAA4; }
+.chip-black  { background: rgba(0,0,0,0.45);       color: #BDBDBD; }
+.chip-grey   { background: rgba(158,158,158,0.16); color: #E0E0E0; }
+.chip-purple { background: rgba(156,39,176,0.20);  color: #CE93D8; }
+.chip-basic  { background: rgba(74,69,78,0.40);    color: #CCC5CF; }
+.chip-blog   { background: rgba(63,81,181,0.18);   color: #9FA8DA; }
+
+/* ── Light chip colours (M3 Tonal Container / On-Container) ── */
+.theme-light .chip-blue   { background: #D3E4FF; color: #001C3A; }
+.theme-light .chip-green  { background: #AAEFC0; color: #002109; }
+.theme-light .chip-red    { background: #FFDAD6; color: #410002; }
+.theme-light .chip-pink   { background: #FFD9E3; color: #3E001D; }
+.theme-light .chip-orange { background: #FFDCBB; color: #311300; }
+.theme-light .chip-teal   { background: #97F0FF; color: #001F24; }
+.theme-light .chip-violet { background: #F3DAFF; color: #260047; }
+.theme-light .chip-olive  { background: #DAEFB3; color: #121F00; }
+.theme-light .chip-yellow { background: #FFF0C2; color: #221B00; }
+.theme-light .chip-wheat  { background: #FFDEA5; color: #261900; }
+.theme-light .chip-brown  { background: #F9DECC; color: #31111D; }
+.theme-light .chip-black  { background: #E3E3E3; color: #1C1B1F; }
+.theme-light .chip-grey   { background: #E9E3ED; color: #49454F; }
+.theme-light .chip-purple { background: #F3DAFF; color: #260047; }
+.theme-light .chip-basic  { background: #E6E0EA; color: #49454F; }
+.theme-light .chip-blog   { background: #DDE1FF; color: #001256; }

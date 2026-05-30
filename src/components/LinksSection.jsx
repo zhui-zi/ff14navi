@@ -2,35 +2,15 @@ import { useMemo } from 'react'
 import { categories } from '../data/links'
 import LinkChip from './LinkChip'
 
-const STYLE_COLOR = {
-  basic:  '#CCC5CF', blue:   '#90CAF9', green:  '#A5D6A7',
-  red:    '#EF9A9A', pink:   '#F48FB1', orange: '#FFCC80',
-  teal:   '#80DEEA', violet: '#CE93D8', yellow: '#FFF176',
-  wheat:  '#FFE082', brown:  '#BCAAA4', black:  '#BDBDBD',
-  grey:   '#E0E0E0', purple: '#CE93D8', blog:   '#9FA8DA',
-}
-const STYLE_BG = {
-  basic:  'rgba(74,69,78,0.38)',    blue:   'rgba(33,150,243,0.16)',
-  green:  'rgba(76,175,80,0.16)',   red:    'rgba(244,67,54,0.16)',
-  pink:   'rgba(233,30,99,0.16)',   orange: 'rgba(255,152,0,0.16)',
-  teal:   'rgba(0,188,212,0.16)',   violet: 'rgba(156,39,176,0.18)',
-  yellow: 'rgba(255,235,59,0.14)', wheat:  'rgba(255,193,7,0.16)',
-  brown:  'rgba(121,85,72,0.25)',  black:  'rgba(0,0,0,0.40)',
-  grey:   'rgba(158,158,158,0.14)', purple: 'rgba(156,39,176,0.16)',
-  blog:   'rgba(63,81,181,0.16)',
-}
-
 function CustomChip({ link, onDelete }) {
-  const bg    = STYLE_BG[link.style]    || STYLE_BG.basic
-  const color = STYLE_COLOR[link.style] || STYLE_COLOR.basic
+  const styleClass = `chip-${link.style || 'basic'}`
   return (
     <div className="group relative inline-flex">
       <a
         href={link.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="link-chip inline-flex items-center gap-1.5 pl-4 pr-8 py-2 rounded-2xl text-sm font-medium cursor-pointer select-none whitespace-nowrap"
-        style={{ background: bg, color }}
+        className={`link-chip ${styleClass} inline-flex items-center gap-1.5 pl-4 pr-8 py-2 rounded-2xl text-sm font-medium cursor-pointer select-none whitespace-nowrap`}
       >
         {link.name}
       </a>
