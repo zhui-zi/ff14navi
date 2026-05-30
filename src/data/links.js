@@ -77,7 +77,9 @@ export const categories = [
     links: [
       { name: 'XivStrat攻略站', style: 'basic', url: 'https://xivstrat.cn/' },
       { name: '菓子君Okashi',        style: 'olive',  url: 'https://space.bilibili.com/932340/video' },
-      { name: '子言姐姐',            style: 'teal',   url: 'https://space.bilibili.com/293917/video' },
+      { name: '苏帕酱噗',            style: 'basic',  url: 'https://space.bilibili.com/25787773' },
+      { name: 'MMW',                 style: 'red',    url: 'https://space.bilibili.com/1578887' },
+      { name: '子言姐姐',            style: 'basic',  url: 'https://space.bilibili.com/293917/video' },
       { name: '苦茶子',              style: 'blue',   url: 'https://space.bilibili.com/359741675/video' },
       { name: '顾跑跑',              style: 'basic',  url: 'https://space.bilibili.com/1783244/video' },
       { name: '配装计算器',          style: 'basic',  url: 'https://gearing.ffsusu.com/' },
