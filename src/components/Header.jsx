@@ -29,24 +29,29 @@ export default function Header({ isDark, toggleTheme }) {
       </button>
 
       <div className="relative max-w-7xl mx-auto px-4 py-6 sm:py-10 text-center">
-        <div className="text-3xl mb-2 sm:mb-3">🐷</div>
+        <div className="text-3xl mb-2 sm:mb-3 opacity-90" style={{ color: 'var(--header-crystal)' }}>✦</div>
 
-        <h1 className="font-black tracking-tight mb-1" style={{
+        <h1 className="tracking-tight mb-1" style={{
+          fontFamily: '"Noto Serif SC", serif',
+          fontWeight: 900,
           fontSize: 'clamp(1.6rem, 5vw, 3.2rem)',
           background: 'linear-gradient(135deg, var(--md-primary) 0%, var(--md-tertiary) 60%, var(--md-primary) 100%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text',
         }}>
-          波奇（piggy）咖啡厅
+          背水咖啡厅
         </h1>
 
-        <p className="text-lg font-medium mb-1" style={{
+        <p className="mb-1" style={{
+          fontFamily: '"Cinzel", serif',
+          fontWeight: 700,
+          fontSize: 'clamp(0.75rem, 1.8vw, 1rem)',
+          letterSpacing: '0.18em',
           color: 'var(--md-primary)',
           opacity: 0.75,
-          letterSpacing: '0.05em',
         }}>
-          Piggy Café
+          The Last Stand
         </p>
 
         <p className="text-xs font-medium tracking-[0.2em] uppercase mt-2"
