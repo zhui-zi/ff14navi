@@ -6,11 +6,12 @@ import TabNav from './components/TabNav'
 import LinksSection from './components/LinksSection'
 import AddLinkModal from './components/AddLinkModal'
 import NewsBoard from './components/NewsBoard'
-import { tabs } from './data/links'
+import { tabs, categories } from './data/links'
 
-const STORAGE_KEY = 'ff14navi-custom-links'
-const COL_KEY     = 'ff14navi-columns'
-const THEME_KEY   = 'ff14navi-theme'
+const STORAGE_KEY   = 'ff14navi-custom-links'
+const COL_KEY       = 'ff14navi-columns'
+const THEME_KEY     = 'ff14navi-theme'
+const CAT_ORDER_KEY = 'ff14navi-cat-order'
 
 function loadCustomLinks() {
   try {
@@ -26,6 +27,14 @@ function loadColumns() {
   return v >= 1 && v <= 4 ? v : 2
 }
 
+function loadCatOrder() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(CAT_ORDER_KEY))
+    if (Array.isArray(saved) && saved.length > 0) return saved
+  } catch {}
+  return categories.map(c => c.id)
+}
+
 function loadDark() {
   const saved = localStorage.getItem(THEME_KEY)
   if (saved) return saved === 'dark'
@@ -38,6 +47,7 @@ export default function App() {
   const [showModal, setShowModal]     = useState(false)
   const [columnCount, setColumnCount] = useState(loadColumns)
   const [isDark, setIsDark]           = useState(loadDark)
+  const [catOrder, setCatOrder]       = useState(loadCatOrder)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(customLinks))
@@ -51,6 +61,10 @@ export default function App() {
     localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light')
     document.documentElement.classList.toggle('theme-light', !isDark)
   }, [isDark])
+
+  useEffect(() => {
+    localStorage.setItem(CAT_ORDER_KEY, JSON.stringify(catOrder))
+  }, [catOrder])
 
   const [flashKey, setFlashKey] = useState(0)
   const toggleTheme = useCallback(() => {
@@ -93,6 +107,8 @@ const handleAddLink = useCallback((link) => {
           onDeleteCustomLink={handleDeleteLink}
           columnCount={columnCount}
           onOpenAddModal={() => setShowModal(true)}
+          catOrder={catOrder}
+          setCatOrder={setCatOrder}
         />
       </main>
 
