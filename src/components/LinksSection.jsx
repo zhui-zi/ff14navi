@@ -31,7 +31,7 @@ function CustomChip({ link, onDelete }) {
 }
 
 /* A single category block — break-inside:avoid keeps it intact in CSS columns */
-function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink }) {
+function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenAddModal }) {
   if (isCustom) {
     return (
       <div className="category-block">
@@ -45,10 +45,20 @@ function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink }) {
               {customLinks.length}
             </span>
           )}
+          <button
+            onClick={onOpenAddModal}
+            className="ml-auto flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-bold transition-all duration-200"
+            style={{ background: 'var(--md-primary)', color: 'var(--md-on-primary)' }}
+            onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.1)' }}
+            onMouseLeave={e => { e.currentTarget.style.filter = 'brightness(1)' }}
+          >
+            <span className="text-base leading-none">+</span>
+            <span>添加</span>
+          </button>
         </div>
         {customLinks.length === 0 ? (
           <p className="text-sm" style={{ color: 'var(--md-outline)' }}>
-            点击右下角 <strong style={{ color: 'var(--md-primary)' }}>+ 添加自定义链接</strong> 收藏常用网站，数据保存在本地浏览器。
+            点击右上角 <strong style={{ color: 'var(--md-primary)' }}>+ 添加</strong> 收藏常用网站，数据保存在本地浏览器。
           </p>
         ) : (
           <div className="flex flex-wrap gap-2">
@@ -85,7 +95,7 @@ function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink }) {
   )
 }
 
-export default function LinksSection({ activeTab, customLinks, onDeleteCustomLink, columnCount }) {
+export default function LinksSection({ activeTab, customLinks, onDeleteCustomLink, columnCount, onOpenAddModal }) {
   // Track unlock state so the 'all' tab updates when user unlocks inside 'tools' tab
   const [toolsUnlocked, setToolsUnlocked] = useState(() => !!localStorage.getItem(TOOLS_KEY))
 
@@ -114,6 +124,7 @@ export default function LinksSection({ activeTab, customLinks, onDeleteCustomLin
           isCustom
           customLinks={visibleCustom}
           onDeleteCustomLink={onDeleteCustomLink}
+          onOpenAddModal={onOpenAddModal}
         />
       )}
       {visibleCats.map(cat => (

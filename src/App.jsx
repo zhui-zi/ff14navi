@@ -92,26 +92,9 @@ const handleAddLink = useCallback((link) => {
           customLinks={customLinks}
           onDeleteCustomLink={handleDeleteLink}
           columnCount={columnCount}
+          onOpenAddModal={() => setShowModal(true)}
         />
       </main>
-
-      {/* FAB — add custom link */}
-      <button
-        onClick={() => setShowModal(true)}
-        className="fixed bottom-6 right-6 flex items-center gap-2 px-5 py-3.5 rounded-full text-sm font-bold shadow-2xl z-40"
-        style={{
-          background: 'var(--md-primary)',
-          color: 'var(--md-on-primary)',
-          boxShadow: '0 6px 24px rgba(206,180,248,0.35)',
-          transition: 'transform 0.2s, filter 0.2s',
-        }}
-        onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.06)'; e.currentTarget.style.filter = 'brightness(1.1)' }}
-        onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.filter = 'brightness(1)' }}
-        aria-label="添加自定义链接"
-      >
-        <span className="text-lg leading-none">+</span>
-        <span>添加自定义链接</span>
-      </button>
 
       {showModal && (
         <AddLinkModal

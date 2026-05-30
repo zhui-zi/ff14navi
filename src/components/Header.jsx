@@ -28,10 +28,10 @@ export default function Header({ isDark, toggleTheme }) {
         </span>
       </button>
 
-      <div className="relative w-full max-w-7xl mx-auto px-4 py-6 text-center">
+      <div className="relative w-full max-w-7xl mx-auto px-4 py-6 flex flex-col items-center text-center">
         <div className="text-3xl mb-2 sm:mb-3 opacity-90" style={{ color: 'var(--header-crystal)' }}>✦</div>
 
-        <h1 className="tracking-tight mb-1" style={{
+        <h1 className="tracking-tight mb-1 w-full text-center" style={{
           fontFamily: '"Noto Serif SC", serif',
           fontWeight: 900,
           fontSize: 'clamp(1.6rem, 5vw, 3.2rem)',
@@ -43,7 +43,7 @@ export default function Header({ isDark, toggleTheme }) {
           背水咖啡厅
         </h1>
 
-        <p className="mb-1" style={{
+        <p className="mb-1 text-center w-full" style={{
           fontFamily: '"Cinzel", serif',
           fontWeight: 700,
           fontSize: 'clamp(0.75rem, 1.8vw, 1rem)',
@@ -54,7 +54,7 @@ export default function Header({ isDark, toggleTheme }) {
           The Last Stand
         </p>
 
-        <p className="text-xs font-medium tracking-[0.2em] uppercase mt-2"
+        <p className="text-xs font-medium tracking-[0.2em] uppercase mt-2 text-center w-full"
           style={{ color: 'var(--header-subtitle)' }}>
           Final Fantasy XIV · 工具导航站
         </p>
