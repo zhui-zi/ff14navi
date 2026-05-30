@@ -173,9 +173,8 @@ function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenA
   )
 }
 
-export default function LinksSection({ activeTab, customLinks, onDeleteCustomLink, columnCount, onOpenAddModal, catOrder, setCatOrder }) {
+export default function LinksSection({ activeTab, customLinks, onDeleteCustomLink, columnCount, onOpenAddModal, catOrder, setCatOrder, isSorting }) {
   const [toolsUnlocked, setToolsUnlocked] = useState(() => !!localStorage.getItem(TOOLS_KEY))
-  const [isSorting, setIsSorting] = useState(false)
 
   const checkUnlocked = () => {
     if (!toolsUnlocked && localStorage.getItem(TOOLS_KEY)) setToolsUnlocked(true)
@@ -213,54 +212,11 @@ export default function LinksSection({ activeTab, customLinks, onDeleteCustomLin
     })
   }, [visibleCats, setCatOrder])
 
-  const handleReset = useCallback(() => {
-    setCatOrder(categories.map(c => c.id))
-  }, [setCatOrder])
-
   const showCustomSection = activeTab === 'all'
   const effectiveColumns = isSorting ? 1 : columnCount
 
-  const sortBar = activeTab === 'all' && (
-    <div className="flex items-center justify-end gap-2 mb-4">
-      {isSorting ? (
-        <>
-          <span className="text-xs mr-auto" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.6 }}>
-            点击 ↑ ↓ 调整顺序，切换标签后仍然生效
-          </span>
-          <button
-            onClick={handleReset}
-            className="text-xs px-3 py-1.5 rounded-full"
-            style={{ background: 'var(--md-surface-container-high)', color: 'var(--md-on-surface-variant)' }}
-          >
-            重置
-          </button>
-          <button
-            onClick={() => setIsSorting(false)}
-            className="text-xs px-4 py-1.5 rounded-full font-semibold"
-            style={{ background: 'var(--md-primary)', color: 'var(--md-on-primary)' }}
-          >
-            完成
-          </button>
-        </>
-      ) : (
-        <button
-          onClick={() => setIsSorting(true)}
-          className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full transition-colors"
-          style={{ background: 'var(--md-surface-container)', color: 'var(--md-on-surface-variant)' }}
-          onMouseEnter={e => e.currentTarget.style.background = 'var(--md-surface-container-high)'}
-          onMouseLeave={e => e.currentTarget.style.background = 'var(--md-surface-container)'}
-        >
-          <span style={{ fontSize: '0.85rem' }}>⇅</span>
-          <span>调整分类顺序</span>
-        </button>
-      )}
-    </div>
-  )
-
   const mainContent = (
-    <>
-      {sortBar}
-      <div
+    <div
         className="columns-layout"
         style={{ columns: effectiveColumns, columnGap: '1.5rem' }}
       >
@@ -285,7 +241,6 @@ export default function LinksSection({ activeTab, customLinks, onDeleteCustomLin
           />
         ))}
       </div>
-    </>
   )
 
   return (
