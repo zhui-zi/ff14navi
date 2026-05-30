@@ -31,7 +31,7 @@ function CustomChip({ link, onDelete }) {
 }
 
 /* A single category block — break-inside:avoid keeps it intact in CSS columns */
-function CategoryBlock({ cat, searchQuery, isCustom, customLinks, onDeleteCustomLink }) {
+function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink }) {
   if (isCustom) {
     return (
       <div className="category-block">
@@ -61,9 +61,7 @@ function CategoryBlock({ cat, searchQuery, isCustom, customLinks, onDeleteCustom
     )
   }
 
-  const links = searchQuery
-    ? cat.links.filter(l => l.name.toLowerCase().includes(searchQuery.toLowerCase()))
-    : cat.links
+  const links = cat.links
 
   if (links.length === 0) return null
 
@@ -87,8 +85,7 @@ function CategoryBlock({ cat, searchQuery, isCustom, customLinks, onDeleteCustom
   )
 }
 
-export default function LinksSection({ activeTab, searchQuery, customLinks, onDeleteCustomLink, columnCount }) {
-  const q = searchQuery.trim()
+export default function LinksSection({ activeTab, customLinks, onDeleteCustomLink, columnCount }) {
   // Track unlock state so the 'all' tab updates when user unlocks inside 'tools' tab
   const [toolsUnlocked, setToolsUnlocked] = useState(() => !!localStorage.getItem(TOOLS_KEY))
 
@@ -97,40 +94,15 @@ export default function LinksSection({ activeTab, searchQuery, customLinks, onDe
     if (!toolsUnlocked && localStorage.getItem(TOOLS_KEY)) setToolsUnlocked(true)
   }
 
-  const visibleCustom = useMemo(() => {
-    if (!q) return customLinks
-    return customLinks.filter(l => l.name.toLowerCase().includes(q.toLowerCase()))
-  }, [customLinks, q])
+  const visibleCustom = customLinks
 
   const visibleCats = useMemo(() => {
-    let cats = categories
-    if (activeTab !== 'all') {
-      cats = cats.filter(c => c.tab === activeTab)
-    } else {
-      // Hide tools from 'all' until the user has unlocked them
-      if (!toolsUnlocked) cats = cats.filter(c => c.tab !== 'tools')
-    }
-    if (q) {
-      cats = cats
-        .map(c => ({ ...c, links: c.links.filter(l => l.name.toLowerCase().includes(q.toLowerCase())) }))
-        .filter(c => c.links.length > 0)
-    }
-    return cats
-  }, [activeTab, q, toolsUnlocked])
+    if (activeTab !== 'all') return categories.filter(c => c.tab === activeTab)
+    // Hide tools from 'all' until unlocked
+    return toolsUnlocked ? categories : categories.filter(c => c.tab !== 'tools')
+  }, [activeTab, toolsUnlocked])
 
-  const showCustomSection = visibleCustom.length > 0 || (customLinks.length === 0 && activeTab === 'all' && !q)
-  const hasAny = showCustomSection || visibleCats.length > 0 || activeTab === 'tools'
-
-  if (!hasAny) {
-    return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
-        <div className="text-5xl mb-4">🔍</div>
-        <p className="text-lg" style={{ color: 'var(--md-outline)' }}>
-          未找到匹配「{searchQuery}」的链接
-        </p>
-      </div>
-    )
-  }
+  const showCustomSection = activeTab === 'all'
 
   const mainContent = (
     <div
@@ -142,11 +114,10 @@ export default function LinksSection({ activeTab, searchQuery, customLinks, onDe
           isCustom
           customLinks={visibleCustom}
           onDeleteCustomLink={onDeleteCustomLink}
-          searchQuery={q}
         />
       )}
       {visibleCats.map(cat => (
-        <CategoryBlock key={cat.id} cat={cat} searchQuery={q} />
+        <CategoryBlock key={cat.id} cat={cat} />
       ))}
     </div>
   )

@@ -29,8 +29,8 @@ function Countdown({ target, expired, accentColor }) {
 
   return (
     <span
-      className="font-black tabular-nums leading-none"
-      style={{ fontFamily: '"Orbitron", monospace', fontSize: '1.5rem', color: accentColor, letterSpacing: '0.02em' }}
+      className="font-bold tabular-nums leading-none"
+      style={{ fontFamily: '"Space Mono", "Courier New", monospace', fontSize: '1.4rem', color: accentColor, letterSpacing: '0.01em' }}
     >
       {t.d > 0 && <>{t.d}<span style={{ fontSize: '0.9rem', fontWeight: 600, margin: '0 2px 0 1px' }}>天</span></>}
       {hh}:{mm}:{ss}

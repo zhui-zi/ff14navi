@@ -33,8 +33,6 @@ function loadDark() {
 }
 
 export default function App() {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [searchMode, setSearchMode] = useState('site')
   const [activeTab, setActiveTab] = useState('all')
   const [customLinks, setCustomLinks] = useState(loadCustomLinks)
   const [showModal, setShowModal]     = useState(false)
@@ -60,20 +58,7 @@ export default function App() {
     setFlashKey(k => k + 1)
   }, [])
 
-  const handleExternalSearch = useCallback((query) => {
-    if (!query.trim()) return
-    const urls = {
-      google: `https://www.google.com/search?q=${encodeURIComponent(query)}`,
-      bing:   `https://www.bing.com/search?q=${encodeURIComponent(query)}`,
-      baidu:  `https://www.baidu.com/s?wd=${encodeURIComponent(query)}`,
-      nga:    `https://nga.178.com/thread.php?key=${encodeURIComponent(query)}&fid=-362960&content=4`,
-    }
-    if (urls[searchMode]) {
-      window.open(urls[searchMode], '_blank', 'noopener,noreferrer')
-    }
-  }, [searchMode])
-
-  const handleAddLink = useCallback((link) => {
+const handleAddLink = useCallback((link) => {
     setCustomLinks(prev => [link, ...prev])
   }, [])
 
@@ -81,42 +66,29 @@ export default function App() {
     setCustomLinks(prev => prev.filter(l => l.id !== id))
   }, [])
 
-  const isFiltering = searchMode === 'site' && searchQuery.trim().length > 0
-
   return (
     <div className="min-h-screen" style={{ background: 'var(--md-surface)', color: 'var(--md-on-surface)' }}>
       <Header isDark={isDark} toggleTheme={toggleTheme} />
       {flashKey > 0 && <div key={flashKey} className="theme-flash-overlay" aria-hidden="true" />}
       <main className="pb-28">
-        <SearchBar
-          query={searchQuery}
-          setQuery={setSearchQuery}
-          mode={searchMode}
-          setMode={setSearchMode}
-          onSearch={handleExternalSearch}
-        />
-        {!isFiltering && (
-          <div className="max-w-7xl mx-auto px-4 mb-6 flex flex-col lg:flex-row gap-4 items-stretch lg:items-start">
-            <div className="flex-1 min-w-0">
-              <GameInfo noWrap />
-            </div>
-            <div className="w-full lg:w-72 xl:w-80 flex-shrink-0">
-              <NewsBoard noWrap />
-            </div>
+        <SearchBar />
+        <div className="max-w-7xl mx-auto px-4 mb-6 flex flex-col lg:flex-row gap-4 items-stretch lg:items-start">
+          <div className="flex-1 min-w-0">
+            <GameInfo noWrap />
           </div>
-        )}
-        {!isFiltering && (
-          <TabNav
-            tabs={tabs}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            columnCount={columnCount}
-            setColumnCount={setColumnCount}
-          />
-        )}
+          <div className="w-full lg:w-72 xl:w-80 flex-shrink-0">
+            <NewsBoard noWrap />
+          </div>
+        </div>
+        <TabNav
+          tabs={tabs}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          columnCount={columnCount}
+          setColumnCount={setColumnCount}
+        />
         <LinksSection
-          activeTab={isFiltering ? 'all' : activeTab}
-          searchQuery={searchMode === 'site' ? searchQuery : ''}
+          activeTab={activeTab}
           customLinks={customLinks}
           onDeleteCustomLink={handleDeleteLink}
           columnCount={columnCount}

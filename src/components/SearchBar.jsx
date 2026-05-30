@@ -1,101 +1,93 @@
-import { useRef } from 'react'
+import { useState, useRef } from 'react'
+
+const STORAGE_KEY = 'ff14navi-search-mode'
 
 const MODES = [
-  { id: 'site',   label: '站内搜索', icon: '🔍' },
-  { id: 'nga',    label: 'NGA',      icon: '📋' },
-  { id: 'google', label: 'Google',   icon: '🌐' },
-  { id: 'bing',   label: 'Bing',     icon: '🔷' },
-  { id: 'baidu',  label: '百度',     icon: '🔵' },
+  { id: 'nga',    label: 'NGA',    icon: '📋' },
+  { id: 'google', label: 'Google', icon: '🌐' },
+  { id: 'bing',   label: 'Bing',   icon: '🔷' },
+  { id: 'baidu',  label: '百度',   icon: '🔵' },
 ]
 
-export default function SearchBar({ query, setQuery, mode, setMode, onSearch }) {
-  const inputRef = useRef(null)
-  const currentMode = MODES.find(m => m.id === mode) || MODES[0]
+const SEARCH_URL = {
+  nga:    q => `https://nga.178.com/thread.php?key=${encodeURIComponent(q)}&fid=-362960&content=4`,
+  google: q => `https://www.google.com/search?q=${encodeURIComponent(q)}`,
+  bing:   q => `https://www.bing.com/search?q=${encodeURIComponent(q)}`,
+  baidu:  q => `https://www.baidu.com/s?wd=${encodeURIComponent(q)}`,
+}
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      if (mode === 'site') return
-      onSearch(e.target.value)
-    }
-    if (e.key === 'Escape') {
-      setQuery('')
-      inputRef.current?.blur()
-    }
+function loadMode() {
+  const saved = localStorage.getItem(STORAGE_KEY)
+  return MODES.some(m => m.id === saved) ? saved : 'nga'
+}
+
+export default function SearchBar() {
+  const [mode,  setModeState] = useState(loadMode)
+  const [query, setQuery]     = useState('')
+  const inputRef = useRef(null)
+  const current  = MODES.find(m => m.id === mode)
+
+  const setMode = id => {
+    setModeState(id)
+    localStorage.setItem(STORAGE_KEY, id)
+    inputRef.current?.focus()
   }
 
-  const placeholder = mode === 'site'
-    ? '搜索站内链接名称…'
-    : `在 ${currentMode.label} 中搜索，按回车确认`
+  const doSearch = q => {
+    if (!q.trim()) return
+    window.open(SEARCH_URL[mode](q.trim()), '_blank', 'noopener,noreferrer')
+  }
+
+  const handleKeyDown = e => {
+    if (e.key === 'Enter')  doSearch(query)
+    if (e.key === 'Escape') { setQuery(''); inputRef.current?.blur() }
+  }
 
   return (
     <div className="max-w-2xl mx-auto px-4 pt-8 pb-4">
-      {/* Input */}
       <div
         className="flex items-center rounded-full overflow-hidden"
-        style={{
-          background: 'var(--md-surface-container)',
-          border: '2px solid var(--md-outline-variant)',
-          transition: 'border-color 0.2s',
-        }}
+        style={{ background: 'var(--md-surface-container)', border: '2px solid var(--md-outline-variant)', transition: 'border-color 0.2s' }}
         onFocusCapture={e => e.currentTarget.style.borderColor = 'var(--md-primary)'}
-        onBlurCapture={e => e.currentTarget.style.borderColor = 'var(--md-outline-variant)'}
+        onBlurCapture={e  => e.currentTarget.style.borderColor = 'var(--md-outline-variant)'}
       >
-        <span className="pl-5 text-lg" style={{ color: 'var(--md-outline)' }}>
-          {currentMode.icon}
-        </span>
-
+        <span className="pl-5 text-lg" style={{ color: 'var(--md-outline)' }}>{current?.icon}</span>
         <input
           ref={inputRef}
           type="text"
           value={query}
           onChange={e => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={placeholder}
+          placeholder={`在 ${current?.label} 中搜索，回车确认`}
           className="flex-1 px-4 py-4 text-base outline-none bg-transparent"
           style={{ color: 'var(--md-on-surface)' }}
         />
-
         {query && (
           <button
             onClick={() => { setQuery(''); inputRef.current?.focus() }}
             className="px-3 text-xl leading-none"
             style={{ color: 'var(--md-outline)' }}
             aria-label="清空"
-          >
-            ×
-          </button>
+          >×</button>
         )}
-
-        {mode !== 'site' && (
-          <button
-            onClick={() => onSearch(query)}
-            className="px-5 py-4 text-sm font-bold rounded-r-full"
-            style={{ background: 'var(--md-primary-container)', color: 'var(--md-on-primary-container)' }}
-          >
-            搜索
-          </button>
-        )}
+        <button
+          onClick={() => doSearch(query)}
+          className="px-5 py-4 text-sm font-bold rounded-r-full"
+          style={{ background: 'var(--md-primary-container)', color: 'var(--md-on-primary-container)' }}
+        >
+          搜索
+        </button>
       </div>
 
-      {/* Mode pills */}
       <div className="flex gap-2 mt-3 justify-center flex-wrap">
         {MODES.map(m => (
           <button
             key={m.id}
-            onClick={() => {
-              setMode(m.id)
-              setQuery('')
-              inputRef.current?.focus()
-            }}
+            onClick={() => setMode(m.id)}
             className="px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200"
-            style={mode === m.id ? {
-              background: 'var(--md-primary)',
-              color: 'var(--md-on-primary)',
-              fontWeight: '700',
-            } : {
-              background: 'var(--md-surface-container)',
-              color: 'var(--md-on-surface-variant)',
-            }}
+            style={mode === m.id
+              ? { background: 'var(--md-primary)', color: 'var(--md-on-primary)', fontWeight: 700 }
+              : { background: 'var(--md-surface-container)', color: 'var(--md-on-surface-variant)' }}
           >
             {m.label}
           </button>
