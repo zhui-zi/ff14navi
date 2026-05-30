@@ -115,6 +115,7 @@ export const categories = [
       { name: '义军武器攻略',      style: 'basic', url: 'https://bbs.nga.cn/read.php?tid=21672716' },
       { name: '扎杜诺尔高原攻略',  style: 'basic', url: 'https://bbs.nga.cn/read.php?tid=26953760' },
       { name: '贡希尔德神庙攻略',  style: 'basic', url: 'https://bbs.nga.cn/read.php?tid=26397957' },
+      { name: '幻境武器·新月岛攻略', style: 'basic', url: 'https://bbs.nga.cn/read.php?tid=44642200' },
     ],
   },
   {
@@ -137,6 +138,7 @@ export const categories = [
       { name: '无人岛攻略',               style: 'green',  url: 'https://ngabbs.com/read.php?tid=33192114' },
       { name: '无人岛每周作业',            style: 'basic',  url: 'https://ngabbs.com/thread.php?authorid=25868132' },
       { name: '素素无人岛',               style: 'blue',   url: 'https://wrd.ffxiv.cn/' },
+      { name: '宇宙探索攻略',             style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=43895399' },
     ],
   },
   {
