@@ -75,6 +75,7 @@ export const categories = [
     tab: 'combat',
     name: '常规副本',
     links: [
+      { name: 'XivStrat攻略站', style: 'basic', url: 'https://xivstrat.cn/' },
       { name: '菓子君Okashi',        style: 'olive',  url: 'https://space.bilibili.com/932340/video' },
       { name: '子言姐姐',            style: 'teal',   url: 'https://space.bilibili.com/293917/video' },
       { name: '苦茶子',              style: 'blue',   url: 'https://space.bilibili.com/359741675/video' },
