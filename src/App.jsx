@@ -178,6 +178,17 @@ export default function App() {
           本站仅作为收录与指引功能，因使用外部程序导致违反相关游戏规定而可能产生的风险，由使用者自负，本站及运营人员对此概不负责。
         </p>
         <p className="text-xs mt-3 opacity-40">FINAL FANTASY XIV © SQUARE ENIX</p>
+        <p className="text-xs mt-4 opacity-50">
+          Built with React · Powered by Cloudflare Pages ·{' '}
+          <a
+            href="https://keita.cc/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:opacity-80 transition-opacity"
+          >
+            黑川启太
+          </a>
+        </p>
       </footer>
     </div>
   )
