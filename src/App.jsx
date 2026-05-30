@@ -45,9 +45,14 @@ export default function App() {
           searchQuery={searchMode === 'site' ? searchQuery : ''}
         />
       </main>
-      <footer className="text-center py-8" style={{ borderTop: '1px solid #201E25', color: 'var(--md-outline)' }}>
-        <p className="text-sm tracking-wider">艾欧泽亚导航 · 非官方粉丝导航站 · 仅供参考</p>
-        <p className="text-xs mt-1 opacity-60">FINAL FANTASY XIV © SQUARE ENIX</p>
+      <footer className="text-center py-10 px-4" style={{ borderTop: '1px solid #201E25', color: 'var(--md-outline)' }}>
+        <p className="text-sm font-medium mb-2" style={{ color: 'var(--md-on-surface-variant)' }}>
+          固执己见的最终幻想14导航站。其中 100% 的代码由 LLM 生成。
+        </p>
+        <p className="text-xs leading-relaxed max-w-2xl mx-auto opacity-70">
+          本站仅作为收录与指引功能，因使用外部程序导致违反相关游戏规定而可能产生的风险，由使用者自负，本站及运营人员对此概不负责。
+        </p>
+        <p className="text-xs mt-3 opacity-40">FINAL FANTASY XIV © SQUARE ENIX</p>
       </footer>
     </div>
   )
