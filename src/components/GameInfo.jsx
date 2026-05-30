@@ -30,9 +30,21 @@ function Countdown({ target, expired, accentColor }) {
   return (
     <span
       className="tabular-nums leading-none"
-      style={{ fontFamily: '"Noto Serif SC", serif', fontWeight: 900, fontSize: '1.5rem', color: accentColor }}
+      style={{
+        fontFamily: '"Noto Serif SC", serif',
+        fontWeight: 900,
+        fontSize: '1.5rem',
+        color: accentColor,
+        whiteSpace: 'nowrap',
+        fontFeatureSettings: '"tnum"',
+        display: 'inline-block',
+        minWidth: '8ch',
+      }}
     >
-      {t.d > 0 && <>{t.d}<span style={{ fontSize: '0.9rem', fontWeight: 600, margin: '0 2px 0 1px' }}>天</span></>}
+      {/* Always reserve space for days to prevent layout shift */}
+      <span style={{ visibility: t.d > 0 ? 'visible' : 'hidden', marginRight: t.d > 0 ? 0 : 0 }}>
+        {t.d}<span style={{ fontSize: '0.9rem', fontWeight: 600, margin: '0 3px 0 1px' }}>天</span>
+      </span>
       {hh}:{mm}:{ss}
     </span>
   )
@@ -65,6 +77,7 @@ function ActivityCard({ accent, badge, title, subtitle, dates, rows, url }) {
         background: 'var(--md-surface-container-high)',
         borderLeft: `4px solid ${accent}`,
         transition: 'transform 0.18s cubic-bezier(0.2,0,0,1), box-shadow 0.18s',
+        minHeight: '120px',
       }}
       onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.02)'; e.currentTarget.style.boxShadow = '0 4px 24px rgba(0,0,0,0.22)' }}
       onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = '' }}
