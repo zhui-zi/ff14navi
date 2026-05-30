@@ -198,6 +198,8 @@ export const categories = [
     tab: 'tools',
     name: '外挂',
     links: [
+      { name: '呆萌ACT', style: 'basic', url: 'https://act.diemoe.net/' },
+      { name: '咖啡ACT', style: 'basic', url: 'https://www.ffcafe.cn/act/' },
       { name: 'NGA幻想科技',                style: 'basic',  url: 'https://bbs.nga.cn/thread.php?stid=20425950' },
       { name: '獭窝',               icon: 'otter',  style: 'brown',  url: 'http://xn--v9x.net/' },
       { name: 'XIVLauncher',  icon: 'star',   style: 'blue',   url: 'https://ottercorp.github.io/' },
