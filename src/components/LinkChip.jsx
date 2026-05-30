@@ -74,6 +74,7 @@ const EMOJI = {
   ban:           '🚫',
   exclamation:   '⚠️',
   calc:          '🧮',
+  star:          '🌠',
 }
 
 function IconEl({ name }) {

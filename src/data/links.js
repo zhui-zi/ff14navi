@@ -200,7 +200,7 @@ export const categories = [
     links: [
       { name: 'NGA幻想科技',                style: 'basic',  url: 'https://bbs.nga.cn/thread.php?stid=20425950' },
       { name: '獭窝',               icon: 'otter',  style: 'brown',  url: 'http://xn--v9x.net/' },
-      { name: 'XIVLauncher',         style: 'basic',  url: 'https://ottercorp.github.io/' },
+      { name: 'XIVLauncher',  icon: 'star',   style: 'blue',   url: 'https://ottercorp.github.io/' },
       { name: 'ACT日志解析',         style: 'orange', url: 'https://parser.ffxiv.cyou/' },
       { name: '探索笔记时钟',               style: 'basic',  url: 'https://annangela.github.io/FFXIVSightseeingGuide/#/' },
       { name: 'PostNamazu',                 style: 'basic',  url: 'https://github.com/Natsukage/PostNamazu' },
