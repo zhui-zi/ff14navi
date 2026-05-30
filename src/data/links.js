@@ -66,7 +66,8 @@ export const categories = [
       { name: 'NGA艾欧泽亚',              style: 'basic',  url: 'https://bbs.nga.cn/thread.php?fid=-362960' },
       { name: '百度FF14贴吧',             style: 'basic',  url: 'https://tieba.baidu.com/f?kw=ff14&ie=utf-8&tp=0' },
       { name: '石之家',                   style: 'yellow', url: 'https://ff14risingstones.web.sdo.com/pc/index.html#/post' },
-      { name: 'Reddit/FFXIV', icon: 'reddit', style: 'orange', url: 'https://www.reddit.com/r/ffxiv/' },
+      { name: 'Reddit/FFXIV',   icon: 'reddit', style: 'orange', url: 'https://www.reddit.com/r/ffxiv/' },
+      { name: '以太之光广场',   icon: 'weibo',  style: 'basic',  url: 'https://weibo.com/u/7755458431' },
     ],
   },
   {
@@ -189,6 +190,7 @@ export const categories = [
       { name: '素素辣鸡排',   style: 'red',   url: 'https://tools.ffxiv.cn/lajipai/index.html' },
       { name: 'むーむーのネタ帳', style: 'basic', url: 'https://ff14moomoo.com/' },
       { name: '天气查询',     icon: 'sun',    style: 'basic', url: 'https://asvel.github.io/ffxiv-weather/' },
+      { name: '光之演奏家',                   style: 'basic', url: 'https://fffff.games/' },
     ],
   },
   {
@@ -196,7 +198,6 @@ export const categories = [
     tab: 'tools',
     name: '外挂',
     links: [
-      { name: '萨雷安の迦巴勒幻想大图书馆', icon: 'book',   style: 'blue',   url: 'https://bbs.tggfl.com/' },
       { name: 'NGA幻想科技',                style: 'basic',  url: 'https://bbs.nga.cn/thread.php?stid=20425950' },
       { name: '獭窝',               icon: 'otter',  style: 'brown',  url: 'http://xn--v9x.net/' },
       { name: 'XIVLauncher',         style: 'basic',  url: 'https://ottercorp.github.io/' },

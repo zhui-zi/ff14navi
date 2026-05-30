@@ -1,6 +1,6 @@
 export default function Header({ isDark, toggleTheme }) {
   return (
-    <header className="relative overflow-hidden select-none" style={{ background: 'var(--header-bg)' }}>
+    <header className="relative overflow-hidden select-none flex items-center justify-center" style={{ background: 'var(--header-bg)', minHeight: 'clamp(140px, 22vw, 200px)' }}>
       {/* Ambient glows */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-32 -left-24 w-96 h-96 rounded-full"
@@ -28,7 +28,7 @@ export default function Header({ isDark, toggleTheme }) {
         </span>
       </button>
 
-      <div className="relative max-w-7xl mx-auto px-4 py-6 sm:py-10 text-center">
+      <div className="relative w-full max-w-7xl mx-auto px-4 py-6 text-center">
         <div className="text-3xl mb-2 sm:mb-3 opacity-90" style={{ color: 'var(--header-crystal)' }}>✦</div>
 
         <h1 className="tracking-tight mb-1" style={{

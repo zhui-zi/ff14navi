@@ -100,9 +100,9 @@ function ActivityCard({ accent, badge, title, subtitle, dates, rows, url }) {
 }
 
 // ── Main component ───────────────────────────────────────────────────────────
-export default function GameInfo() {
-  return (
-    <div className="max-w-7xl mx-auto px-4 mb-6 space-y-3">
+export default function GameInfo({ noWrap = false }) {
+  const content = (
+    <div className="space-y-3">
 
       {/* Version banner — M3 Primary Container filled card, compact */}
       <a
@@ -178,4 +178,6 @@ export default function GameInfo() {
       </div>
     </div>
   )
+  if (noWrap) return content
+  return <div className="max-w-7xl mx-auto px-4 mb-6">{content}</div>
 }
