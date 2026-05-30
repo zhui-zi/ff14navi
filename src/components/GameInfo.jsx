@@ -29,7 +29,7 @@ function Countdown({ target, expired, accentColor }) {
 
   return (
     <span
-      className="tabular-nums leading-none"
+      className="countdown-num tabular-nums leading-none"
       style={{
         fontFamily: '"Noto Serif SC", serif',
         fontWeight: 900,
