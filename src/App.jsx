@@ -151,13 +151,13 @@ export default function App() {
             <span>⭐</span> GitHub 仓库
           </a>
           <a
-            href="https://github.com/zhui-zi/ff14navi/pulls"
+            href="https://github.com/zhui-zi/ff14navi/issues"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105"
             style={{ background: 'var(--md-primary-container)', color: 'var(--md-on-primary-container)' }}
           >
-            <span>🔀</span> 通过 PR 贡献链接
+            <span>💬</span> 反馈意见
           </a>
         </div>
 

@@ -1,6 +1,9 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { categories } from '../data/links'
 import LinkChip from './LinkChip'
+import ToolsGate from './ToolsGate'
+
+const TOOLS_KEY = 'ff14navi-tools-unlocked'
 
 function CustomChip({ link, onDelete }) {
   const styleClass = `chip-${link.style || 'basic'}`
@@ -86,6 +89,13 @@ function CategoryBlock({ cat, searchQuery, isCustom, customLinks, onDeleteCustom
 
 export default function LinksSection({ activeTab, searchQuery, customLinks, onDeleteCustomLink, columnCount }) {
   const q = searchQuery.trim()
+  // Track unlock state so the 'all' tab updates when user unlocks inside 'tools' tab
+  const [toolsUnlocked, setToolsUnlocked] = useState(() => !!localStorage.getItem(TOOLS_KEY))
+
+  // Re-check after ToolsGate writes to localStorage
+  const checkUnlocked = () => {
+    if (!toolsUnlocked && localStorage.getItem(TOOLS_KEY)) setToolsUnlocked(true)
+  }
 
   const visibleCustom = useMemo(() => {
     if (!q) return customLinks
@@ -94,17 +104,22 @@ export default function LinksSection({ activeTab, searchQuery, customLinks, onDe
 
   const visibleCats = useMemo(() => {
     let cats = categories
-    if (activeTab !== 'all') cats = cats.filter(c => c.tab === activeTab)
+    if (activeTab !== 'all') {
+      cats = cats.filter(c => c.tab === activeTab)
+    } else {
+      // Hide tools from 'all' until the user has unlocked them
+      if (!toolsUnlocked) cats = cats.filter(c => c.tab !== 'tools')
+    }
     if (q) {
       cats = cats
         .map(c => ({ ...c, links: c.links.filter(l => l.name.toLowerCase().includes(q.toLowerCase())) }))
         .filter(c => c.links.length > 0)
     }
     return cats
-  }, [activeTab, q])
+  }, [activeTab, q, toolsUnlocked])
 
   const showCustomSection = visibleCustom.length > 0 || (customLinks.length === 0 && activeTab === 'all' && !q)
-  const hasAny = showCustomSection || visibleCats.length > 0
+  const hasAny = showCustomSection || visibleCats.length > 0 || activeTab === 'tools'
 
   if (!hasAny) {
     return (
@@ -117,26 +132,32 @@ export default function LinksSection({ activeTab, searchQuery, customLinks, onDe
     )
   }
 
-  return (
-    <div className="max-w-7xl mx-auto px-4">
-      <div
-        className="columns-layout"
-        style={{ columns: columnCount, columnGap: '1.5rem' }}
-      >
-        {/* Custom links always first */}
-        {showCustomSection && (
-          <CategoryBlock
-            isCustom
-            customLinks={visibleCustom}
-            onDeleteCustomLink={onDeleteCustomLink}
-            searchQuery={q}
-          />
-        )}
+  const mainContent = (
+    <div
+      className="columns-layout"
+      style={{ columns: columnCount, columnGap: '1.5rem' }}
+    >
+      {showCustomSection && (
+        <CategoryBlock
+          isCustom
+          customLinks={visibleCustom}
+          onDeleteCustomLink={onDeleteCustomLink}
+          searchQuery={q}
+        />
+      )}
+      {visibleCats.map(cat => (
+        <CategoryBlock key={cat.id} cat={cat} searchQuery={q} />
+      ))}
+    </div>
+  )
 
-        {visibleCats.map(cat => (
-          <CategoryBlock key={cat.id} cat={cat} searchQuery={q} />
-        ))}
-      </div>
+  return (
+    <div className="max-w-7xl mx-auto px-4" onClick={checkUnlocked}>
+      {activeTab === 'tools' ? (
+        <ToolsGate>{mainContent}</ToolsGate>
+      ) : (
+        mainContent
+      )}
     </div>
   )
 }
