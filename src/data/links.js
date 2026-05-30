@@ -196,7 +196,6 @@ export const categories = [
       { name: '国际服服务器实时状况',        style: 'basic',  url: 'https://arrstatus.com/' },
       { name: '天气查询',           icon: 'sun',    style: 'basic',  url: 'https://asvel.github.io/ffxiv-weather/' },
       { name: '獭爹の工具箱',       icon: 'otter',  style: 'basic',  url: 'https://file.bluefissure.com/FFXIV/' },
-      { name: 'FFXIV 官方/第三方服务监控',   style: 'basic',  url: 'https://mystatus.bingyin.org/status/ffxivcn' },
       { name: '塔塔露国际服翻译插件',        style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=30399830&rand=953' },
     ],
   },
