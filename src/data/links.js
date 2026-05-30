@@ -5,7 +5,7 @@ export const tabs = [
   { id: 'combat',   label: '副本战斗', emoji: '⚔' },
   { id: 'crafting', label: '生产采集', emoji: '🔨' },
   { id: 'life',     label: '娱乐生活', emoji: '🎪' },
-  { id: 'tools',    label: '科技工具', emoji: '🔧' },
+  { id: 'tools',    label: '外挂',     emoji: '🔧' },
 ]
 
 export const categories = [
@@ -193,7 +193,7 @@ export const categories = [
   {
     id: 'tech-tools',
     tab: 'tools',
-    name: '科技工具',
+    name: '外挂',
     links: [
       { name: '萨雷安の迦巴勒幻想大图书馆', icon: 'book',   style: 'blue',   url: 'https://bbs.tggfl.com/' },
       { name: 'NGA幻想科技',                style: 'basic',  url: 'https://bbs.nga.cn/thread.php?stid=20425950' },

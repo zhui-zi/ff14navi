@@ -11,15 +11,21 @@ export default function Header({ isDark, toggleTheme }) {
           style={{ background: `radial-gradient(circle, var(--header-glow-3) 0%, transparent 65%)` }} />
       </div>
 
-      {/* Theme toggle */}
+      {/* Theme toggle — M3 icon button */}
       <button
         onClick={toggleTheme}
-        className="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center text-lg z-10 transition-all duration-200 hover:scale-110"
-        style={{ background: 'var(--md-surface-container)', color: 'var(--md-on-surface-variant)' }}
+        className="theme-toggle-btn absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center text-lg z-10"
+        style={{
+          background: 'var(--md-surface-container)',
+          color: 'var(--md-on-surface-variant)',
+        }}
         aria-label={isDark ? '切换到浅色模式' : '切换到深色模式'}
-        title={isDark ? '切换到浅色模式' : '切换到深色模式'}
+        title={isDark ? '切换浅色' : '切换深色'}
       >
-        {isDark ? '☀' : '🌙'}
+        {/* key changes on each toggle → remounts span → triggers CSS animation */}
+        <span key={String(isDark)} className="theme-icon text-base leading-none">
+          {isDark ? '☀️' : '🌙'}
+        </span>
       </button>
 
       <div className="relative max-w-7xl mx-auto px-4 py-14 text-center">

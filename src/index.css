@@ -80,6 +80,55 @@ body {
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
+/* ── Theme toggle animations ── */
+/* Icon springs in when key changes (React key trick) */
+@keyframes icon-spring-in {
+  0%   { transform: rotate(-120deg) scale(0.3); opacity: 0; }
+  60%  { transform: rotate(15deg)   scale(1.15); opacity: 1; }
+  80%  { transform: rotate(-8deg)   scale(0.95); }
+  100% { transform: rotate(0deg)    scale(1); opacity: 1; }
+}
+.theme-icon {
+  display: inline-block;
+  animation: icon-spring-in 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+/* M3 icon button: relative + overflow for state-layer */
+.theme-toggle-btn {
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.2s, transform 0.15s cubic-bezier(0.2,0,0,1);
+}
+.theme-toggle-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+.theme-toggle-btn:hover::before  { opacity: 0.08; }
+.theme-toggle-btn:focus-visible::before { opacity: 0.12; }
+.theme-toggle-btn:active { transform: scale(0.85); }
+.theme-toggle-btn:active::before { opacity: 0.16; }
+
+/* Page-level flash on theme switch */
+@keyframes theme-flash {
+  0%   { opacity: 0.18; }
+  100% { opacity: 0; }
+}
+.theme-flash-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: white;
+  animation: theme-flash 0.35s ease-out forwards;
+}
+.theme-light .theme-flash-overlay { background: #141218; }
+
 /* ── Multi-column layout ── */
 .category-block { break-inside: avoid; margin-bottom: 2rem; }
 @media (max-width: 639px)                      { .columns-layout { columns: 1 !important; } }

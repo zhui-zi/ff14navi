@@ -4,7 +4,7 @@ import { useCountdown } from '../hooks/useCountdown'
 const cst = (y, mo, d, h = 0, mi = 0) =>
   new Date(Date.UTC(y, mo - 1, d, h - 8, mi))
 
-const T_PATCH_751     = cst(2026, 6,  2,  0,  0)
+const T_PATCH_751     = cst(2026, 6,  2, 16,  0)
 const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
 const T_STAR_END      = cst(2026, 6,  9, 22, 59)
 const T_TRIAL_CH_END  = cst(2026, 5, 31, 23, 59)

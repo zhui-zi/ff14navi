@@ -53,7 +53,11 @@ export default function App() {
     document.documentElement.classList.toggle('theme-light', !isDark)
   }, [isDark])
 
-  const toggleTheme = useCallback(() => setIsDark(d => !d), [])
+  const [flashKey, setFlashKey] = useState(0)
+  const toggleTheme = useCallback(() => {
+    setIsDark(d => !d)
+    setFlashKey(k => k + 1)
+  }, [])
 
   const handleExternalSearch = useCallback((query) => {
     if (!query.trim()) return
@@ -80,6 +84,7 @@ export default function App() {
   return (
     <div className="min-h-screen" style={{ background: 'var(--md-surface)', color: 'var(--md-on-surface)' }}>
       <Header isDark={isDark} toggleTheme={toggleTheme} />
+      {flashKey > 0 && <div key={flashKey} className="theme-flash-overlay" aria-hidden="true" />}
       <main className="pb-28">
         <SearchBar
           query={searchQuery}
