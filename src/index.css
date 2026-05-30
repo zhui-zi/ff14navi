@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* M3 Dark Scheme — Purple seed + FF14 gold tertiary */
+  --md-primary: #CEB4F8;
+  --md-on-primary: #3D1B72;
+  --md-primary-container: #553387;
+  --md-on-primary-container: #EDD9FF;
+  --md-tertiary: #F4C161;
+  --md-on-tertiary: #3D2A00;
+  --md-tertiary-container: #5C3F00;
+  --md-surface: #141218;
+  --md-on-surface: #E7E0EB;
+  --md-surface-container: #201E25;
+  --md-surface-container-high: #2B282F;
+  --md-surface-container-highest: #36333B;
+  --md-on-surface-variant: #CCC5CF;
+  --md-outline: #978E9B;
+  --md-outline-variant: #4A454E;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--md-surface);
+  color: var(--md-on-surface);
+  font-family: 'Noto Sans SC', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0E0C12;
+}
+::-webkit-scrollbar-thumb {
+  background: #4A454E;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #978E9B;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Link chip hover */
+.link-chip {
+  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+.link-chip:hover {
+  filter: brightness(1.35) saturate(1.15);
+  transform: scale(1.04);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+}
+.link-chip:active {
+  transform: scale(0.97);
+  transition-duration: 0.08s;
+}
