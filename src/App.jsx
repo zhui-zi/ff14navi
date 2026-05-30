@@ -9,6 +9,7 @@ import { tabs } from './data/links'
 
 const STORAGE_KEY = 'ff14navi-custom-links'
 const COL_KEY     = 'ff14navi-columns'
+const THEME_KEY   = 'ff14navi-theme'
 
 function loadCustomLinks() {
   try {
@@ -24,6 +25,12 @@ function loadColumns() {
   return v >= 1 && v <= 4 ? v : 2
 }
 
+function loadDark() {
+  const saved = localStorage.getItem(THEME_KEY)
+  if (saved) return saved === 'dark'
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+}
+
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchMode, setSearchMode] = useState('site')
@@ -31,6 +38,7 @@ export default function App() {
   const [customLinks, setCustomLinks] = useState(loadCustomLinks)
   const [showModal, setShowModal]     = useState(false)
   const [columnCount, setColumnCount] = useState(loadColumns)
+  const [isDark, setIsDark]           = useState(loadDark)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(customLinks))
@@ -39,6 +47,13 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem(COL_KEY, columnCount)
   }, [columnCount])
+
+  useEffect(() => {
+    localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light')
+    document.documentElement.classList.toggle('theme-light', !isDark)
+  }, [isDark])
+
+  const toggleTheme = useCallback(() => setIsDark(d => !d), [])
 
   const handleExternalSearch = useCallback((query) => {
     if (!query.trim()) return
@@ -64,7 +79,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--md-surface)', color: 'var(--md-on-surface)' }}>
-      <Header />
+      <Header isDark={isDark} toggleTheme={toggleTheme} />
       <main className="pb-28">
         <SearchBar
           query={searchQuery}

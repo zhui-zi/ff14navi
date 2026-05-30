@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Dark theme (default) ── */
 :root {
-  /* M3 Dark Scheme — Purple seed + FF14 gold tertiary */
   --md-primary: #CEB4F8;
   --md-on-primary: #3D1B72;
   --md-primary-container: #553387;
@@ -19,14 +19,77 @@
   --md-on-surface-variant: #CCC5CF;
   --md-outline: #978E9B;
   --md-outline-variant: #4A454E;
+
+  /* Header */
+  --header-bg: linear-gradient(135deg, #0D0F2A 0%, #1C1042 45%, #0F1635 100%);
+  --header-glow-1: rgba(206,180,248,0.20);
+  --header-glow-2: rgba(244,193,97,0.15);
+  --header-glow-3: rgba(126,203,232,0.15);
+  --header-subtitle: #9B95B0;
+  --header-crystal: #CEB4F8;
+
+  /* Info cards */
+  --card-version-bg: linear-gradient(135deg, #3D1B72, #553387);
+  --card-version-text: #EDD9FF;
+  --card-patch-bg: linear-gradient(135deg, #00414F, #005E6E);
+  --card-patch-text: #A2EEF9;
+  --card-gold-bg: linear-gradient(135deg, #5C3F00, #7A5500);
+  --card-gold-text: #FFDEA5;
+  --card-star-bg: linear-gradient(135deg, #4C2436, #673A4D);
+  --card-star-text: #FFD8E4;
+  --card-trial-bg: linear-gradient(135deg, #3E1A00, #5A2A00);
+  --card-trial-text: #FFD5B0;
+
+  /* Chip overlay in dark */
+  --chip-border: none;
 }
 
-* {
-  box-sizing: border-box;
+/* ── Light theme ── */
+.theme-light {
+  --md-primary: #6750A4;
+  --md-on-primary: #FFFFFF;
+  --md-primary-container: #EADDFF;
+  --md-on-primary-container: #21005D;
+  --md-tertiary: #7D5700;
+  --md-on-tertiary: #FFFFFF;
+  --md-tertiary-container: #FFD8A8;
+  --md-surface: #FFFBFF;
+  --md-on-surface: #1C1B1F;
+  --md-surface-container: #F3EDF7;
+  --md-surface-container-high: #ECE6F0;
+  --md-surface-container-highest: #E6E0EA;
+  --md-on-surface-variant: #49454F;
+  --md-outline: #79747E;
+  --md-outline-variant: #CAC4D0;
+
+  --header-bg: linear-gradient(135deg, #EDE7F6 0%, #D1C4E9 45%, #E8EAF6 100%);
+  --header-glow-1: rgba(103,80,164,0.12);
+  --header-glow-2: rgba(125,87,0,0.10);
+  --header-glow-3: rgba(0,96,115,0.10);
+  --header-subtitle: #49454F;
+  --header-crystal: #6750A4;
+
+  --card-version-bg: linear-gradient(135deg, #EDE7F6, #D1C4E9);
+  --card-version-text: #21005D;
+  --card-patch-bg: linear-gradient(135deg, #E0F7FA, #B2EBF2);
+  --card-patch-text: #00363D;
+  --card-gold-bg: linear-gradient(135deg, #FFFDE7, #FFE082);
+  --card-gold-text: #261900;
+  --card-star-bg: linear-gradient(135deg, #FCE4EC, #F8BBD0);
+  --card-star-text: #370B1E;
+  --card-trial-bg: linear-gradient(135deg, #FFF3E0, #FFE0B2);
+  --card-trial-text: #341100;
+
+  --chip-border: 1.5px solid currentColor;
 }
+
+/* ── Global ── */
+* { box-sizing: border-box; }
 
 html {
   scroll-behavior: smooth;
+  /* theme transition */
+  transition: background-color 0.25s, color 0.25s;
 }
 
 body {
@@ -34,59 +97,35 @@ body {
   color: var(--md-on-surface);
   font-family: 'Noto Sans SC', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.25s, color 0.25s;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #0E0C12;
-}
-::-webkit-scrollbar-thumb {
-  background: #4A454E;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #978E9B;
-}
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--md-surface); }
+::-webkit-scrollbar-thumb { background: var(--md-outline-variant); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--md-outline); }
 
-/* Hide scrollbar utility */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* Multi-column category layout */
+/* ── Multi-column layout ── */
 .category-block {
   break-inside: avoid;
   margin-bottom: 2rem;
 }
+@media (max-width: 639px) { .columns-layout { columns: 1 !important; } }
+@media (min-width: 640px) and (max-width: 1023px) { .columns-layout { columns: min(var(--cols, 2), 2) !important; } }
 
-/* On small screens, always single column regardless of setting */
-@media (max-width: 639px) {
-  .columns-layout {
-    columns: 1 !important;
-  }
-}
-@media (min-width: 640px) and (max-width: 1023px) {
-  .columns-layout {
-    columns: min(var(--cols, 2), 2) !important;
-  }
-}
-
-/* Link chip hover */
+/* ── Link chip ── */
 .link-chip {
   transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  border: var(--chip-border);
 }
 .link-chip:hover {
-  filter: brightness(1.35) saturate(1.15);
+  filter: brightness(1.3) saturate(1.15);
   transform: scale(1.04);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 .link-chip:active {
   transform: scale(0.97);
