@@ -120,44 +120,25 @@ const handleAddLink = useCallback((link) => {
       )}
 
       <footer className="text-center py-10 px-4" style={{ borderTop: '1px solid #201E25', color: 'var(--md-outline)' }}>
-        {/* GitHub links */}
-        <div className="flex gap-3 justify-center flex-wrap mb-5">
-          <a
-            href="https://github.com/zhui-zi/ff14navi"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105"
-            style={{ background: 'var(--md-surface-container-high)', color: 'var(--md-on-surface-variant)' }}
-          >
-            <span>⭐</span> GitHub 仓库
-          </a>
-          <a
-            href="https://github.com/zhui-zi/ff14navi/issues"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 hover:scale-105"
-            style={{ background: 'var(--md-primary-container)', color: 'var(--md-on-primary-container)' }}
-          >
-            <span>💬</span> 反馈意见
-          </a>
-        </div>
-
-        <p className="text-sm font-medium mb-2" style={{ color: 'var(--md-on-surface-variant)' }}>
+        <p className="text-sm font-medium mb-4" style={{ color: 'var(--md-on-surface-variant)' }}>
           固执己见的最终幻想14导航站。其中 100% 的代码由 LLM 生成。
         </p>
-        <p className="text-xs leading-relaxed max-w-2xl mx-auto opacity-70">
-          本站仅作为收录与指引功能，因使用外部程序导致违反相关游戏规定而可能产生的风险，由使用者自负，本站及运营人员对此概不负责。
-        </p>
-        <p className="text-xs mt-3 opacity-40">FINAL FANTASY XIV © SQUARE ENIX</p>
-        <p className="text-xs mt-4 opacity-50">
+        <p className="text-xs opacity-35 mb-2">FINAL FANTASY XIV © SQUARE ENIX</p>
+        <p className="text-xs opacity-45 leading-relaxed">
           Built with React · Powered by Cloudflare Pages ·{' '}
-          <a
-            href="https://keita.cc/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:opacity-80 transition-opacity"
-          >
+          <a href="https://keita.cc/" target="_blank" rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:opacity-80 transition-opacity">
             黑川启太
+          </a>
+          {' '}·{' '}
+          <a href="https://github.com/zhui-zi/ff14navi" target="_blank" rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:opacity-80 transition-opacity">
+            GitHub
+          </a>
+          {' '}·{' '}
+          <a href="https://github.com/zhui-zi/ff14navi/issues" target="_blank" rel="noopener noreferrer"
+            className="underline underline-offset-2 hover:opacity-80 transition-opacity">
+            反馈意见
           </a>
         </p>
       </footer>

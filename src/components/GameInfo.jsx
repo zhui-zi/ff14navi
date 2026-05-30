@@ -69,17 +69,18 @@ function ActivityCard({ accent, badge, title, subtitle, dates, rows, url }) {
       className="block rounded-xl px-4 py-3.5 cursor-pointer"
       style={{
         backgroundColor: 'var(--md-surface-container-high)',
-        backgroundImage: `linear-gradient(160deg, ${accent}14 0%, transparent 55%)`,
-        borderTop: `2px solid ${accent}`,
-        transition: 'transform 0.15s ease, box-shadow 0.15s ease',
+        backgroundImage: `linear-gradient(160deg, ${accent}0d 0%, transparent 50%)`,
+        border: `1.5px solid ${accent}`,
+        boxShadow: `0 2px 8px rgba(0,0,0,0.1)`,
+        transition: 'transform 0.18s ease, box-shadow 0.22s ease',
       }}
       onMouseEnter={e => {
         e.currentTarget.style.transform = 'translateY(-3px)'
-        e.currentTarget.style.boxShadow = `0 8px 24px rgba(0,0,0,0.22), 0 0 0 1px ${accent}30`
+        e.currentTarget.style.boxShadow = `0 10px 28px rgba(0,0,0,0.22), 0 0 20px ${accent}3a`
       }}
       onMouseLeave={e => {
         e.currentTarget.style.transform = ''
-        e.currentTarget.style.boxShadow = ''
+        e.currentTarget.style.boxShadow = `0 2px 8px rgba(0,0,0,0.1)`
       }}
     >
       <span

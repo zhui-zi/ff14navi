@@ -1,31 +1,35 @@
-import { useMemo, useState, useCallback } from 'react'
+import { useMemo, useState, useCallback, useEffect } from 'react'
 import { categories } from '../data/links'
 import LinkChip from './LinkChip'
 import ToolsGate from './ToolsGate'
 
 const TOOLS_KEY = 'ff14navi-tools-unlocked'
 
-function CustomChip({ link, onDelete }) {
+function CustomChip({ link, onDelete, editMode }) {
   const styleClass = `chip-${link.style || 'basic'}`
   return (
-    <div className="group relative inline-flex">
+    <div className="inline-flex items-center gap-1">
       <a
         href={link.url}
         target="_blank"
         rel="noopener noreferrer"
-        className={`link-chip ${styleClass} inline-flex items-center gap-1.5 pl-4 pr-8 py-2 rounded-2xl text-sm font-medium cursor-pointer select-none whitespace-nowrap`}
+        className={`link-chip ${styleClass} inline-flex items-center gap-1.5 px-4 py-2 rounded-2xl text-sm font-medium cursor-pointer select-none whitespace-nowrap`}
       >
         {link.name}
       </a>
-      <button
-        onClick={() => onDelete(link.id)}
-        className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-150"
-        style={{ background: 'rgba(0,0,0,0.55)', color: '#fff' }}
-        aria-label="删除"
-        title="删除此链接"
-      >
-        ×
-      </button>
+      {editMode && (
+        <button
+          onClick={() => onDelete(link.id)}
+          className="w-5 h-5 flex items-center justify-center rounded-full text-xs flex-shrink-0 transition-colors duration-150"
+          style={{ background: 'var(--md-surface-container-highest)', color: 'var(--md-on-surface-variant)' }}
+          onMouseEnter={e => { e.currentTarget.style.background = '#EF9A9A33'; e.currentTarget.style.color = '#EF9A9A' }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'var(--md-surface-container-highest)'; e.currentTarget.style.color = 'var(--md-on-surface-variant)' }}
+          aria-label="删除"
+          title="删除此链接"
+        >
+          ✕
+        </button>
+      )}
     </div>
   )
 }
@@ -57,6 +61,12 @@ function SortButtons({ isFirst, isLast, onMoveUp, onMoveDown }) {
 }
 
 function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenAddModal, isSorting, isFirst, isLast, onMoveUp, onMoveDown }) {
+  const [editMode, setEditMode] = useState(false)
+
+  useEffect(() => {
+    if (isSorting || customLinks?.length === 0) setEditMode(false)
+  }, [isSorting, customLinks?.length])
+
   if (isCustom) {
     return (
       <div className="category-block">
@@ -70,23 +80,37 @@ function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenA
               {customLinks.length}
             </span>
           )}
-          {!isSorting && (
-            <button
-              onClick={onOpenAddModal}
-              className="ml-auto flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-bold transition-all duration-200"
-              style={{ background: 'var(--md-primary)', color: 'var(--md-on-primary)' }}
-              onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.1)' }}
-              onMouseLeave={e => { e.currentTarget.style.filter = 'brightness(1)' }}
-            >
-              <span className="text-base leading-none">+</span>
-              <span>添加</span>
-            </button>
-          )}
-          {isSorting && (
+          {isSorting ? (
             <span className="ml-auto text-xs px-2 py-1 rounded"
               style={{ color: 'var(--md-outline)', background: 'var(--md-surface-container)' }}>
               固定置顶
             </span>
+          ) : (
+            <div className="ml-auto flex items-center gap-2">
+              {customLinks.length > 0 && (
+                <button
+                  onClick={() => setEditMode(v => !v)}
+                  className="text-xs px-3 py-1.5 rounded-full transition-colors duration-150"
+                  style={editMode
+                    ? { background: 'var(--md-surface-container-high)', color: 'var(--md-on-surface-variant)' }
+                    : { background: 'var(--md-surface-container)', color: 'var(--md-on-surface-variant)' }}
+                >
+                  {editMode ? '完成' : '管理'}
+                </button>
+              )}
+              {!editMode && (
+                <button
+                  onClick={onOpenAddModal}
+                  className="flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-bold transition-all duration-200"
+                  style={{ background: 'var(--md-primary)', color: 'var(--md-on-primary)' }}
+                  onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.1)' }}
+                  onMouseLeave={e => { e.currentTarget.style.filter = 'brightness(1)' }}
+                >
+                  <span className="text-base leading-none">+</span>
+                  <span>添加</span>
+                </button>
+              )}
+            </div>
           )}
         </div>
         {customLinks.length === 0 ? (
@@ -96,7 +120,7 @@ function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenA
         ) : (
           <div className="flex flex-wrap gap-2" style={isSorting ? { opacity: 0.35, pointerEvents: 'none' } : {}}>
             {customLinks.map(link => (
-              <CustomChip key={link.id} link={link} onDelete={onDeleteCustomLink} />
+              <CustomChip key={link.id} link={link} onDelete={onDeleteCustomLink} editMode={editMode} />
             ))}
           </div>
         )}

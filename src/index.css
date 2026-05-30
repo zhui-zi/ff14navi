@@ -80,9 +80,21 @@ body {
 .scrollbar-hide::-webkit-scrollbar { display: none; }
 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* ── News board ── */
-@keyframes spin { to { transform: rotate(360deg); } }
-.news-spin { display: inline-block; animation: spin 1s linear infinite; }
+/* ── Skeleton loading ── */
+@keyframes skeleton-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--md-surface-container-high) 20%,
+    var(--md-surface-container-highest) 50%,
+    var(--md-surface-container-high) 80%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease infinite;
+}
 
 /* ── Theme toggle animations ── */
 /* Icon springs in when key changes (React key trick) */

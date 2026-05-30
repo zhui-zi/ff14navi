@@ -3,8 +3,8 @@ import { useState, useRef } from 'react'
 const STORAGE_KEY = 'ff14navi-search-mode'
 
 const MODES = [
-  { id: 'wiki',   label: 'WIKI搜索', icon: '📖' },
-  { id: 'item',   label: '物品搜索', icon: '🔮' },
+  { id: 'wiki',   label: 'WIKI搜索', icon: '📖', placeholder: '在中文维基中搜索，回车确认' },
+  { id: 'item',   label: '物品搜索', icon: '🔮', placeholder: '在中文维基中搜索，回车确认' },
   { id: 'nga',    label: 'NGA',      icon: '📋' },
   { id: 'google', label: 'Google',   icon: '🌐' },
   { id: 'bing',   label: 'Bing',     icon: '🔷' },
@@ -62,7 +62,7 @@ export default function SearchBar() {
           value={query}
           onChange={e => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder={`在 ${current?.label} 中搜索，回车确认`}
+          placeholder={current?.placeholder ?? `在 ${current?.label} 中搜索，回车确认`}
           className="flex-1 px-4 py-4 text-base outline-none bg-transparent"
           style={{ color: 'var(--md-on-surface)' }}
         />
