@@ -23,7 +23,6 @@ const STYLE_BG = {
 function CustomChip({ link, onDelete }) {
   const bg    = STYLE_BG[link.style]    || STYLE_BG.basic
   const color = STYLE_COLOR[link.style] || STYLE_COLOR.basic
-
   return (
     <div className="group relative inline-flex">
       <a
@@ -35,7 +34,6 @@ function CustomChip({ link, onDelete }) {
       >
         {link.name}
       </a>
-      {/* Delete button — visible on hover */}
       <button
         onClick={() => onDelete(link.id)}
         className="absolute right-1.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-150"
@@ -49,7 +47,37 @@ function CustomChip({ link, onDelete }) {
   )
 }
 
-function CategorySection({ cat, searchQuery }) {
+/* A single category block — break-inside:avoid keeps it intact in CSS columns */
+function CategoryBlock({ cat, searchQuery, isCustom, customLinks, onDeleteCustomLink }) {
+  if (isCustom) {
+    return (
+      <div className="category-block">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-1 h-7 rounded-full flex-shrink-0"
+            style={{ background: 'linear-gradient(180deg, var(--md-tertiary), var(--md-primary))' }} />
+          <h2 className="text-xl font-bold" style={{ color: 'var(--md-on-surface)' }}>我的收藏</h2>
+          {customLinks.length > 0 && (
+            <span className="text-xs px-2 py-0.5 rounded-full"
+              style={{ background: 'var(--md-surface-container-high)', color: 'var(--md-on-surface-variant)' }}>
+              {customLinks.length}
+            </span>
+          )}
+        </div>
+        {customLinks.length === 0 ? (
+          <p className="text-sm" style={{ color: 'var(--md-outline)' }}>
+            点击右下角 <strong style={{ color: 'var(--md-primary)' }}>+ 添加自定义链接</strong> 收藏常用网站，数据保存在本地浏览器。
+          </p>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            {customLinks.map(link => (
+              <CustomChip key={link.id} link={link} onDelete={onDeleteCustomLink} />
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
+
   const links = searchQuery
     ? cat.links.filter(l => l.name.toLowerCase().includes(searchQuery.toLowerCase()))
     : cat.links
@@ -57,19 +85,13 @@ function CategorySection({ cat, searchQuery }) {
   if (links.length === 0) return null
 
   return (
-    <section className="mb-10 animate-slide-up">
-      <div className="flex items-center gap-3 mb-5">
-        <div
-          className="w-1 h-7 rounded-full flex-shrink-0"
-          style={{ background: 'linear-gradient(180deg, var(--md-primary), var(--md-tertiary))' }}
-        />
-        <h2 className="text-xl font-bold" style={{ color: 'var(--md-on-surface)' }}>
-          {cat.name}
-        </h2>
-        <span className="text-xs px-2 py-0.5 rounded-full" style={{
-          background: 'var(--md-surface-container-high)',
-          color: 'var(--md-on-surface-variant)',
-        }}>
+    <div className="category-block">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="w-1 h-7 rounded-full flex-shrink-0"
+          style={{ background: 'linear-gradient(180deg, var(--md-primary), var(--md-tertiary))' }} />
+        <h2 className="text-xl font-bold" style={{ color: 'var(--md-on-surface)' }}>{cat.name}</h2>
+        <span className="text-xs px-2 py-0.5 rounded-full"
+          style={{ background: 'var(--md-surface-container-high)', color: 'var(--md-on-surface-variant)' }}>
           {links.length}
         </span>
       </div>
@@ -78,11 +100,11 @@ function CategorySection({ cat, searchQuery }) {
           <LinkChip key={`${link.name}-${link.url}-${i}`} link={link} />
         ))}
       </div>
-    </section>
+    </div>
   )
 }
 
-export default function LinksSection({ activeTab, searchQuery, customLinks, onDeleteCustomLink }) {
+export default function LinksSection({ activeTab, searchQuery, customLinks, onDeleteCustomLink, columnCount }) {
   const q = searchQuery.trim()
 
   const visibleCustom = useMemo(() => {
@@ -101,7 +123,8 @@ export default function LinksSection({ activeTab, searchQuery, customLinks, onDe
     return cats
   }, [activeTab, q])
 
-  const hasAny = visibleCustom.length > 0 || visibleCats.length > 0
+  const showCustomSection = visibleCustom.length > 0 || (customLinks.length === 0 && activeTab === 'all' && !q)
+  const hasAny = showCustomSection || visibleCats.length > 0
 
   if (!hasAny) {
     return (
@@ -116,45 +139,24 @@ export default function LinksSection({ activeTab, searchQuery, customLinks, onDe
 
   return (
     <div className="max-w-7xl mx-auto px-4">
-      {/* Custom links section — always at top */}
-      {(visibleCustom.length > 0 || (customLinks.length === 0 && activeTab === 'all' && !q)) && (
-        <section className="mb-10 animate-slide-up">
-          <div className="flex items-center gap-3 mb-5">
-            <div
-              className="w-1 h-7 rounded-full flex-shrink-0"
-              style={{ background: 'linear-gradient(180deg, var(--md-tertiary), var(--md-primary))' }}
-            />
-            <h2 className="text-xl font-bold" style={{ color: 'var(--md-on-surface)' }}>
-              我的收藏
-            </h2>
-            {customLinks.length > 0 && (
-              <span className="text-xs px-2 py-0.5 rounded-full" style={{
-                background: 'var(--md-surface-container-high)',
-                color: 'var(--md-on-surface-variant)',
-              }}>
-                {visibleCustom.length}
-              </span>
-            )}
-          </div>
+      <div
+        className="columns-layout"
+        style={{ columns: columnCount, columnGap: '1.5rem' }}
+      >
+        {/* Custom links always first */}
+        {showCustomSection && (
+          <CategoryBlock
+            isCustom
+            customLinks={visibleCustom}
+            onDeleteCustomLink={onDeleteCustomLink}
+            searchQuery={q}
+          />
+        )}
 
-          {customLinks.length === 0 ? (
-            <p className="text-sm" style={{ color: 'var(--md-outline)' }}>
-              点击右下角的 <strong style={{ color: 'var(--md-primary)' }}>+ 添加自定义链接</strong> 按钮来收藏你常用的网站。链接保存在本地浏览器中。
-            </p>
-          ) : (
-            <div className="flex flex-wrap gap-2">
-              {visibleCustom.map(link => (
-                <CustomChip key={link.id} link={link} onDelete={onDeleteCustomLink} />
-              ))}
-            </div>
-          )}
-        </section>
-      )}
-
-      {/* Regular categories */}
-      {visibleCats.map(cat => (
-        <CategorySection key={cat.id} cat={cat} searchQuery={q} />
-      ))}
+        {visibleCats.map(cat => (
+          <CategoryBlock key={cat.id} cat={cat} searchQuery={q} />
+        ))}
+      </div>
     </div>
   )
 }

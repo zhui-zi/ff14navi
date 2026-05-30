@@ -61,6 +61,24 @@ body {
   scrollbar-width: none;
 }
 
+/* Multi-column category layout */
+.category-block {
+  break-inside: avoid;
+  margin-bottom: 2rem;
+}
+
+/* On small screens, always single column regardless of setting */
+@media (max-width: 639px) {
+  .columns-layout {
+    columns: 1 !important;
+  }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .columns-layout {
+    columns: min(var(--cols, 2), 2) !important;
+  }
+}
+
 /* Link chip hover */
 .link-chip {
   transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);

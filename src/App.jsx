@@ -8,6 +8,7 @@ import AddLinkModal from './components/AddLinkModal'
 import { tabs } from './data/links'
 
 const STORAGE_KEY = 'ff14navi-custom-links'
+const COL_KEY     = 'ff14navi-columns'
 
 function loadCustomLinks() {
   try {
@@ -18,16 +19,26 @@ function loadCustomLinks() {
   }
 }
 
+function loadColumns() {
+  const v = parseInt(localStorage.getItem(COL_KEY), 10)
+  return v >= 1 && v <= 4 ? v : 2
+}
+
 export default function App() {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchMode, setSearchMode] = useState('site')
   const [activeTab, setActiveTab] = useState('all')
   const [customLinks, setCustomLinks] = useState(loadCustomLinks)
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal]     = useState(false)
+  const [columnCount, setColumnCount] = useState(loadColumns)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(customLinks))
   }, [customLinks])
+
+  useEffect(() => {
+    localStorage.setItem(COL_KEY, columnCount)
+  }, [columnCount])
 
   const handleExternalSearch = useCallback((query) => {
     if (!query.trim()) return
@@ -64,13 +75,20 @@ export default function App() {
         />
         {!isFiltering && <GameInfo />}
         {!isFiltering && (
-          <TabNav tabs={tabs} activeTab={activeTab} setActiveTab={setActiveTab} />
+          <TabNav
+            tabs={tabs}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            columnCount={columnCount}
+            setColumnCount={setColumnCount}
+          />
         )}
         <LinksSection
           activeTab={isFiltering ? 'all' : activeTab}
           searchQuery={searchMode === 'site' ? searchQuery : ''}
           customLinks={customLinks}
           onDeleteCustomLink={handleDeleteLink}
+          columnCount={columnCount}
         />
       </main>
 
