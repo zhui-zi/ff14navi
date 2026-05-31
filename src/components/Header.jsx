@@ -13,35 +13,26 @@ function FeedbackButton() {
   const [open, setOpen] = useState(false)
 
   return (
-    // Outer div: fixed 16rem wide, right-aligned content, slides in from right edge
     <div
       className="absolute z-20"
       style={{
         top: 'calc(1rem + 2.5rem + 0.5rem)',
         right: '1rem',
-        width: '16rem',
         display: 'flex',
-        justifyContent: 'flex-end',
+        alignItems: 'center',
+        height: '2.5rem',
+        borderRadius: '9999px',
+        background: 'var(--md-surface-container)',
+        color: 'var(--md-on-surface-variant)',
+        overflow: 'hidden',
+        maxWidth: open ? '16rem' : '2.5rem',
         transform: open ? 'translateX(0)' : 'translateX(2.25rem)',
-        transition: 'transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
+        transition: 'max-width 0.28s cubic-bezier(0.4, 0, 0.2, 1), transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
+        whiteSpace: 'nowrap',
       }}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          height: '2.5rem',
-          borderRadius: '9999px',
-          background: 'var(--md-surface-container)',
-          color: 'var(--md-on-surface-variant)',
-          overflow: 'hidden',
-          maxWidth: open ? '16rem' : '2.5rem',
-          transition: 'max-width 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
-          whiteSpace: 'nowrap',
-        }}
-      >
         <span
           style={{
             width: '2.5rem',
@@ -118,7 +109,6 @@ function FeedbackButton() {
             邮件
           </a>
         </div>
-      </div>
     </div>
   )
 }
