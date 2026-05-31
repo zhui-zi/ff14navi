@@ -71,67 +71,40 @@ function ThemeButton({ theme, cycleTheme }) {
 }
 
 function FeedbackButton() {
-  const [open, setOpen] = useState(false)
-  const closeTimer = useRef(null)
-
-  const handleEnter = () => {
-    clearTimeout(closeTimer.current)
-    setOpen(true)
-  }
-  const handleLeave = () => {
-    closeTimer.current = setTimeout(() => setOpen(false), 150)
-  }
-
   return (
-    <div
-      style={{ ...pillStyle(open), top: 'calc(1rem + 2.5rem + 0.5rem)' }}
-      onMouseEnter={handleEnter}
-      onMouseLeave={handleLeave}
-    >
-      <span
-        style={{ width: '2.5rem', height: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '1rem', lineHeight: 1 }}
-      >
-        💬
-      </span>
-
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.25rem',
-          paddingRight: '0.5rem',
-          opacity: open ? 1 : 0,
-          transition: 'opacity 0.15s ease',
-        }}
-      >
-        <a
-          href={GITHUB_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.25rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--md-on-surface-variant)', textDecoration: 'none', transition: 'background 0.15s ease' }}
-          onMouseEnter={e => e.currentTarget.style.background = 'var(--md-surface-container-high)'}
-          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-        >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/>
-          </svg>
-          GitHub
-        </a>
-
-        <span style={{ opacity: 0.25, fontSize: '0.75rem' }}>|</span>
-
-        <a
-          href={`mailto:${EMAIL}`}
-          style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.25rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--md-on-surface-variant)', textDecoration: 'none', transition: 'background 0.15s ease' }}
-          onMouseEnter={e => e.currentTarget.style.background = 'var(--md-surface-container-high)'}
-          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-        >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="2" y="4" width="20" height="16" rx="2"/>
-            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-          </svg>
-          邮件
-        </a>
+    <div className="feedback-trigger" style={{ top: 'calc(1rem + 2.5rem + 0.5rem)' }}>
+      <div className="feedback-pill">
+        <span style={{ width: '2.5rem', height: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '1rem', lineHeight: 1 }}>
+          💬
+        </span>
+        <div className="feedback-links">
+          <a
+            href={GITHUB_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.25rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--md-on-surface-variant)', textDecoration: 'none', transition: 'background 0.15s ease' }}
+            onMouseEnter={e => e.currentTarget.style.background = 'var(--md-surface-container-high)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            GitHub
+          </a>
+          <span style={{ opacity: 0.25, fontSize: '0.75rem' }}>|</span>
+          <a
+            href={`mailto:${EMAIL}`}
+            style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.25rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--md-on-surface-variant)', textDecoration: 'none', transition: 'background 0.15s ease' }}
+            onMouseEnter={e => e.currentTarget.style.background = 'var(--md-surface-container-high)'}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="4" width="20" height="16" rx="2"/>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+            </svg>
+            邮件
+          </a>
+        </div>
       </div>
     </div>
   )
