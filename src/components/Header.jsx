@@ -22,12 +22,19 @@ export default function Header({ theme, isDark, cycleTheme }) {
       {/* Theme cycle button */}
       <button
         onClick={cycleTheme}
-        className="theme-toggle-btn absolute top-4 right-4 w-10 h-10 rounded-full flex flex-col items-center justify-center gap-0 z-10"
-        style={{ background: 'var(--md-surface-container)', color: 'var(--md-on-surface-variant)' }}
+        className="theme-toggle-btn absolute top-4 right-4 w-10 h-10 rounded-full z-10"
+        style={{
+          background: 'var(--md-surface-container)',
+          color: 'var(--md-on-surface-variant)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          lineHeight: 1,
+        }}
         aria-label={`${meta.label}（点击${meta.next}）`}
         title={`当前：${meta.label}  点击${meta.next}`}
       >
-        <span key={theme} className="theme-icon leading-none" style={{ fontSize: '1rem' }}>
+        <span key={theme} className="theme-icon" style={{ fontSize: '1.1rem', lineHeight: 1, display: 'flex' }}>
           {meta.icon}
         </span>
       </button>

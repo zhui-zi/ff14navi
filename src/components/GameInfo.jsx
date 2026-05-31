@@ -120,16 +120,17 @@ export default function GameInfo({ noWrap = false }) {
         href="https://actff1.web.sdo.com/project/20240927dawntrail/patch75/index.html"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center gap-5 rounded-xl px-5 py-3.5 cursor-pointer"
+        className="relative flex items-center gap-4 rounded-xl px-5 py-3.5 cursor-pointer overflow-hidden"
         style={{
           background: 'var(--md-primary-container)',
           color: 'var(--md-on-primary-container)',
           transition: 'filter 0.15s ease',
+          minHeight: '4.5rem',
         }}
         onMouseEnter={e => e.currentTarget.style.filter = 'brightness(1.07)'}
         onMouseLeave={e => e.currentTarget.style.filter = ''}
       >
-        <div className="flex-1 min-w-0">
+        <div className="flex-1 min-w-0 z-10">
           <div className="text-xs mb-0.5 opacity-55">当前版本</div>
           <div
             className="font-bold leading-tight"
@@ -138,10 +139,15 @@ export default function GameInfo({ noWrap = false }) {
             7.5 天际的行路
           </div>
         </div>
-        <div className="text-right flex-shrink-0">
-          <div className="text-xs opacity-55">黎明之晓 · Dawntrail</div>
-          <div className="text-xs opacity-35 mt-0.5">查看更新说明 →</div>
+        <div className="relative flex-shrink-0 z-10 text-right">
+          <div className="text-xs opacity-35">查看专题站➡️</div>
         </div>
+        <img
+          src="/patch75-logo.png"
+          alt="Patch 7.5 Trail to the Heavens"
+          className="absolute right-0 top-0 h-full object-contain object-right pointer-events-none"
+          style={{ opacity: 0.55, maxWidth: '55%' }}
+        />
       </a>
 
       {/* Activity grid — 2×2 on md+, 1 col on mobile */}
