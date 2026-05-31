@@ -137,8 +137,11 @@ export default function Header({ theme, isDark, cycleTheme }) {
 
       <button
         onClick={cycleTheme}
-        className="theme-toggle-btn absolute top-4 right-4 w-10 h-10 rounded-full z-20"
+        className="theme-toggle-btn w-10 h-10 rounded-full z-20"
         style={{
+          position: 'absolute',
+          top: '1rem',
+          right: '1rem',
           background: 'var(--md-surface-container)',
           color: 'var(--md-on-surface-variant)',
           display: 'flex',
