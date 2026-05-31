@@ -13,9 +13,18 @@ function FeedbackButton() {
   const [open, setOpen] = useState(false)
 
   return (
+    // Outer div: fixed 16rem wide, right-aligned content, slides in from right edge
     <div
-      className="absolute top-4 z-20"
-      style={{ right: '3.5rem' }}
+      className="absolute z-20"
+      style={{
+        top: 'calc(1rem + 2.5rem + 0.5rem)',
+        right: '1rem',
+        width: '16rem',
+        display: 'flex',
+        justifyContent: 'flex-end',
+        transform: open ? 'translateX(0)' : 'translateX(2.25rem)',
+        transition: 'transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
+      }}
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
     >
