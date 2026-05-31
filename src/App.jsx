@@ -165,11 +165,6 @@ const handleAddLink = useCallback((link) => {
             className="underline underline-offset-2 hover:opacity-80 transition-opacity">
             GitHub
           </a>
-          {' '}·{' '}
-          <a href="https://github.com/zhui-zi/ff14navi/issues" target="_blank" rel="noopener noreferrer"
-            className="underline underline-offset-2 hover:opacity-80 transition-opacity">
-            反馈意见
-          </a>
         </p>
       </footer>
     </div>
