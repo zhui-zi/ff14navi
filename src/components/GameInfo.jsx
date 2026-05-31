@@ -142,12 +142,6 @@ export default function GameInfo({ noWrap = false }) {
         <div className="relative flex-shrink-0 z-10 text-right">
           <div className="text-xs opacity-35">查看专题站➡️</div>
         </div>
-        <img
-          src="/patch75-logo.png"
-          alt="Patch 7.5 Trail to the Heavens"
-          className="absolute right-0 top-0 h-full object-contain object-right pointer-events-none"
-          style={{ opacity: 0.55, maxWidth: '55%' }}
-        />
       </a>
 
       {/* Activity grid — 2×2 on md+, 1 col on mobile */}

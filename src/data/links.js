@@ -82,6 +82,7 @@ export const categories = [
       { name: '子言姐姐',            style: 'basic',  url: 'https://space.bilibili.com/293917/video' },
       { name: '苦茶子',              style: 'blue',   url: 'https://space.bilibili.com/359741675/video' },
       { name: '顾跑跑',              style: 'basic',  url: 'https://space.bilibili.com/1783244/video' },
+      { name: 'Zafir的职业攻略',    style: 'basic',  url: 'https://space.bilibili.com/23105654/lists/3736677?type=season' },
       { name: '配装计算器',          style: 'basic',  url: 'https://gearing.ffsusu.com/' },
       { name: '豆芽站-副本文字攻略',  style: 'green',  url: 'https://ff14.org/duty/' },
       { name: 'CN FFLogs',           style: 'basic',  url: 'https://cn.fflogs.com/' },
