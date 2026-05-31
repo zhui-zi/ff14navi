@@ -1,128 +1,149 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 const THEME_META = {
-  dark:  { icon: '🌙', label: '深色', next: '→ 浅色' },
-  light: { icon: '☀️', label: '浅色', next: '→ 自动' },
-  auto:  { icon: '🌓', label: '跟随系统', next: '→ 深色' },
+  dark:  { icon: '🌙', label: '深色' },
+  light: { icon: '☀️', label: '浅色' },
+  auto:  { icon: '🌓', label: '跟随系统' },
 }
 
 const GITHUB_URL = 'https://github.com/zhui-zi/ff14navi/issues'
 const EMAIL = 'zhuizi@hotmail.com'
 
-function FeedbackButton() {
+// Half-hidden pill that slides in from the right edge
+const pillStyle = (open) => ({
+  position: 'absolute',
+  right: '1rem',
+  display: 'flex',
+  alignItems: 'center',
+  height: '2.5rem',
+  borderRadius: '9999px',
+  background: 'var(--md-surface-container)',
+  color: 'var(--md-on-surface-variant)',
+  overflow: 'hidden',
+  maxWidth: open ? '16rem' : '2.5rem',
+  transform: open ? 'translateX(0)' : 'translateX(2.25rem)',
+  transition: 'max-width 0.28s cubic-bezier(0.4, 0, 0.2, 1), transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
+  whiteSpace: 'nowrap',
+  cursor: 'pointer',
+  zIndex: 20,
+})
+
+function ThemeButton({ theme, cycleTheme }) {
   const [open, setOpen] = useState(false)
+  const closeTimer = useRef(null)
+  const meta = THEME_META[theme] ?? THEME_META.auto
+
+  const handleClick = () => {
+    cycleTheme()
+    setOpen(true)
+    clearTimeout(closeTimer.current)
+    closeTimer.current = setTimeout(() => setOpen(false), 2000)
+  }
 
   return (
     <div
-      className="absolute z-20"
-      style={{
-        top: 'calc(1rem + 2.5rem + 0.5rem)',
-        right: '1rem',
-        display: 'flex',
-        alignItems: 'center',
-        height: '2.5rem',
-        borderRadius: '9999px',
-        background: 'var(--md-surface-container)',
-        color: 'var(--md-on-surface-variant)',
-        overflow: 'hidden',
-        maxWidth: open ? '16rem' : '2.5rem',
-        transform: open ? 'translateX(0)' : 'translateX(2.25rem)',
-        transition: 'max-width 0.28s cubic-bezier(0.4, 0, 0.2, 1), transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
-        whiteSpace: 'nowrap',
-      }}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
+      style={{ ...pillStyle(open), top: '1rem' }}
+      onClick={handleClick}
+      aria-label={`当前主题：${meta.label}，点击切换`}
+      title={`当前：${meta.label}，点击切换`}
+      role="button"
     >
-        <span
-          style={{
-            width: '2.5rem',
-            height: '2.5rem',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0,
-            fontSize: '1rem',
-            lineHeight: 1,
-          }}
+      <span
+        key={theme}
+        className="theme-icon"
+        style={{ width: '2.5rem', height: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '1.1rem', lineHeight: 1 }}
+      >
+        {meta.icon}
+      </span>
+      <span
+        style={{
+          fontSize: '0.75rem',
+          fontWeight: 600,
+          paddingRight: '0.875rem',
+          opacity: open ? 1 : 0,
+          transition: 'opacity 0.15s ease',
+        }}
+      >
+        {meta.label}
+      </span>
+    </div>
+  )
+}
+
+function FeedbackButton() {
+  const [open, setOpen] = useState(false)
+  const closeTimer = useRef(null)
+
+  const handleEnter = () => {
+    clearTimeout(closeTimer.current)
+    setOpen(true)
+  }
+  const handleLeave = () => {
+    closeTimer.current = setTimeout(() => setOpen(false), 150)
+  }
+
+  return (
+    <div
+      style={{ ...pillStyle(open), top: 'calc(1rem + 2.5rem + 0.5rem)' }}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+    >
+      <span
+        style={{ width: '2.5rem', height: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '1rem', lineHeight: 1 }}
+      >
+        💬
+      </span>
+
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.25rem',
+          paddingRight: '0.5rem',
+          opacity: open ? 1 : 0,
+          transition: 'opacity 0.15s ease',
+        }}
+      >
+        <a
+          href={GITHUB_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.25rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--md-on-surface-variant)', textDecoration: 'none', transition: 'background 0.15s ease' }}
+          onMouseEnter={e => e.currentTarget.style.background = 'var(--md-surface-container-high)'}
+          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
         >
-          💬
-        </span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          GitHub
+        </a>
 
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.25rem',
-            paddingRight: '0.5rem',
-            opacity: open ? 1 : 0,
-            transition: 'opacity 0.15s ease',
-          }}
+        <span style={{ opacity: 0.25, fontSize: '0.75rem' }}>|</span>
+
+        <a
+          href={`mailto:${EMAIL}`}
+          style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', padding: '0.25rem 0.6rem', borderRadius: '9999px', fontSize: '0.75rem', fontWeight: 600, color: 'var(--md-on-surface-variant)', textDecoration: 'none', transition: 'background 0.15s ease' }}
+          onMouseEnter={e => e.currentTarget.style.background = 'var(--md-surface-container-high)'}
+          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
         >
-          <a
-            href={GITHUB_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.3rem',
-              padding: '0.25rem 0.6rem',
-              borderRadius: '9999px',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              color: 'var(--md-on-surface-variant)',
-              textDecoration: 'none',
-              transition: 'background 0.15s ease',
-            }}
-            onMouseEnter={e => e.currentTarget.style.background = 'var(--md-surface-container-high)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.385-1.335-1.755-1.335-1.755-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/>
-            </svg>
-            GitHub
-          </a>
-
-          <span style={{ opacity: 0.25, fontSize: '0.75rem' }}>|</span>
-
-          <a
-            href={`mailto:${EMAIL}`}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.3rem',
-              padding: '0.25rem 0.6rem',
-              borderRadius: '9999px',
-              fontSize: '0.75rem',
-              fontWeight: 600,
-              color: 'var(--md-on-surface-variant)',
-              textDecoration: 'none',
-              transition: 'background 0.15s ease',
-            }}
-            onMouseEnter={e => e.currentTarget.style.background = 'var(--md-surface-container-high)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-          >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="2" y="4" width="20" height="16" rx="2"/>
-              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-            </svg>
-            邮件
-          </a>
-        </div>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/>
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+          邮件
+        </a>
+      </div>
     </div>
   )
 }
 
 export default function Header({ theme, isDark, cycleTheme }) {
-  const meta = THEME_META[theme] ?? THEME_META.auto
-
   return (
-    /* Wrapper controls the height; buttons sit here, outside overflow-hidden */
     <div
       className="relative select-none"
       style={{ minHeight: 'clamp(140px, 22vw, 200px)', background: 'var(--header-bg)' }}
     >
-      {/* Background layer — overflow-hidden only clips the ambient glows */}
+      {/* Ambient glows — overflow-hidden only here */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-32 -left-24 w-96 h-96 rounded-full"
           style={{ background: `radial-gradient(circle, var(--header-glow-1) 0%, transparent 65%)` }} />
@@ -132,30 +153,8 @@ export default function Header({ theme, isDark, cycleTheme }) {
           style={{ background: `radial-gradient(circle, var(--header-glow-3) 0%, transparent 65%)` }} />
       </div>
 
-      {/* Buttons — outside overflow-hidden so capsule expands freely */}
+      <ThemeButton theme={theme} cycleTheme={cycleTheme} />
       <FeedbackButton />
-
-      <button
-        onClick={cycleTheme}
-        className="theme-toggle-btn w-10 h-10 rounded-full z-20"
-        style={{
-          position: 'absolute',
-          top: '1rem',
-          right: '1rem',
-          background: 'var(--md-surface-container)',
-          color: 'var(--md-on-surface-variant)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          lineHeight: 1,
-        }}
-        aria-label={`${meta.label}（点击${meta.next}）`}
-        title={`当前：${meta.label}  点击${meta.next}`}
-      >
-        <span key={theme} className="theme-icon" style={{ fontSize: '1.1rem', lineHeight: 1, display: 'flex' }}>
-          {meta.icon}
-        </span>
-      </button>
 
       {/* Content */}
       <div className="relative flex flex-col justify-center" style={{ minHeight: 'clamp(140px, 22vw, 200px)' }}>
