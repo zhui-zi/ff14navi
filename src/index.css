@@ -130,6 +130,46 @@ body {
 .theme-toggle-btn:active { transform: scale(0.85); }
 .theme-toggle-btn:active::before { opacity: 0.16; }
 
+/* Theme button — same CSS-only hover as feedback */
+.theme-trigger {
+  position: absolute;
+  right: 0;
+  height: 2.5rem;
+  width: 10rem;
+  z-index: 20;
+  cursor: pointer;
+}
+.theme-pill {
+  position: absolute;
+  right: 1rem;
+  display: flex;
+  align-items: center;
+  height: 2.5rem;
+  border-radius: 9999px;
+  background: var(--md-surface-container);
+  color: var(--md-on-surface-variant);
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 2.5rem;
+  transform: translateX(2.25rem);
+  transition: max-width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.theme-trigger:hover .theme-pill {
+  max-width: 8rem;
+  transform: translateX(0);
+}
+.theme-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding-right: 0.875rem;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.theme-trigger:hover .theme-label {
+  opacity: 1;
+}
+
 /* Feedback button — CSS-only hover to prevent flicker */
 .feedback-trigger {
   position: absolute;

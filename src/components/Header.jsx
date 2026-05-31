@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react'
+import React from 'react'
 
 const THEME_META = {
   dark:  { icon: '🌙', label: '深色' },
@@ -9,63 +9,28 @@ const THEME_META = {
 const GITHUB_URL = 'https://github.com/zhui-zi/ff14navi/issues'
 const EMAIL = 'zhuizi@hotmail.com'
 
-// Half-hidden pill that slides in from the right edge
-const pillStyle = (open) => ({
-  position: 'absolute',
-  right: '1rem',
-  display: 'flex',
-  alignItems: 'center',
-  height: '2.5rem',
-  borderRadius: '9999px',
-  background: 'var(--md-surface-container)',
-  color: 'var(--md-on-surface-variant)',
-  overflow: 'hidden',
-  maxWidth: open ? '16rem' : '2.5rem',
-  transform: open ? 'translateX(0)' : 'translateX(2.25rem)',
-  transition: 'max-width 0.28s cubic-bezier(0.4, 0, 0.2, 1), transform 0.28s cubic-bezier(0.4, 0, 0.2, 1)',
-  whiteSpace: 'nowrap',
-  cursor: 'pointer',
-  zIndex: 20,
-})
 
 function ThemeButton({ theme, cycleTheme }) {
-  const [open, setOpen] = useState(false)
-  const closeTimer = useRef(null)
   const meta = THEME_META[theme] ?? THEME_META.auto
-
-  const handleClick = () => {
-    cycleTheme()
-    setOpen(true)
-    clearTimeout(closeTimer.current)
-    closeTimer.current = setTimeout(() => setOpen(false), 2000)
-  }
 
   return (
     <div
-      style={{ ...pillStyle(open), top: '1rem' }}
-      onClick={handleClick}
+      className="theme-trigger"
+      style={{ top: '1rem' }}
+      onClick={cycleTheme}
       aria-label={`当前主题：${meta.label}，点击切换`}
       title={`当前：${meta.label}，点击切换`}
-      role="button"
     >
-      <span
-        key={theme}
-        className="theme-icon"
-        style={{ width: '2.5rem', height: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '1.1rem', lineHeight: 1 }}
-      >
-        {meta.icon}
-      </span>
-      <span
-        style={{
-          fontSize: '0.75rem',
-          fontWeight: 600,
-          paddingRight: '0.875rem',
-          opacity: open ? 1 : 0,
-          transition: 'opacity 0.15s ease',
-        }}
-      >
-        {meta.label}
-      </span>
+      <div className="theme-pill">
+        <span
+          key={theme}
+          className="theme-icon"
+          style={{ width: '2.5rem', height: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '1.1rem', lineHeight: 1 }}
+        >
+          {meta.icon}
+        </span>
+        <span className="theme-label">{meta.label}</span>
+      </div>
     </div>
   )
 }
