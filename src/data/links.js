@@ -27,6 +27,7 @@ export const categories = [
       { name: '石之家',                                 style: 'basic', url: 'https://ff14risingstones.web.sdo.com/pc/index.html#/post' },
       { name: '游戏充值(盛趣)', icon: 'donate',        style: 'green', url: 'https://pay.sdo.com/item/GWPAY-100001900' },
       { name: '游戏充值(腾讯)', icon: 'donate',        style: 'blue',  url: 'https://www.wegame.com.cn/mall/list.html?game_id=2000340' },
+      { name: '💎 水晶冲突',                          style: 'basic', url: 'https://actff1.web.sdo.com/project/ffcrystranking/index.html#/index' },
     ],
   },
   {
