@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 import { useCountdown, fmtCountdown } from '../hooks/useCountdown'
+import { useTheme } from '../hooks/useTheme'
+import { adaptForLight } from '../utils/color'
 
 // ── Schedule algorithm ────────────────────────────────────────────────────────
 // Source: https://github.com/sijiamaoche/ff14-daily-frontline-widget
@@ -70,6 +72,9 @@ function ResetCountdown({ nextReset }) {
 }
 
 export default function FrontlineSchedule({ noWrap = false }) {
+  const { effective } = useTheme()
+  const adapt = c => effective === 'light' ? adaptForLight(c) : c
+
   const { todayMap, nextMaps, nextReset } = useMemo(() => {
     const now  = new Date()
     const base = getMapIndex(now)
@@ -80,7 +85,7 @@ export default function FrontlineSchedule({ noWrap = false }) {
     }
   }, [])
 
-  const accent = todayMap.color
+  const accent = adapt(todayMap.color)
 
   const content = (
     <div
@@ -165,7 +170,7 @@ export default function FrontlineSchedule({ noWrap = false }) {
                 <div className="text-xs font-medium truncate" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.6 }}>
                   {DAY_LABELS[i + 1]}
                 </div>
-                <div className="text-xs font-semibold truncate" style={{ color: m.color }}>
+                <div className="text-xs font-semibold truncate" style={{ color: adapt(m.color) }}>
                   {m.name}
                 </div>
               </div>

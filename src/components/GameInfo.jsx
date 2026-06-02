@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { useCountdown } from '../hooks/useCountdown'
+import { useTheme } from '../hooks/useTheme'
+import { adaptForLight } from '../utils/color'
 
 // All times CST (UTC+8)
 const cst = (y, mo, d, h = 0, mi = 0) =>
@@ -60,7 +62,9 @@ function CountdownRow({ label, target, expired, accentColor }) {
   )
 }
 
-function ActivityCard({ accent, badge, title, subtitle, dates, rows, url, compact }) {
+function ActivityCard({ accent: rawAccent, badge, title, subtitle, dates, rows, url, compact }) {
+  const { effective } = useTheme()
+  const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
   return (
     <a
       href={url}

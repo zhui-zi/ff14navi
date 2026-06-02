@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react'
+import { useTheme } from '../hooks/useTheme'
+import { adaptForLight } from '../utils/color'
 
 // Mulberry32 seeded PRNG
 function mulberry32(seed) {
@@ -170,13 +172,15 @@ function buildFortune() {
 export default function DailyFortune({ noWrap = false }) {
   const [revealed, setRevealed] = useState(loadRevealed)
   const fortune = useMemo(() => buildFortune(), [])
+  const { effective } = useTheme()
 
   function handleReveal() {
     setRevealed(true)
     saveRevealed()
   }
 
-  const accent = fortune.level.color
+  const adapt = c => effective === 'light' ? adaptForLight(c) : c
+  const accent = adapt(fortune.level.color)
 
   const content = (
     <div
@@ -273,8 +277,8 @@ export default function DailyFortune({ noWrap = false }) {
             style={{ borderTop: `1px solid ${accent}20`, background: `${accent}08` }}
           >
             {[
-              { label: '幸运职业', value: fortune.job.name, sub: ROLE_LABEL[fortune.job.role], color: fortune.job.color },
-              { label: '幸运属性', value: `${fortune.element.sym} ${fortune.element.name}`, color: fortune.element.color },
+              { label: '幸运职业', value: fortune.job.name, sub: ROLE_LABEL[fortune.job.role], color: adapt(fortune.job.color) },
+              { label: '幸运属性', value: `${fortune.element.sym} ${fortune.element.name}`, color: adapt(fortune.element.color) },
               { label: '今日宜',   value: fortune.activity, color: 'var(--md-on-surface-variant)' },
               { label: '幸运数字', value: String(fortune.luckyNum), color: accent, mono: true },
             ].map((item, i) => (
