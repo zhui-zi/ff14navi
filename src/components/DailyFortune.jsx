@@ -119,7 +119,17 @@ const ACTIVITIES = [
 
 // ── Logic ────────────────────────────────────────────────────────────────────
 
-const REVEALED_KEY = 'ff14navi-fortune-revealed'
+const REVEALED_KEY   = 'ff14navi-fortune-revealed'
+const USER_TOKEN_KEY = 'ff14navi-fortune-token'
+
+function getUserToken() {
+  let token = localStorage.getItem(USER_TOKEN_KEY)
+  if (!token) {
+    token = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2)
+    localStorage.setItem(USER_TOKEN_KEY, token)
+  }
+  return token
+}
 
 function getTodayStr() {
   const d = new Date()
@@ -141,7 +151,8 @@ function saveRevealed() {
 
 function buildFortune() {
   const dateStr = getTodayStr()
-  const rand = mulberry32(hashStr(dateStr))
+  const token   = getUserToken()
+  const rand    = mulberry32(hashStr(dateStr + token))
 
   const level    = pickWeighted(rand, LEVELS)
   const job      = pick(rand, JOBS)
@@ -210,7 +221,7 @@ export default function DailyFortune({ noWrap = false }) {
             点击占卜今日运势
           </div>
           <div className="text-xs" style={{ color: 'var(--md-outline)', opacity: 0.5 }}>
-            每日重置 · 今日运势对所有冒险者相同
+            每日重置 · 每位冒险者独享专属运势
           </div>
         </button>
       ) : (

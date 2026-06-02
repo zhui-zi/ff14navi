@@ -75,7 +75,7 @@ export default function App() {
       <Header />
       <main className="pb-28">
         <SearchBar />
-        <div className="max-w-7xl mx-auto px-4 mb-6 flex flex-col lg:flex-row gap-4 items-stretch lg:items-start">
+        <div className="max-w-7xl mx-auto px-4 mb-6 flex flex-col lg:flex-row gap-4 items-stretch">
           <div className="flex-1 min-w-0">
             <GameInfo noWrap />
           </div>

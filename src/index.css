@@ -3,37 +3,31 @@
 @tailwind utilities;
 
 /* ══════════════════════════════════════════════
-   M3 Expressive Dark  —  Seed: #0047AB Cobalt Blue
+   M3 Expressive Dark  —  Seed: Purple / Tertiary: FF14 Gold
    ══════════════════════════════════════════════ */
 :root {
-  /* Primary: cobalt blue family */
-  --md-primary:                  #7BADFF;
-  --md-on-primary:               #00306B;
-  --md-primary-container:        #0047AB;
-  --md-on-primary-container:     #D6E4FF;
+  --md-primary:                  #CEB4F8;
+  --md-on-primary:               #3D1B72;
+  --md-primary-container:        #553387;
+  --md-on-primary-container:     #EDD9FF;
+  --md-tertiary:                 #F4C161;
+  --md-on-tertiary:              #3D2A00;
+  --md-tertiary-container:       #5C3F00;
+  --md-surface:                  #141218;
+  --md-on-surface:               #E7E0EB;
+  --md-surface-container:        #201E25;
+  --md-surface-container-high:   #2B282F;
+  --md-surface-container-highest:#36333B;
+  --md-on-surface-variant:       #CCC5CF;
+  --md-outline:                  #978E9B;
+  --md-outline-variant:          #4A454E;
 
-  /* Tertiary: warm amber — expressive contrast */
-  --md-tertiary:                 #FFB84D;
-  --md-on-tertiary:              #442A00;
-  --md-tertiary-container:       #5E3C00;
-  --md-on-tertiary-container:    #FFDDB0;
-
-  /* Surfaces — cool dark, blue-tinted */
-  --md-surface:                  #0F121B;
-  --md-on-surface:               #E1E3F0;
-  --md-surface-container:        #171C2C;
-  --md-surface-container-high:   #1D2438;
-  --md-surface-container-highest:#242C44;
-  --md-on-surface-variant:       #BBC3D9;
-  --md-outline:                  #838BAA;
-  --md-outline-variant:          #3C4562;
-
-  --header-bg:       linear-gradient(135deg, #040A18 0%, #0A1C40 45%, #07112A 100%);
-  --header-glow-1:   rgba(123,173,255,0.22);
-  --header-glow-2:   rgba(255,184,77, 0.12);
-  --header-glow-3:   rgba(100,160,255,0.16);
-  --header-subtitle: #7B8DAD;
-  --header-crystal:  #7BADFF;
+  --header-bg:       linear-gradient(135deg,#0D0F2A 0%,#1C1042 45%,#0F1635 100%);
+  --header-glow-1:   rgba(206,180,248,0.20);
+  --header-glow-2:   rgba(244,193,97, 0.15);
+  --header-glow-3:   rgba(126,203,232,0.15);
+  --header-subtitle: #9B95B0;
+  --header-crystal:  #CEB4F8;
 }
 
 /* ══════════════════════════════════════════════
@@ -44,9 +38,9 @@ html { scroll-behavior: smooth; transition: background-color 0.25s, color 0.25s;
 body {
   background-color: var(--md-surface);
   background-image:
-    radial-gradient(ellipse 80% 50% at 10%  5%, rgba(  0, 71,171,0.16) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 90% 90%, rgba(255,184, 77,0.07) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 45% at 62% 28%, rgba(100,160,255,0.09) 0%, transparent 52%);
+    radial-gradient(ellipse 90% 55% at 12%  8%, rgba(206,180,248,0.10) 0%, transparent 62%),
+    radial-gradient(ellipse 65% 45% at 88% 92%, rgba(244,193, 97,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 50% at 68% 32%, rgba( 77,208,225,0.06) 0%, transparent 52%);
   color: var(--md-on-surface);
   font-family: 'Noto Sans SC', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -219,4 +213,4 @@ body {
 .chip-basic  { background: rgba(74,69,78,0.40);    color: #CCC5CF; }
 .chip-blog   { background: rgba(63,81,181,0.18);   color: #9FA8DA; }
 
-.chip-navy   { background: rgba(0,47,120,0.55); color: #7BADFF; }
+.chip-navy   { background: rgba(26,58,106,0.55); color: #7EB8F7; }

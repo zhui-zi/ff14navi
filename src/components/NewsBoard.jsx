@@ -54,7 +54,7 @@ export default function NewsBoard({ noWrap = false }) {
 
   const board = (
     <div
-      className="rounded-2xl overflow-hidden h-full"
+      className="rounded-2xl overflow-hidden h-full flex flex-col"
       style={{
         background: 'var(--md-surface-container)',
         border: '2px solid var(--md-outline-variant)',
@@ -138,7 +138,7 @@ export default function NewsBoard({ noWrap = false }) {
                 onMouseEnter={e => e.currentTarget.style.background = 'var(--md-surface-container-high)'}
                 onMouseLeave={e => e.currentTarget.style.background = ''}
               >
-                <span className="text-sm leading-snug line-clamp-2" style={{ color: 'var(--md-on-surface)' }}>
+                <span className="text-sm leading-snug truncate" style={{ color: 'var(--md-on-surface)' }}>
                   {item.title}
                 </span>
                 <span className="text-xs tabular-nums mt-0.5" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.6 }}>
