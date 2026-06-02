@@ -186,17 +186,6 @@ body {
   transform-origin: center;
 }
 
-/* ── Animated gradient (header title) ── */
-@keyframes gradient-shift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-.title-gradient {
-  background-size: 300% 300% !important;
-  animation: gradient-shift 8s ease infinite;
-}
-
 /* ── Search bar focus glow ── */
 .search-bar-wrap {
   transition: box-shadow 0.3s ease;

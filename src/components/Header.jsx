@@ -69,11 +69,11 @@ export default function Header() {
         <div className="w-full max-w-7xl mx-auto px-4 py-6 text-center">
           <div className="crystal-glyph text-3xl mb-2 sm:mb-3 opacity-90" style={{ color: 'var(--header-crystal)' }}>✦</div>
 
-          <h1 className="title-gradient tracking-tight mb-1" style={{
+          <h1 className="tracking-tight mb-1" style={{
             fontFamily: '"Noto Serif SC", serif',
             fontWeight: 900,
             fontSize: 'clamp(1.6rem, 5vw, 3.2rem)',
-            background: 'linear-gradient(135deg, var(--md-primary) 0%, var(--md-tertiary) 40%, #a78bfa 65%, var(--md-tertiary) 80%, var(--md-primary) 100%)',
+            background: 'linear-gradient(135deg, var(--md-primary) 0%, var(--md-tertiary) 55%, var(--md-primary) 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',
