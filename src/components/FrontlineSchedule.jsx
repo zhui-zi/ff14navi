@@ -45,7 +45,7 @@ const MAPS = [
   { name: '沃刻其特', en: 'Worqor Chirteh',   mode: '演习战', color: '#FFA726', icon: '🐉' },
 ]
 
-const DAY_LABELS = ['今日', '明日', '后日']
+const DAY_LABELS = ['今日', '明天', '后天']
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
