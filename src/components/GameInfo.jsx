@@ -168,74 +168,80 @@ function VersionBanner() {
   const [open, setOpen] = useState(false)
 
   return (
-    <div
-      className="relative rounded-2xl overflow-hidden"
-      style={{
-        background: 'var(--md-primary-container)',
-        border: `2px solid ${open ? 'var(--md-primary)' : 'var(--md-primary)'}`,
-        color: 'var(--md-on-primary-container)',
-      }}
-    >
-      {/* Header row */}
+    <div className="relative" style={{ zIndex: open ? 20 : 'auto' }}>
+      {/* Card */}
       <div
-        className="relative flex items-center gap-4 px-5 py-3.5 cursor-pointer"
+        className="relative rounded-2xl"
         style={{
-          minHeight: '4.5rem',
-          transition: 'filter 0.18s ease',
-        }}
-        onClick={() => setOpen(v => !v)}
-        onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.1)')}
-        onMouseLeave={e => (e.currentTarget.style.filter = '')}
-      >
-        <div className="flex-1 min-w-0 z-10">
-          <div className="text-xs mb-0.5 opacity-55">当前版本</div>
-          <div
-            className="font-bold leading-tight"
-            style={{ fontFamily: '"Noto Serif SC", serif', fontSize: 'clamp(1.05rem, 2.2vw, 1.35rem)' }}
-          >
-            7.51 天际的行路
-          </div>
-        </div>
-        <div className="relative flex-shrink-0 z-10 flex items-center gap-3">
-          <a
-            href="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/387965"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs opacity-50 hover:opacity-90"
-            style={{ transition: 'opacity 0.15s' }}
-            onClick={e => e.stopPropagation()}
-          >
-            更新说明 ↗
-          </a>
-          <span
-            className="text-lg select-none"
-            style={{
-              display: 'inline-block',
-              transition: 'transform 0.25s cubic-bezier(0.34,1.56,0.64,1)',
-              transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
-              opacity: 0.6,
-            }}
-          >
-            ▾
-          </span>
-        </div>
-      </div>
-
-      {/* Expandable notes */}
-      <div
-        style={{
-          maxHeight: open ? '800px' : '0',
-          overflow: 'hidden',
-          transition: 'max-height 0.4s cubic-bezier(0.4,0,0.2,1)',
+          background: 'var(--md-primary-container)',
+          border: '2px solid var(--md-primary)',
+          color: 'var(--md-on-primary-container)',
         }}
       >
         <div
-          className="px-5 pb-4 grid gap-3"
-          style={{
-            borderTop: '1px solid var(--md-primary)',
-            paddingTop: '0.75rem',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
-          }}
+          className="flex items-center gap-4 px-5 py-3.5 cursor-pointer rounded-2xl"
+          style={{ minHeight: '4.5rem', transition: 'filter 0.18s ease' }}
+          onClick={() => setOpen(v => !v)}
+          onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.1)')}
+          onMouseLeave={e => (e.currentTarget.style.filter = '')}
+        >
+          <div className="flex-1 min-w-0">
+            <div className="text-xs mb-0.5 opacity-55">当前版本</div>
+            <div
+              className="font-bold leading-tight"
+              style={{ fontFamily: '"Noto Serif SC", serif', fontSize: 'clamp(1.05rem, 2.2vw, 1.35rem)' }}
+            >
+              7.51 天际的行路
+            </div>
+          </div>
+          <div className="flex-shrink-0 flex items-center gap-3">
+            <a
+              href="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/387965"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs opacity-50 hover:opacity-90"
+              style={{ transition: 'opacity 0.15s' }}
+              onClick={e => e.stopPropagation()}
+            >
+              更新说明 ↗
+            </a>
+            <span
+              className="text-lg select-none"
+              style={{
+                display: 'inline-block',
+                transition: 'transform 0.25s cubic-bezier(0.34,1.56,0.64,1)',
+                transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+                opacity: 0.6,
+              }}
+            >
+              ▾
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Floating dropdown */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 'calc(100% + 6px)',
+          left: 0,
+          right: 0,
+          zIndex: 50,
+          borderRadius: '1rem',
+          background: 'var(--md-surface-container-highest)',
+          border: '2px solid var(--md-primary)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.45)',
+          overflow: 'hidden',
+          opacity: open ? 1 : 0,
+          transform: open ? 'translateY(0)' : 'translateY(-8px)',
+          pointerEvents: open ? 'auto' : 'none',
+          transition: 'opacity 0.22s ease, transform 0.22s cubic-bezier(0.34,1.56,0.64,1)',
+        }}
+      >
+        <div
+          className="px-5 pt-3 pb-4 grid gap-3"
+          style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))' }}
         >
           {PATCH_751_NOTES.map(section => (
             <div key={section.category}>
@@ -250,9 +256,9 @@ function VersionBanner() {
                   <li
                     key={i}
                     className="text-xs leading-snug"
-                    style={{ color: 'var(--md-on-primary-container)', opacity: 0.8, paddingLeft: '0.75rem', position: 'relative' }}
+                    style={{ color: 'var(--md-on-surface)', opacity: 0.8, paddingLeft: '0.75rem', position: 'relative' }}
                   >
-                    <span style={{ position: 'absolute', left: 0, opacity: 0.5 }}>·</span>
+                    <span style={{ position: 'absolute', left: 0, opacity: 0.45 }}>·</span>
                     {item}
                   </li>
                 ))}
@@ -260,13 +266,13 @@ function VersionBanner() {
             </div>
           ))}
         </div>
-        <div className="px-5 pb-3 text-right">
+        <div className="px-5 pb-3 text-right" style={{ borderTop: '1px solid var(--md-outline-variant)' }}>
           <a
             href="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/387965"
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs"
-            style={{ color: 'var(--md-primary)', opacity: 0.75 }}
+            style={{ color: 'var(--md-primary)', opacity: 0.8 }}
           >
             查看完整更新说明 →
           </a>
