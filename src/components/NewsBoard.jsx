@@ -53,13 +53,29 @@ export default function NewsBoard({ noWrap = false }) {
   useEffect(() => { fetchFeed() }, [fetchFeed])
 
   const board = (
-    <div className="rounded-3xl overflow-hidden h-full" style={{ background: 'var(--md-surface-container)' }}>
+    <div
+      className="rounded-2xl overflow-hidden h-full"
+      style={{
+        background: 'linear-gradient(145deg, rgba(206,180,248,0.10) 0%, var(--glass-bg) 50%)',
+        backdropFilter: 'var(--glass-blur)',
+        WebkitBackdropFilter: 'var(--glass-blur)',
+        border: '1px solid rgba(206,180,248,0.18)',
+        borderTopColor: 'rgba(206,180,248,0.35)',
+        boxShadow: 'var(--glass-shadow), 0 0 40px rgba(206,180,248,0.06), var(--glass-inset)',
+        position: 'relative',
+      }}
+    >
       {/* Header */}
-      <div className="flex items-center justify-between px-4 py-3"
-        style={{ borderBottom: '1px solid var(--md-outline-variant)' }}>
-        <div className="flex items-center gap-1.5">
-          <span>📰</span>
-          <span className="font-bold text-sm" style={{ color: 'var(--md-on-surface)' }}>游戏公告</span>
+      <div
+        className="flex items-center justify-between px-4 py-3"
+        style={{ borderBottom: '1px solid rgba(206,180,248,0.12)' }}
+      >
+        <div className="flex items-center gap-2">
+          <span style={{ color: 'var(--md-primary)', opacity: 0.7, fontSize: '0.75rem' }}>■</span>
+          <span className="text-xs font-semibold tracking-widest"
+            style={{ color: 'var(--md-on-surface-variant)', letterSpacing: '0.15em' }}>
+            游戏公告
+          </span>
         </div>
         <div className="flex gap-1">
           {Object.entries(FEEDS).map(([key, { label }]) => (
@@ -70,8 +86,9 @@ export default function NewsBoard({ noWrap = false }) {
               style={server === key ? {
                 background: 'var(--md-primary)',
                 color: 'var(--md-on-primary)',
+                boxShadow: '0 0 10px var(--md-primary)',
               } : {
-                background: 'var(--md-surface-container-high)',
+                background: 'rgba(255,255,255,0.06)',
                 color: 'var(--md-on-surface-variant)',
               }}
             >
@@ -86,7 +103,7 @@ export default function NewsBoard({ noWrap = false }) {
         <div>
           {[72, 55, 65].map((w, i) => (
             <div key={i} className="px-4 py-3.5"
-              style={{ borderBottom: i < 2 ? '1px solid var(--md-outline-variant)' : 'none' }}>
+              style={{ borderBottom: i < 2 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
               <div className="skeleton rounded-md mb-2" style={{ height: '14px', width: `${w}%` }} />
               <div className="skeleton rounded-md" style={{ height: '11px', width: '52px' }} />
             </div>
@@ -101,7 +118,7 @@ export default function NewsBoard({ noWrap = false }) {
           <button
             onClick={fetchFeed}
             className="text-xs px-3 py-1.5 rounded-full flex-shrink-0"
-            style={{ background: 'var(--md-surface-container-high)', color: 'var(--md-primary)' }}
+            style={{ background: 'rgba(255,255,255,0.06)', color: 'var(--md-primary)' }}
           >
             重试
           </button>
@@ -117,15 +134,18 @@ export default function NewsBoard({ noWrap = false }) {
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col px-4 py-3 gap-0.5 transition-colors duration-100"
-                style={{ borderBottom: i < items.length - 1 ? '1px solid var(--md-outline-variant)' : 'none' }}
-                onMouseEnter={e => e.currentTarget.style.background = 'var(--md-surface-container-high)'}
+                className="flex flex-col px-4 py-3 gap-0.5"
+                style={{
+                  borderBottom: i < items.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                  transition: 'background 0.15s ease',
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
                 onMouseLeave={e => e.currentTarget.style.background = ''}
               >
                 <span className="text-sm leading-snug line-clamp-2" style={{ color: 'var(--md-on-surface)' }}>
                   {item.title}
                 </span>
-                <span className="text-xs tabular-nums mt-0.5" style={{ color: 'var(--md-on-surface-variant)' }}>
+                <span className="text-xs tabular-nums mt-0.5" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.6 }}>
                   {item.dateStr}
                 </span>
               </a>
