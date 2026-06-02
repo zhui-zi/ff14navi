@@ -86,14 +86,17 @@ function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenA
               固定置顶
             </span>
           ) : (
-            <div className="ml-auto flex items-center gap-2">
+            <div className="ml-auto flex items-center gap-1 p-1 rounded-full"
+              style={{ background: 'var(--md-surface-container)', border: '1px solid var(--md-outline-variant)' }}>
               {customLinks.length > 0 && (
                 <button
                   onClick={() => setEditMode(v => !v)}
-                  className="text-xs px-3 py-1.5 rounded-full transition-colors duration-150"
+                  className="text-xs px-3 h-8 rounded-full font-medium transition-all duration-150"
                   style={editMode
-                    ? { background: 'var(--md-surface-container-high)', color: 'var(--md-on-surface-variant)' }
-                    : { background: 'var(--md-surface-container)', color: 'var(--md-on-surface-variant)' }}
+                    ? { background: 'var(--md-primary)', color: 'var(--md-on-primary)', fontWeight: 600 }
+                    : { color: 'var(--md-on-surface-variant)' }}
+                  onMouseEnter={e => { if (!editMode) e.currentTarget.style.background = 'var(--md-surface-container-high)' }}
+                  onMouseLeave={e => { if (!editMode) e.currentTarget.style.background = '' }}
                 >
                   {editMode ? '完成' : '管理'}
                 </button>
@@ -101,10 +104,10 @@ function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenA
               {!editMode && (
                 <button
                   onClick={onOpenAddModal}
-                  className="flex items-center gap-1 px-3 py-1.5 rounded-full text-sm font-bold transition-all duration-200"
+                  className="flex items-center gap-1 px-3 h-8 rounded-full text-sm font-bold transition-all duration-150"
                   style={{ background: 'var(--md-primary)', color: 'var(--md-on-primary)' }}
                   onMouseEnter={e => { e.currentTarget.style.filter = 'brightness(1.1)' }}
-                  onMouseLeave={e => { e.currentTarget.style.filter = 'brightness(1)' }}
+                  onMouseLeave={e => { e.currentTarget.style.filter = '' }}
                 >
                   <span className="text-base leading-none">+</span>
                   <span>添加</span>
