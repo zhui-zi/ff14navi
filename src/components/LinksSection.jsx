@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback, useEffect, useRef } from 'react'
+import { useMemo, useState, useCallback, useEffect } from 'react'
 import { categories } from '../data/links'
 import LinkChip from './LinkChip'
 import ToolsGate from './ToolsGate'
@@ -62,15 +62,6 @@ function SortButtons({ isFirst, isLast, onMoveUp, onMoveDown }) {
 
 function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenAddModal, isSorting, isFirst, isLast, onMoveUp, onMoveDown, linkSort }) {
   const [editMode, setEditMode] = useState(false)
-  const blockRef = useRef(null)
-
-  const handleMouseMove = useCallback(e => {
-    const el = blockRef.current
-    if (!el) return
-    const { left, top } = el.getBoundingClientRect()
-    el.style.setProperty('--gx', `${e.clientX - left + 10}px`)
-    el.style.setProperty('--gy', `${e.clientY - top  + 10}px`)
-  }, [])
 
   useEffect(() => {
     if (isSorting || customLinks?.length === 0) setEditMode(false)
@@ -78,7 +69,7 @@ function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenA
 
   if (isCustom) {
     return (
-      <div className="category-block" ref={blockRef} onMouseMove={handleMouseMove}>
+      <div className="category-block">
         <div className="flex items-center gap-2 mb-4">
           <h2 className="text-sm font-semibold tracking-widest" style={{ color: 'var(--md-on-surface-variant)' }}>我的收藏</h2>
           {customLinks.length > 0 && (
@@ -146,8 +137,6 @@ function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenA
   return (
     <div
       className="category-block"
-      ref={blockRef}
-      onMouseMove={isSorting ? undefined : handleMouseMove}
       style={isSorting ? {
         outline: '1px dashed var(--md-outline-variant)',
         outlineOffset: '8px',
