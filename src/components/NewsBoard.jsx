@@ -86,7 +86,7 @@ export default function NewsBoard({ noWrap = false }) {
               style={server === key ? {
                 background: 'var(--md-primary)',
                 color: 'var(--md-on-primary)',
-                boxShadow: '0 0 10px var(--md-primary)',
+                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20)',
               } : {
                 background: 'rgba(255,255,255,0.06)',
                 color: 'var(--md-on-surface-variant)',
