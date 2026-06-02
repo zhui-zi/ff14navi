@@ -27,6 +27,7 @@ export const categories = [
       { name: '石之家',                                 style: 'basic', url: 'https://ff14risingstones.web.sdo.com/pc/index.html#/post' },
       { name: '游戏充值(盛趣)', icon: 'donate',        style: 'green', url: 'https://pay.sdo.com/item/GWPAY-100001900' },
       { name: '游戏充值(腾讯)', icon: 'donate',        style: 'blue',  url: 'https://www.wegame.com.cn/mall/list.html?game_id=2000340' },
+      { name: '积分中心',                              style: 'basic', url: 'https://qu.sdo.com/personal-center?merchantId=#pointsindex-1' },
       { name: '💎 水晶冲突',                          style: 'basic', url: 'https://actff1.web.sdo.com/project/ffcrystranking/index.html#/index' },
     ],
   },
@@ -107,6 +108,7 @@ export const categories = [
       { name: '青魔法师技能学习攻略',     style: 'basic',  url: 'https://thewakingsands.github.io/blue-mage/' },
       { name: '死灵术士心得攻略',         style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=22630278' },
       { name: '5v5水晶冲突PVP指北',      style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=32454519' },
+      { name: '灭本限时奖励',            style: 'basic',  url: 'https://uptime.ff14.xin/' },
     ],
   },
   {
@@ -121,6 +123,7 @@ export const categories = [
       { name: '扎杜诺尔高原攻略',  style: 'basic', url: 'https://bbs.nga.cn/read.php?tid=26953760' },
       { name: '贡希尔德神庙攻略',  style: 'basic', url: 'https://bbs.nga.cn/read.php?tid=26397957' },
       { name: '幻境武器·新月岛攻略', style: 'basic', url: 'https://bbs.nga.cn/read.php?tid=44642200' },
+      { name: '新月岛萌新指南',      style: 'basic', url: 'https://docs.qq.com/doc/DVk5jZnNoTGFBREpC' },
     ],
   },
   {
