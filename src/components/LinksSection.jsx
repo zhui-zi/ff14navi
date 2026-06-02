@@ -70,10 +70,8 @@ function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenA
   if (isCustom) {
     return (
       <div className="category-block">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-1 h-7 rounded-full flex-shrink-0"
-            style={{ background: 'linear-gradient(180deg, var(--md-tertiary), var(--md-primary))' }} />
-          <h2 className="text-xl font-bold" style={{ color: 'var(--md-on-surface)' }}>我的收藏</h2>
+        <div className="flex items-center gap-2 mb-4">
+          <h2 className="text-sm font-semibold tracking-widest" style={{ color: 'var(--md-on-surface-variant)' }}>我的收藏</h2>
           {customLinks.length > 0 && (
             <span className="text-xs px-2 py-0.5 rounded-full"
               style={{ background: 'var(--md-surface-container-high)', color: 'var(--md-on-surface-variant)' }}>
@@ -145,17 +143,14 @@ function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenA
         borderRadius: '4px',
       } : {}}
     >
-      <div className="flex items-center gap-3 mb-4">
-        {isSorting ? (
+      <div className="flex items-center gap-2 mb-4">
+        {isSorting && (
           <span className="text-lg leading-none select-none flex-shrink-0"
             style={{ color: 'var(--md-outline)', letterSpacing: '-2px' }}>
             ⠿
           </span>
-        ) : (
-          <div className="w-1 h-7 rounded-full flex-shrink-0"
-            style={{ background: 'linear-gradient(180deg, var(--md-primary), var(--md-tertiary))' }} />
         )}
-        <h2 className="text-xl font-bold" style={{ color: 'var(--md-on-surface)' }}>{cat.name}</h2>
+        <h2 className="text-sm font-semibold tracking-widest" style={{ color: 'var(--md-on-surface-variant)' }}>{cat.name}</h2>
         <span className="text-xs px-2 py-0.5 rounded-full"
           style={{ background: 'var(--md-surface-container-high)', color: 'var(--md-on-surface-variant)' }}>
           {links.length}
