@@ -5,7 +5,7 @@ export const tabs = [
   { id: 'combat',   label: '副本战斗', emoji: '⚔' },
   { id: 'crafting', label: '生产采集', emoji: '🔨' },
   { id: 'life',     label: '娱乐生活', emoji: '🎪' },
-  { id: 'tools',    label: '外挂',     emoji: '🔧' },
+  { id: 'tools',    label: '科技',     emoji: '🔧' },
 ]
 
 export const categories = [
@@ -216,7 +216,7 @@ export const categories = [
   {
     id: 'tech-tools',
     tab: 'tools',
-    name: '外挂',
+    name: '科技',
     links: [
       { name: '呆萌ACT', style: 'basic', url: 'https://act.diemoe.net/' },
       { name: '咖啡ACT', style: 'basic', url: 'https://www.ffcafe.cn/act/' },
