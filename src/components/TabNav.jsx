@@ -19,7 +19,17 @@ function SortIcon() {
   )
 }
 
-export default function TabNav({ tabs, activeTab, setActiveTab, columnCount, setColumnCount, isSorting, setIsSorting, onResetCatOrder }) {
+function AlphaSortIcon() {
+  return (
+    <svg width="16" height="13" viewBox="0 0 16 13" fill="currentColor" aria-hidden="true">
+      <text x="0" y="10" fontSize="7.5" fontFamily="monospace" fontWeight="800">A</text>
+      <text x="9" y="10" fontSize="7.5" fontFamily="monospace" fontWeight="800">Z</text>
+      <path d="M6.5 1.5 L5 4 H6 V9 H7.5 V4 H8.5 L6.5 1.5Z" />
+    </svg>
+  )
+}
+
+export default function TabNav({ tabs, activeTab, setActiveTab, columnCount, setColumnCount, isSorting, setIsSorting, onResetCatOrder, linkSort, onToggleLinkSort }) {
   return (
     <div className="max-w-7xl mx-auto px-4 mb-8">
       <div className="flex items-center gap-3">
@@ -97,7 +107,7 @@ export default function TabNav({ tabs, activeTab, setActiveTab, columnCount, set
           <div className="w-px h-4 rounded-full flex-shrink-0 mx-0.5"
             style={{ background: 'var(--md-outline-variant)' }} />
 
-          {/* Sort toggle button */}
+          {/* Category reorder toggle */}
           <button
             onClick={() => setIsSorting(v => !v)}
             className="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-150"
@@ -111,6 +121,26 @@ export default function TabNav({ tabs, activeTab, setActiveTab, columnCount, set
             aria-label={isSorting ? '退出排序模式' : '调整分类顺序'}
           >
             <SortIcon />
+          </button>
+
+          {/* Divider */}
+          <div className="w-px h-4 rounded-full flex-shrink-0 mx-0.5"
+            style={{ background: 'var(--md-outline-variant)' }} />
+
+          {/* Link alpha-sort toggle */}
+          <button
+            onClick={onToggleLinkSort}
+            className="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-150"
+            style={linkSort === 'alpha' ? {
+              background: 'var(--md-primary)',
+              color: 'var(--md-on-primary)',
+            } : {
+              color: 'var(--md-on-surface-variant)',
+            }}
+            title={linkSort === 'alpha' ? '当前：字母排序' : '当前：默认排序'}
+            aria-label="切换链接排序方式"
+          >
+            <AlphaSortIcon />
           </button>
         </div>
       </div>

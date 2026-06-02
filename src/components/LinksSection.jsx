@@ -60,7 +60,7 @@ function SortButtons({ isFirst, isLast, onMoveUp, onMoveDown }) {
   )
 }
 
-function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenAddModal, isSorting, isFirst, isLast, onMoveUp, onMoveDown }) {
+function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenAddModal, isSorting, isFirst, isLast, onMoveUp, onMoveDown, linkSort }) {
   const [editMode, setEditMode] = useState(false)
 
   useEffect(() => {
@@ -122,7 +122,7 @@ function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenA
           </p>
         ) : (
           <div className="flex flex-wrap gap-2" style={isSorting ? { opacity: 0.35, pointerEvents: 'none' } : {}}>
-            {customLinks.map(link => (
+            {(linkSort === 'alpha' ? [...customLinks].sort((a, b) => a.name.localeCompare(b.name, 'zh-CN')) : customLinks).map(link => (
               <CustomChip key={link.id} link={link} onDelete={onDeleteCustomLink} editMode={editMode} />
             ))}
           </div>
@@ -131,7 +131,9 @@ function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenA
     )
   }
 
-  const links = cat.links
+  const links = linkSort === 'alpha'
+    ? [...cat.links].sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'))
+    : cat.links
   if (links.length === 0) return null
 
   return (
@@ -176,7 +178,7 @@ function CategoryBlock({ cat, isCustom, customLinks, onDeleteCustomLink, onOpenA
   )
 }
 
-export default function LinksSection({ activeTab, customLinks, onDeleteCustomLink, columnCount, onOpenAddModal, catOrder, setCatOrder, isSorting }) {
+export default function LinksSection({ activeTab, customLinks, onDeleteCustomLink, columnCount, onOpenAddModal, catOrder, setCatOrder, isSorting, linkSort }) {
   const [toolsUnlocked, setToolsUnlocked] = useState(() => !!localStorage.getItem(TOOLS_KEY))
 
   const checkUnlocked = () => {
@@ -231,6 +233,7 @@ export default function LinksSection({ activeTab, customLinks, onDeleteCustomLin
             onDeleteCustomLink={onDeleteCustomLink}
             onOpenAddModal={onOpenAddModal}
             isSorting={isSorting}
+            linkSort={linkSort}
           />
         )}
         {visibleCats.map((cat, idx) => (
@@ -242,6 +245,7 @@ export default function LinksSection({ activeTab, customLinks, onDeleteCustomLin
             isLast={idx === visibleCats.length - 1}
             onMoveUp={() => handleMove(cat.id, -1)}
             onMoveDown={() => handleMove(cat.id, 1)}
+            linkSort={linkSort}
           />
         ))}
       </div>

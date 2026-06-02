@@ -80,7 +80,8 @@ export default function App() {
     if (hasMissing) setCatOrder(loadCatOrder())
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const [isSorting, setIsSorting] = useState(false)
+  const [isSorting,  setIsSorting]  = useState(false)
+  const [linkSort,   setLinkSort]   = useState('default')
   useEffect(() => { setIsSorting(false) }, [activeTab])
 
   const resetCatOrder = useCallback(() => {
@@ -125,6 +126,8 @@ export default function App() {
           isSorting={isSorting}
           setIsSorting={setIsSorting}
           onResetCatOrder={resetCatOrder}
+          linkSort={linkSort}
+          onToggleLinkSort={() => setLinkSort(s => s === 'default' ? 'alpha' : 'default')}
         />
         <LinksSection
           activeTab={activeTab}
@@ -135,6 +138,7 @@ export default function App() {
           catOrder={catOrder}
           setCatOrder={setCatOrder}
           isSorting={isSorting}
+          linkSort={linkSort}
         />
       </main>
 
