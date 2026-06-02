@@ -169,7 +169,7 @@ export default function DailyFortune({ noWrap = false }) {
 
   const content = (
     <div
-      className="rounded-2xl overflow-hidden"
+      className="rounded-2xl overflow-hidden h-full"
       style={{
         background: `linear-gradient(145deg, ${accent}14 0%, var(--glass-bg) 50%)`,
         backdropFilter: 'var(--glass-blur)',

@@ -84,7 +84,7 @@ export default function FrontlineSchedule({ noWrap = false }) {
 
   const content = (
     <div
-      className="rounded-2xl overflow-hidden"
+      className="rounded-2xl overflow-hidden h-full"
       style={{
         background: `linear-gradient(145deg, var(--glass-bg) 40%, ${accent}16 100%)`,
         backdropFilter: 'var(--glass-blur)',
