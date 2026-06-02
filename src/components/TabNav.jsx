@@ -31,7 +31,7 @@ export default function TabNav({ tabs, activeTab, setActiveTab, columnCount, set
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className="flex-shrink-0 flex items-center gap-1.5 px-5 py-2.5 rounded-full text-sm font-medium"
+                className="flex-shrink-0 flex items-center gap-1.5 px-5 h-10 rounded-full text-sm font-medium"
                 style={active ? {
                   background: 'var(--md-primary)',
                   color: 'var(--md-on-primary)',
