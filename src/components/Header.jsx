@@ -73,7 +73,7 @@ export default function Header() {
             fontFamily: '"Noto Serif SC", serif',
             fontWeight: 900,
             fontSize: 'clamp(1.6rem, 5vw, 3.2rem)',
-            background: 'linear-gradient(135deg, var(--md-primary) 0%, var(--md-tertiary) 60%, var(--md-primary) 100%)',
+            background: 'linear-gradient(135deg, var(--md-primary) 0%, var(--md-tertiary) 55%, var(--md-primary) 100%)',
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
             backgroundClip: 'text',

@@ -56,19 +56,16 @@ export default function NewsBoard({ noWrap = false }) {
     <div
       className="rounded-2xl overflow-hidden h-full"
       style={{
-        background: 'linear-gradient(145deg, rgba(206,180,248,0.10) 0%, var(--glass-bg) 50%)',
-        backdropFilter: 'var(--glass-blur)',
-        WebkitBackdropFilter: 'var(--glass-blur)',
-        border: '1px solid rgba(206,180,248,0.18)',
-        borderTopColor: 'rgba(206,180,248,0.35)',
-        boxShadow: 'var(--glass-shadow), 0 0 40px rgba(206,180,248,0.06), var(--glass-inset)',
-        position: 'relative',
+        background: 'var(--md-surface-container)',
+        border: '2px solid var(--md-outline-variant)',
+        borderTopWidth: '4px',
+        borderTopColor: 'var(--md-primary)',
       }}
     >
       {/* Header */}
       <div
         className="flex items-center justify-between px-4 py-3"
-        style={{ borderBottom: '1px solid rgba(206,180,248,0.12)' }}
+        style={{ borderBottom: '1px solid var(--md-outline-variant)' }}
       >
         <div className="flex items-center gap-2">
           <span style={{ color: 'var(--md-primary)', opacity: 0.7, fontSize: '0.75rem' }}>■</span>
@@ -86,9 +83,8 @@ export default function NewsBoard({ noWrap = false }) {
               style={server === key ? {
                 background: 'var(--md-primary)',
                 color: 'var(--md-on-primary)',
-                boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.20)',
               } : {
-                background: 'rgba(255,255,255,0.06)',
+                background: 'var(--md-surface-container-high)',
                 color: 'var(--md-on-surface-variant)',
               }}
             >
@@ -103,7 +99,7 @@ export default function NewsBoard({ noWrap = false }) {
         <div>
           {[72, 55, 65].map((w, i) => (
             <div key={i} className="px-4 py-3.5"
-              style={{ borderBottom: i < 2 ? '1px solid rgba(255,255,255,0.06)' : 'none' }}>
+              style={{ borderBottom: i < 2 ? '1px solid var(--md-outline-variant)' : 'none' }}>
               <div className="skeleton rounded-md mb-2" style={{ height: '14px', width: `${w}%` }} />
               <div className="skeleton rounded-md" style={{ height: '11px', width: '52px' }} />
             </div>
@@ -118,7 +114,7 @@ export default function NewsBoard({ noWrap = false }) {
           <button
             onClick={fetchFeed}
             className="text-xs px-3 py-1.5 rounded-full flex-shrink-0"
-            style={{ background: 'rgba(255,255,255,0.06)', color: 'var(--md-primary)' }}
+            style={{ background: 'var(--md-surface-container-high)', color: 'var(--md-primary)' }}
           >
             重试
           </button>
@@ -136,10 +132,10 @@ export default function NewsBoard({ noWrap = false }) {
                 rel="noopener noreferrer"
                 className="flex flex-col px-4 py-3 gap-0.5"
                 style={{
-                  borderBottom: i < items.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                  borderBottom: i < items.length - 1 ? '1px solid var(--md-outline-variant)' : 'none',
                   transition: 'background 0.15s ease',
                 }}
-                onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.05)'}
+                onMouseEnter={e => e.currentTarget.style.background = 'var(--md-surface-container-high)'}
                 onMouseLeave={e => e.currentTarget.style.background = ''}
               >
                 <span className="text-sm leading-snug line-clamp-2" style={{ color: 'var(--md-on-surface)' }}>

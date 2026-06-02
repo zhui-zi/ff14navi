@@ -171,27 +171,18 @@ export default function DailyFortune({ noWrap = false }) {
     <div
       className="rounded-2xl overflow-hidden h-full flex flex-col"
       style={{
-        background: `linear-gradient(145deg, ${accent}14 0%, var(--glass-bg) 50%)`,
-        backdropFilter: 'var(--glass-blur)',
-        WebkitBackdropFilter: 'var(--glass-blur)',
-        border: `1px solid ${accent}30`,
-        borderTopColor: `${accent}55`,
-        boxShadow: `var(--glass-shadow), 0 0 40px ${accent}10, var(--glass-inset)`,
+        background: 'var(--md-surface-container)',
+        border: `2px solid ${accent}50`,
+        borderLeftWidth: '4px',
+        borderLeftColor: accent,
         position: 'relative',
       }}
     >
-      {/* Ambient glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `radial-gradient(ellipse 70% 60% at 5% 10%, ${accent}18 0%, transparent 65%)`,
-        }}
-      />
 
       {/* Header bar */}
       <div
         className="relative flex items-center justify-between px-5 py-2.5"
-        style={{ borderBottom: `1px solid ${accent}20` }}
+        style={{ borderBottom: `1px solid ${accent}30` }}
       >
         <div className="flex items-center gap-2">
           <span style={{ color: 'var(--md-primary)', opacity: 0.7, fontSize: '0.75rem' }}>✦</span>

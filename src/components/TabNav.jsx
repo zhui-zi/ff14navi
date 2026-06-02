@@ -58,12 +58,8 @@ export default function TabNav({ tabs, activeTab, setActiveTab, columnCount, set
         <div
           className="flex-shrink-0 flex items-center gap-1 p-1 rounded-full"
           style={{
-            background: 'var(--glass-bg)',
-            backdropFilter: 'var(--glass-blur-sm)',
-            WebkitBackdropFilter: 'var(--glass-blur-sm)',
-            border: '1px solid var(--glass-border)',
-            borderTopColor: 'var(--glass-border-top)',
-            boxShadow: 'var(--glass-shadow), var(--glass-inset)',
+            background: 'var(--md-surface-container)',
+            border: '1px solid var(--md-outline-variant)',
           }}
         >
           {isSorting ? (

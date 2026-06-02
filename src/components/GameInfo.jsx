@@ -68,21 +68,17 @@ function ActivityCard({ accent, badge, title, subtitle, dates, rows, url }) {
       rel="noopener noreferrer"
       className="block rounded-2xl px-4 py-3.5 cursor-pointer"
       style={{
-        background: `linear-gradient(145deg, ${accent}20 0%, var(--glass-bg) 55%)`,
-        backdropFilter: 'var(--glass-blur)',
-        WebkitBackdropFilter: 'var(--glass-blur)',
-        border: `1px solid ${accent}45`,
-        borderTopColor: `${accent}70`,
-        boxShadow: `0 4px 20px rgba(0,0,0,0.35), 0 0 0 0 ${accent}00, inset 0 1px 0 rgba(255,255,255,0.10)`,
-        transition: 'transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease',
+        background: `linear-gradient(160deg, ${accent}18 0%, var(--md-surface-container) 55%)`,
+        border: `2px solid ${accent}55`,
+        transition: 'transform 0.22s cubic-bezier(0.34,1.56,0.64,1), border-color 0.18s ease',
       }}
       onMouseEnter={e => {
-        e.currentTarget.style.transform = 'translateY(-5px) scale(1.02)'
-        e.currentTarget.style.boxShadow = `0 16px 40px rgba(0,0,0,0.50), 0 0 28px ${accent}40, inset 0 1px 0 rgba(255,255,255,0.15)`
+        e.currentTarget.style.transform = 'translateY(-4px) scale(1.015)'
+        e.currentTarget.style.borderColor = `${accent}CC`
       }}
       onMouseLeave={e => {
         e.currentTarget.style.transform = ''
-        e.currentTarget.style.boxShadow = `0 4px 20px rgba(0,0,0,0.35), 0 0 0 0 ${accent}00, inset 0 1px 0 rgba(255,255,255,0.10)`
+        e.currentTarget.style.borderColor = `${accent}55`
       }}
     >
       <span
@@ -124,23 +120,19 @@ export default function GameInfo({ noWrap = false }) {
         rel="noopener noreferrer"
         className="relative flex items-center gap-4 rounded-2xl px-5 py-3.5 cursor-pointer overflow-hidden"
         style={{
-          background: 'linear-gradient(135deg, var(--md-primary-container) 0%, rgba(85,51,135,0.70) 100%)',
-          backdropFilter: 'var(--glass-blur)',
-          WebkitBackdropFilter: 'var(--glass-blur)',
-          border: '1px solid rgba(206,180,248,0.25)',
-          borderTopColor: 'rgba(206,180,248,0.45)',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12)',
+          background: 'var(--md-primary-container)',
+          border: '2px solid var(--md-primary)',
           color: 'var(--md-on-primary-container)',
-          transition: 'transform 0.22s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.22s ease',
+          transition: 'transform 0.22s cubic-bezier(0.34,1.56,0.64,1), filter 0.18s ease',
           minHeight: '4.5rem',
         }}
         onMouseEnter={e => {
           e.currentTarget.style.transform = 'translateY(-2px)'
-          e.currentTarget.style.boxShadow = '0 10px 32px rgba(0,0,0,0.45), 0 0 24px rgba(206,180,248,0.25), inset 0 1px 0 rgba(255,255,255,0.16)'
+          e.currentTarget.style.filter = 'brightness(1.12)'
         }}
         onMouseLeave={e => {
           e.currentTarget.style.transform = ''
-          e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12)'
+          e.currentTarget.style.filter = ''
         }}
       >
         <div className="flex-1 min-w-0 z-10">

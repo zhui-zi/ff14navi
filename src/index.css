@@ -3,80 +3,37 @@
 @tailwind utilities;
 
 /* ══════════════════════════════════════════════
-   M3 Dark Scheme  (default)
-   Seed: purple / tertiary: FF14 gold
+   M3 Expressive Dark  —  Seed: #0047AB Cobalt Blue
    ══════════════════════════════════════════════ */
 :root {
-  --md-primary:                  #CEB4F8;
-  --md-on-primary:               #3D1B72;
-  --md-primary-container:        #553387;
-  --md-on-primary-container:     #EDD9FF;
-  --md-tertiary:                 #F4C161;
-  --md-on-tertiary:              #3D2A00;
-  --md-tertiary-container:       #5C3F00;
-  --md-surface:                  #141218;
-  --md-on-surface:               #E7E0EB;
-  --md-surface-container:        #201E25;
-  --md-surface-container-high:   #2B282F;
-  --md-surface-container-highest:#36333B;
-  --md-on-surface-variant:       #CCC5CF;
-  --md-outline:                  #978E9B;
-  --md-outline-variant:          #4A454E;
+  /* Primary: cobalt blue family */
+  --md-primary:                  #7BADFF;
+  --md-on-primary:               #00306B;
+  --md-primary-container:        #0047AB;
+  --md-on-primary-container:     #D6E4FF;
 
-  --header-bg:        linear-gradient(135deg,#0D0F2A 0%,#1C1042 45%,#0F1635 100%);
-  --header-glow-1:    rgba(206,180,248,0.20);
-  --header-glow-2:    rgba(244,193,97,0.15);
-  --header-glow-3:    rgba(126,203,232,0.15);
-  --header-subtitle:  #9B95B0;
-  --header-crystal:   #CEB4F8;
+  /* Tertiary: warm amber — expressive contrast */
+  --md-tertiary:                 #FFB84D;
+  --md-on-tertiary:              #442A00;
+  --md-tertiary-container:       #5E3C00;
+  --md-on-tertiary-container:    #FFDDB0;
 
-  /* ── Liquid Glass ── */
-  --glass-bg:          rgba(18, 16, 22, 0.58);
-  --glass-bg-hi:       rgba(28, 26, 34, 0.52);
-  --glass-border:      rgba(255,255,255, 0.08);
-  --glass-border-top:  rgba(255,255,255, 0.18);
-  --glass-shadow:      0 8px 32px rgba(0,0,0,0.45);
-  --glass-inset:       inset 0 1px 0 rgba(255,255,255,0.13);
-  --glass-blur:        blur(20px) saturate(160%);
-  --glass-blur-sm:     blur(12px) saturate(140%);
-}
+  /* Surfaces — cool dark, blue-tinted */
+  --md-surface:                  #0F121B;
+  --md-on-surface:               #E1E3F0;
+  --md-surface-container:        #171C2C;
+  --md-surface-container-high:   #1D2438;
+  --md-surface-container-highest:#242C44;
+  --md-on-surface-variant:       #BBC3D9;
+  --md-outline:                  #838BAA;
+  --md-outline-variant:          #3C4562;
 
-/* ══════════════════════════════════════════════
-   M3 Light Scheme  (retained for reference, unused)
-   ══════════════════════════════════════════════ */
-.theme-light-DISABLED {
-  --md-primary:                  #6750A4;
-  --md-on-primary:               #FFFFFF;
-  --md-primary-container:        #EADDFF;
-  --md-on-primary-container:     #21005D;
-  --md-tertiary:                 #7D5700;
-  --md-on-tertiary:              #FFFFFF;
-  --md-tertiary-container:       #FFD8A8;
-  --md-surface:                  #FFFBFF;
-  --md-on-surface:               #1C1B1F;
-  --md-surface-container:        #F3EDF7;
-  --md-surface-container-high:   #ECE6F0;
-  --md-surface-container-highest:#E6E0EA;
-  --md-on-surface-variant:       #49454F;
-  --md-outline:                  #79747E;
-  --md-outline-variant:          #CAC4D0;
-
-  --header-bg:       linear-gradient(135deg,#EDE7F6 0%,#D1C4E9 45%,#E8EAF6 100%);
-  --header-glow-1:   rgba(103,80,164,0.12);
-  --header-glow-2:   rgba(125,87,0,0.10);
-  --header-glow-3:   rgba(0,96,115,0.10);
-  --header-subtitle: #49454F;
-  --header-crystal:  #6750A4;
-
-  /* ── Liquid Glass (light) ── */
-  --glass-bg:          rgba(255,255,252, 0.68);
-  --glass-bg-hi:       rgba(243,237,247, 0.72);
-  --glass-border:      rgba(0,0,0, 0.05);
-  --glass-border-top:  rgba(255,255,255, 0.92);
-  --glass-shadow:      0 4px 24px rgba(0,0,0,0.10);
-  --glass-inset:       inset 0 1px 0 rgba(255,255,255,0.85);
-  --glass-blur:        blur(20px) saturate(160%);
-  --glass-blur-sm:     blur(12px) saturate(140%);
+  --header-bg:       linear-gradient(135deg, #040A18 0%, #0A1C40 45%, #07112A 100%);
+  --header-glow-1:   rgba(123,173,255,0.22);
+  --header-glow-2:   rgba(255,184,77, 0.12);
+  --header-glow-3:   rgba(100,160,255,0.16);
+  --header-subtitle: #7B8DAD;
+  --header-crystal:  #7BADFF;
 }
 
 /* ══════════════════════════════════════════════
@@ -87,18 +44,13 @@ html { scroll-behavior: smooth; transition: background-color 0.25s, color 0.25s;
 body {
   background-color: var(--md-surface);
   background-image:
-    radial-gradient(ellipse 90% 55% at 12%  8%,  rgba(206,180,248,0.10) 0%, transparent 62%),
-    radial-gradient(ellipse 65% 45% at 88% 92%,  rgba(244,193, 97,0.08) 0%, transparent 55%),
-    radial-gradient(ellipse 55% 50% at 68% 32%,  rgba( 77,208,225,0.06) 0%, transparent 52%);
+    radial-gradient(ellipse 80% 50% at 10%  5%, rgba(  0, 71,171,0.16) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 90%, rgba(255,184, 77,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 45% at 62% 28%, rgba(100,160,255,0.09) 0%, transparent 52%);
   color: var(--md-on-surface);
   font-family: 'Noto Sans SC', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.25s, color 0.25s;
-}
-.theme-light-DISABLED body {
-  background-image:
-    radial-gradient(ellipse 80% 55% at 15% 10%, rgba(103, 80,164,0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 85% 85%, rgba(125, 87,  0,0.06) 0%, transparent 52%);
 }
 
 /* ── Scrollbar ── */
@@ -166,12 +118,8 @@ body {
   align-items: center;
   height: 2.5rem;
   border-radius: 9999px;
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur-sm);
-  -webkit-backdrop-filter: var(--glass-blur-sm);
-  border: 1px solid var(--glass-border);
-  border-top-color: var(--glass-border-top);
-  box-shadow: var(--glass-shadow), var(--glass-inset);
+  background: var(--md-surface-container-high);
+  border: 1px solid var(--md-outline-variant);
   color: var(--md-on-surface-variant);
   overflow: hidden;
   white-space: nowrap;
@@ -202,12 +150,8 @@ body {
   align-items: center;
   height: 2.5rem;
   border-radius: 9999px;
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur-sm);
-  -webkit-backdrop-filter: var(--glass-blur-sm);
-  border: 1px solid var(--glass-border);
-  border-top-color: var(--glass-border-top);
-  box-shadow: var(--glass-shadow), var(--glass-inset);
+  background: var(--md-surface-container-high);
+  border: 1px solid var(--md-outline-variant);
   color: var(--md-on-surface-variant);
   overflow: hidden;
   white-space: nowrap;
@@ -275,25 +219,4 @@ body {
 .chip-basic  { background: rgba(74,69,78,0.40);    color: #CCC5CF; }
 .chip-blog   { background: rgba(63,81,181,0.18);   color: #9FA8DA; }
 
-/* ── Light chip colours (M3 Tonal Container / On-Container) ── */
-.theme-light-DISABLED .chip-blue   { background: #D3E4FF; color: #001C3A; }
-.theme-light-DISABLED .chip-green  { background: #AAEFC0; color: #002109; }
-.theme-light-DISABLED .chip-red    { background: #FFDAD6; color: #410002; }
-.theme-light-DISABLED .chip-pink   { background: #FFD9E3; color: #3E001D; }
-.theme-light-DISABLED .chip-orange { background: #FFDCBB; color: #311300; }
-.theme-light-DISABLED .chip-teal   { background: #97F0FF; color: #001F24; }
-.theme-light-DISABLED .chip-violet { background: #F3DAFF; color: #260047; }
-.theme-light-DISABLED .chip-olive  { background: #DAEFB3; color: #121F00; }
-.theme-light-DISABLED .chip-yellow { background: #FFF0C2; color: #221B00; }
-.theme-light-DISABLED .chip-wheat  { background: #FFDEA5; color: #261900; }
-.theme-light-DISABLED .chip-brown  { background: #F9DECC; color: #31111D; }
-.theme-light-DISABLED .chip-black  { background: #E3E3E3; color: #1C1B1F; }
-.theme-light-DISABLED .chip-grey   { background: #E9E3ED; color: #49454F; }
-.theme-light-DISABLED .chip-purple { background: #F3DAFF; color: #260047; }
-.theme-light-DISABLED .chip-basic  { background: #E6E0EA; color: #49454F; }
-.theme-light-DISABLED .chip-blog   { background: #DDE1FF; color: #001256; }
-/* Countdown accent colours — darken in light mode for contrast */
-.theme-light-DISABLED .countdown-num { filter: brightness(0.52) saturate(1.3); }
-
-.chip-navy   { background: rgba(26,58,106,0.55); color: #7EB8F7; }
-.theme-light-DISABLED .chip-navy  { background: #1A3A6A;  color: #FFFFFF; }
+.chip-navy   { background: rgba(0,47,120,0.55); color: #7BADFF; }
