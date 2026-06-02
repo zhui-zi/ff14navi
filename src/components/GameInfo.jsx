@@ -60,7 +60,7 @@ function CountdownRow({ label, target, expired, accentColor }) {
   )
 }
 
-function ActivityCard({ accent, badge, title, subtitle, dates, rows, url }) {
+function ActivityCard({ accent, badge, title, subtitle, dates, rows, url, compact }) {
   return (
     <a
       href={url}
@@ -96,11 +96,25 @@ function ActivityCard({ accent, badge, title, subtitle, dates, rows, url }) {
         <div className="text-xs mb-1 truncate" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.75 }}>{subtitle}</div>
       )}
 
-      {dates?.map((d, i) => (
-        <div key={i} className="text-xs leading-relaxed" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.55 }}>
-          {d}
+      {compact ? (
+        <div className="flex flex-wrap gap-1 mt-1">
+          {dates?.map((d, i) => (
+            <span
+              key={i}
+              className="text-xs px-1.5 py-0.5 rounded"
+              style={{ background: `${accent}15`, color: 'var(--md-on-surface-variant)', opacity: 0.85, lineHeight: '1.4' }}
+            >
+              {d}
+            </span>
+          ))}
         </div>
-      ))}
+      ) : (
+        dates?.map((d, i) => (
+          <div key={i} className="text-xs leading-relaxed" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.55 }}>
+            {d}
+          </div>
+        ))
+      )}
 
       {rows.map((r, i) => (
         <CountdownRow key={i} {...r} accentColor={accent} />
@@ -303,6 +317,7 @@ export default function GameInfo({ noWrap = false }) {
             '友好部族盟友任务 金曦之章',
           ]}
           rows={[]}
+          compact
           url="https://actff1.web.sdo.com/project/20240927dawntrail/patch75/index.html"
         />
 
