@@ -5,7 +5,16 @@ const FEEDS = {
   int: { label: '国际服', path: '/rss?feed=int' },
 }
 
+const CN_NEWS_LIST = 'https://ff.sdo.com/web8/index.html#/newstab/newslist'
+
 const get = (el, tag) => el.getElementsByTagName(tag)[0]?.textContent?.trim() || ''
+
+// RSSHub FF14 CN route generates broken SPA links like /web8/555 instead of /web8/index.html#/...
+function fixLink(url) {
+  if (!url?.startsWith('http')) return ''
+  const m = url.match(/^(https:\/\/ff\.sdo\.com\/web8\/)(\d+)$/)
+  return m ? `${m[1]}index.html#/newstab/newsdetail/${m[2]}` : url
+}
 
 function parseRSS(xml) {
   const doc = new DOMParser().parseFromString(xml, 'application/xml')
@@ -13,14 +22,15 @@ function parseRSS(xml) {
   return [...doc.getElementsByTagName('item')].slice(0, 3).map(item => {
     const title   = get(item, 'title')
     const linkEl  = item.getElementsByTagName('link')[0]
-    const link    = linkEl?.textContent?.trim() || linkEl?.getAttribute('href') || get(item, 'guid')
+    const rawLink = linkEl?.textContent?.trim() || linkEl?.getAttribute('href') || get(item, 'guid')
+    const link    = fixLink(rawLink) || CN_NEWS_LIST
     const pubDate = get(item, 'pubDate')
     const date    = pubDate ? new Date(pubDate) : null
     const dateStr = date && !isNaN(date)
       ? `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`
       : ''
     return { title, link, dateStr }
-  }).filter(item => item.link.startsWith('http'))
+  })
 }
 
 export default function NewsBoard({ noWrap = false }) {
