@@ -7,9 +7,6 @@ function FeedbackButton() {
   return (
     <div className="feedback-trigger" style={{ top: 'calc(1rem + 2.5rem + 0.5rem)' }}>
       <div className="feedback-pill">
-        <span style={{ width: '2.5rem', height: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '1rem', lineHeight: 1 }}>
-          💬
-        </span>
         <div className="feedback-links">
           <a
             href={GITHUB_URL}
@@ -38,6 +35,9 @@ function FeedbackButton() {
             邮件
           </a>
         </div>
+        <span style={{ width: '2.5rem', height: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '1rem', lineHeight: 1 }}>
+          💬
+        </span>
       </div>
     </div>
   )

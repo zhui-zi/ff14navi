@@ -5,7 +5,6 @@ import { useCountdown } from '../hooks/useCountdown'
 const cst = (y, mo, d, h = 0, mi = 0) =>
   new Date(Date.UTC(y, mo - 1, d, h - 8, mi))
 
-const T_PATCH_751     = cst(2026, 6,  2, 16,  0)
 const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
 const T_STAR_END      = cst(2026, 6,  9, 22, 59)
 const T_TRIAL_CH_END  = cst(2026, 5, 31, 23, 59)
@@ -61,7 +60,7 @@ function CountdownRow({ label, target, expired, accentColor }) {
   )
 }
 
-function ActivityCard({ accent, badge, title, subtitle, dates, rows, url, nextPatch }) {
+function ActivityCard({ accent, badge, title, subtitle, dates, rows, url }) {
   return (
     <a
       href={url}
@@ -107,29 +106,6 @@ function ActivityCard({ accent, badge, title, subtitle, dates, rows, url, nextPa
         <CountdownRow key={i} {...r} accentColor={accent} />
       ))}
 
-      {nextPatch && (
-        <div
-          className="mt-3 pt-2.5"
-          style={{ borderTop: `1px solid ${accent}33` }}
-          onClick={e => e.preventDefault()}
-        >
-          <div className="text-xs font-medium mb-1.5" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.5 }}>
-            下个版本 · {nextPatch.version}
-          </div>
-          <ul className="space-y-0.5">
-            {nextPatch.items.map((item, i) => (
-              <li
-                key={i}
-                className="text-xs leading-snug"
-                style={{ color: 'var(--md-on-surface-variant)', opacity: 0.6, paddingLeft: '0.75rem', position: 'relative' }}
-              >
-                <span style={{ position: 'absolute', left: 0, opacity: 0.4 }}>·</span>
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </a>
   )
 }
@@ -317,20 +293,17 @@ export default function GameInfo({ noWrap = false }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
         <ActivityCard
           accent="#4DD0E1"
-          badge="当前版本"
-          title="7.51 版本"
-          dates={['2026年6月2日 正式上线']}
-          rows={[{ target: T_PATCH_751, expired: '已上线 ✓' }]}
+          badge="下个版本"
+          title="7.55"
+          subtitle="预计上线时间未定"
+          dates={[
+            '大型战斗任务「蜃景幻境新月岛北征之章」',
+            '武器强化任务「幻境武器」',
+            '非著名调查员 金曦之章',
+            '友好部族盟友任务 金曦之章',
+          ]}
+          rows={[]}
           url="https://actff1.web.sdo.com/project/20240927dawntrail/patch75/index.html"
-          nextPatch={{
-            version: '7.55（时间未定）',
-            items: [
-              '大型战斗任务「蜃景幻境新月岛北征之章」',
-              '武器强化任务「幻境武器」',
-              '非著名调查员 金曦之章',
-              '友好部族盟友任务 金曦之章',
-            ],
-          }}
         />
 
         <ActivityCard
