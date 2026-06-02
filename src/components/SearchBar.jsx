@@ -50,8 +50,8 @@ export default function SearchBar() {
   return (
     <div className="max-w-2xl mx-auto px-4 pt-8 pb-4">
       <div
-        className="flex items-center rounded-full overflow-hidden"
-        style={{ background: 'var(--md-surface-container)', border: '2px solid var(--md-outline-variant)', transition: 'border-color 0.2s' }}
+        className="search-bar-wrap flex items-center rounded-full overflow-hidden"
+        style={{ background: 'var(--md-surface-container)', border: '2px solid var(--md-outline-variant)', transition: 'border-color 0.25s, box-shadow 0.3s' }}
         onFocusCapture={e => e.currentTarget.style.borderColor = 'var(--md-primary)'}
         onBlurCapture={e  => e.currentTarget.style.borderColor = 'var(--md-outline-variant)'}
       >

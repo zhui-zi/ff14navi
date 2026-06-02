@@ -168,8 +168,65 @@ body {
 }
 
 
+/* ── Entrance: fade + rise ── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Header crystal glyph ── */
+@keyframes crystal-float {
+  0%, 100% { opacity: 0.90; transform: scale(1)    rotate(0deg); }
+  35%       { opacity: 0.45; transform: scale(0.80) rotate(12deg); }
+  70%       { opacity: 0.78; transform: scale(1.12) rotate(-7deg); }
+}
+.crystal-glyph {
+  display: inline-block;
+  animation: crystal-float 5.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  transform-origin: center;
+}
+
+/* ── Animated gradient (header title) ── */
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.title-gradient {
+  background-size: 300% 300% !important;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* ── Search bar focus glow ── */
+.search-bar-wrap {
+  transition: box-shadow 0.3s ease;
+}
+.search-bar-wrap:focus-within {
+  box-shadow: 0 0 32px rgba(206, 180, 248, 0.16), 0 0 8px rgba(206, 180, 248, 0.08);
+}
+
 /* ── Multi-column layout ── */
-.category-block { break-inside: avoid; margin-bottom: 2rem; }
+.category-block {
+  break-inside: avoid;
+  margin-bottom: 2rem;
+  animation: fade-up 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.category-block:nth-child(1)    { animation-delay:   0ms; }
+.category-block:nth-child(2)    { animation-delay:  50ms; }
+.category-block:nth-child(3)    { animation-delay: 100ms; }
+.category-block:nth-child(4)    { animation-delay: 150ms; }
+.category-block:nth-child(5)    { animation-delay: 200ms; }
+.category-block:nth-child(6)    { animation-delay: 250ms; }
+.category-block:nth-child(7)    { animation-delay: 300ms; }
+.category-block:nth-child(8)    { animation-delay: 350ms; }
+.category-block:nth-child(n+9)  { animation-delay: 400ms; }
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .crystal-glyph  { animation: none !important; }
+  .title-gradient { animation: none !important; background-size: 100% 100% !important; }
+  .category-block { animation: none !important; }
+}
 @media (max-width: 639px)                      { .columns-layout { columns: 1 !important; } }
 @media (min-width: 640px) and (max-width: 1023px) { .columns-layout { columns: min(2, var(--cols,2)) !important; } }
 

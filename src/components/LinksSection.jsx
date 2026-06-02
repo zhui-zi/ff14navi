@@ -217,6 +217,7 @@ export default function LinksSection({ activeTab, customLinks, onDeleteCustomLin
 
   const mainContent = (
     <div
+        key={activeTab}
         className="columns-layout"
         style={{ columns: effectiveColumns, columnGap: '1.5rem' }}
       >
