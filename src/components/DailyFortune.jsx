@@ -224,11 +224,11 @@ export default function DailyFortune({ noWrap = false }) {
         </button>
       ) : (
         /* ── Revealed state ── */
-        <div className="relative px-5 py-4 flex gap-4 items-start flex-1">
+        <div className="relative px-5 py-5 flex gap-4 items-center flex-1">
 
           {/* Fortune level */}
           <div
-            className="flex-shrink-0 flex flex-col items-center gap-0.5 pt-0.5 pr-4"
+            className="flex-shrink-0 flex flex-col items-center justify-center gap-0.5 self-stretch pr-4"
             style={{ borderRight: '1px solid var(--md-outline-variant)', minWidth: '3.2rem' }}
           >
             <div
@@ -246,7 +246,7 @@ export default function DailyFortune({ noWrap = false }) {
           </div>
 
           {/* All info — fills remaining width naturally */}
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 flex flex-col justify-center">
             <div className="flex flex-wrap gap-1.5 mb-2.5">
               <span
                 className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-0.5 rounded-full"

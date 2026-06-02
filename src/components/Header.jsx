@@ -1,39 +1,7 @@
 import React from 'react'
 
-const THEME_META = {
-  dark:  { icon: '🌙', label: '深色' },
-  light: { icon: '☀️', label: '浅色' },
-  auto:  { icon: '🌓', label: '跟随系统' },
-}
-
 const GITHUB_URL = 'https://github.com/zhui-zi/ff14navi/issues'
 const EMAIL = 'zhuizi@hotmail.com'
-
-
-function ThemeButton({ theme, cycleTheme }) {
-  const meta = THEME_META[theme] ?? THEME_META.auto
-
-  return (
-    <div
-      className="theme-trigger"
-      style={{ top: '1rem' }}
-      onClick={cycleTheme}
-      aria-label={`当前主题：${meta.label}，点击切换`}
-      title={`当前：${meta.label}，点击切换`}
-    >
-      <div className="theme-pill">
-        <span
-          key={theme}
-          className="theme-icon"
-          style={{ width: '2.5rem', height: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: '1.1rem', lineHeight: 1 }}
-        >
-          {meta.icon}
-        </span>
-        <span className="theme-label">{meta.label}</span>
-      </div>
-    </div>
-  )
-}
 
 function FeedbackButton() {
   return (
@@ -75,7 +43,7 @@ function FeedbackButton() {
   )
 }
 
-export default function Header({ theme, isDark, cycleTheme }) {
+export default function Header() {
   return (
     <div
       className="relative select-none"
@@ -94,7 +62,6 @@ export default function Header({ theme, isDark, cycleTheme }) {
           style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(206,180,248,0.35) 30%, rgba(244,193,97,0.25) 60%, transparent 100%)' }} />
       </div>
 
-      <ThemeButton theme={theme} cycleTheme={cycleTheme} />
       <FeedbackButton />
 
       {/* Content */}

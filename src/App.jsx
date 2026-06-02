@@ -12,7 +12,6 @@ import { tabs, categories } from './data/links'
 
 const STORAGE_KEY   = 'ff14navi-custom-links'
 const COL_KEY       = 'ff14navi-columns'
-const THEME_KEY     = 'ff14navi-theme'
 const CAT_ORDER_KEY = 'ff14navi-cat-order'
 
 function loadCustomLinks() {
@@ -37,32 +36,12 @@ function loadCatOrder() {
   return categories.map(c => c.id)
 }
 
-function loadTheme() {
-  const saved = localStorage.getItem(THEME_KEY)
-  if (saved === 'dark' || saved === 'light' || saved === 'auto') return saved
-  return 'auto'
-}
-
 export default function App() {
-  const [activeTab, setActiveTab] = useState('all')
+  const [activeTab, setActiveTab]     = useState('all')
   const [customLinks, setCustomLinks] = useState(loadCustomLinks)
   const [showModal, setShowModal]     = useState(false)
   const [columnCount, setColumnCount] = useState(loadColumns)
-  const [theme, setTheme]             = useState(loadTheme)
   const [catOrder, setCatOrder]       = useState(loadCatOrder)
-  const [systemDark, setSystemDark]   = useState(
-    () => window.matchMedia('(prefers-color-scheme: dark)').matches
-  )
-
-  // Track system preference changes
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)')
-    const handler = e => setSystemDark(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
-  }, [])
-
-  const isDark = theme === 'dark' || (theme === 'auto' && systemDark)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(customLinks))
@@ -73,34 +52,17 @@ export default function App() {
   }, [columnCount])
 
   useEffect(() => {
-    localStorage.setItem(THEME_KEY, theme)
-  }, [theme])
-
-  useEffect(() => {
-    document.documentElement.classList.toggle('theme-light', !isDark)
-  }, [isDark])
-
-  useEffect(() => {
     localStorage.setItem(CAT_ORDER_KEY, JSON.stringify(catOrder))
   }, [catOrder])
 
   const [isSorting, setIsSorting] = useState(false)
-
-  // Exit sort mode whenever the active tab changes
   useEffect(() => { setIsSorting(false) }, [activeTab])
 
   const resetCatOrder = useCallback(() => {
     setCatOrder(categories.map(c => c.id))
   }, [])
 
-  const [flashKey, setFlashKey] = useState(0)
-  // Cycle: dark → light → auto → dark
-  const cycleTheme = useCallback(() => {
-    setTheme(t => t === 'dark' ? 'light' : t === 'light' ? 'auto' : 'dark')
-    setFlashKey(k => k + 1)
-  }, [])
-
-const handleAddLink = useCallback((link) => {
+  const handleAddLink = useCallback((link) => {
     setCustomLinks(prev => [link, ...prev])
   }, [])
 
@@ -110,8 +72,7 @@ const handleAddLink = useCallback((link) => {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--md-surface)', color: 'var(--md-on-surface)' }}>
-      <Header theme={theme} isDark={isDark} cycleTheme={cycleTheme} />
-      {flashKey > 0 && <div key={flashKey} className="theme-flash-overlay" aria-hidden="true" />}
+      <Header />
       <main className="pb-28">
         <SearchBar />
         <div className="max-w-7xl mx-auto px-4 mb-6 flex flex-col lg:flex-row gap-4 items-stretch lg:items-start">

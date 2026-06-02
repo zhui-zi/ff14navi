@@ -42,9 +42,9 @@
 }
 
 /* ══════════════════════════════════════════════
-   M3 Light Scheme
+   M3 Light Scheme  (retained for reference, unused)
    ══════════════════════════════════════════════ */
-.theme-light {
+.theme-light-DISABLED {
   --md-primary:                  #6750A4;
   --md-on-primary:               #FFFFFF;
   --md-primary-container:        #EADDFF;
@@ -95,7 +95,7 @@ body {
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.25s, color 0.25s;
 }
-.theme-light body {
+.theme-light-DISABLED body {
   background-image:
     radial-gradient(ellipse 80% 55% at 15% 10%, rgba(103, 80,164,0.08) 0%, transparent 60%),
     radial-gradient(ellipse 60% 40% at 85% 85%, rgba(125, 87,  0,0.06) 0%, transparent 52%);
@@ -159,15 +159,6 @@ body {
 .theme-toggle-btn:active { transform: scale(0.85); }
 .theme-toggle-btn:active::before { opacity: 0.16; }
 
-/* Theme button — same CSS-only hover as feedback */
-.theme-trigger {
-  position: absolute;
-  right: 0;
-  height: 2.5rem;
-  width: 10rem;
-  z-index: 20;
-  cursor: pointer;
-}
 .theme-pill {
   position: absolute;
   right: 1rem;
@@ -189,19 +180,10 @@ body {
   transition: max-width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
               transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.theme-trigger:hover .theme-pill {
-  max-width: 8rem;
-  transform: translateX(0);
-}
 .theme-label {
   font-size: 0.75rem;
   font-weight: 600;
   padding-right: 0.875rem;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-}
-.theme-trigger:hover .theme-label {
-  opacity: 1;
 }
 
 /* Feedback button — CSS-only hover to prevent flicker */
@@ -250,20 +232,6 @@ body {
   opacity: 1;
 }
 
-/* Page-level flash on theme switch */
-@keyframes theme-flash {
-  0%   { opacity: 0.18; }
-  100% { opacity: 0; }
-}
-.theme-flash-overlay {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9999;
-  background: white;
-  animation: theme-flash 0.35s ease-out forwards;
-}
-.theme-light .theme-flash-overlay { background: #141218; }
 
 /* ── Multi-column layout ── */
 .category-block { break-inside: avoid; margin-bottom: 2rem; }
@@ -308,24 +276,24 @@ body {
 .chip-blog   { background: rgba(63,81,181,0.18);   color: #9FA8DA; }
 
 /* ── Light chip colours (M3 Tonal Container / On-Container) ── */
-.theme-light .chip-blue   { background: #D3E4FF; color: #001C3A; }
-.theme-light .chip-green  { background: #AAEFC0; color: #002109; }
-.theme-light .chip-red    { background: #FFDAD6; color: #410002; }
-.theme-light .chip-pink   { background: #FFD9E3; color: #3E001D; }
-.theme-light .chip-orange { background: #FFDCBB; color: #311300; }
-.theme-light .chip-teal   { background: #97F0FF; color: #001F24; }
-.theme-light .chip-violet { background: #F3DAFF; color: #260047; }
-.theme-light .chip-olive  { background: #DAEFB3; color: #121F00; }
-.theme-light .chip-yellow { background: #FFF0C2; color: #221B00; }
-.theme-light .chip-wheat  { background: #FFDEA5; color: #261900; }
-.theme-light .chip-brown  { background: #F9DECC; color: #31111D; }
-.theme-light .chip-black  { background: #E3E3E3; color: #1C1B1F; }
-.theme-light .chip-grey   { background: #E9E3ED; color: #49454F; }
-.theme-light .chip-purple { background: #F3DAFF; color: #260047; }
-.theme-light .chip-basic  { background: #E6E0EA; color: #49454F; }
-.theme-light .chip-blog   { background: #DDE1FF; color: #001256; }
+.theme-light-DISABLED .chip-blue   { background: #D3E4FF; color: #001C3A; }
+.theme-light-DISABLED .chip-green  { background: #AAEFC0; color: #002109; }
+.theme-light-DISABLED .chip-red    { background: #FFDAD6; color: #410002; }
+.theme-light-DISABLED .chip-pink   { background: #FFD9E3; color: #3E001D; }
+.theme-light-DISABLED .chip-orange { background: #FFDCBB; color: #311300; }
+.theme-light-DISABLED .chip-teal   { background: #97F0FF; color: #001F24; }
+.theme-light-DISABLED .chip-violet { background: #F3DAFF; color: #260047; }
+.theme-light-DISABLED .chip-olive  { background: #DAEFB3; color: #121F00; }
+.theme-light-DISABLED .chip-yellow { background: #FFF0C2; color: #221B00; }
+.theme-light-DISABLED .chip-wheat  { background: #FFDEA5; color: #261900; }
+.theme-light-DISABLED .chip-brown  { background: #F9DECC; color: #31111D; }
+.theme-light-DISABLED .chip-black  { background: #E3E3E3; color: #1C1B1F; }
+.theme-light-DISABLED .chip-grey   { background: #E9E3ED; color: #49454F; }
+.theme-light-DISABLED .chip-purple { background: #F3DAFF; color: #260047; }
+.theme-light-DISABLED .chip-basic  { background: #E6E0EA; color: #49454F; }
+.theme-light-DISABLED .chip-blog   { background: #DDE1FF; color: #001256; }
 /* Countdown accent colours — darken in light mode for contrast */
-.theme-light .countdown-num { filter: brightness(0.52) saturate(1.3); }
+.theme-light-DISABLED .countdown-num { filter: brightness(0.52) saturate(1.3); }
 
 .chip-navy   { background: rgba(26,58,106,0.55); color: #7EB8F7; }
-.theme-light .chip-navy  { background: #1A3A6A;  color: #FFFFFF; }
+.theme-light-DISABLED .chip-navy  { background: #1A3A6A;  color: #FFFFFF; }
