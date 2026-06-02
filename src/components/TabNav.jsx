@@ -40,27 +40,12 @@ export default function TabNav({ tabs, activeTab, setActiveTab, columnCount, set
                   transform: 'scale(1.04)',
                   transition: 'all 0.25s cubic-bezier(0.34,1.56,0.64,1)',
                 } : {
-                  background: 'var(--glass-bg)',
-                  backdropFilter: 'var(--glass-blur-sm)',
-                  WebkitBackdropFilter: 'var(--glass-blur-sm)',
-                  border: '1px solid var(--glass-border)',
-                  borderTopColor: 'var(--glass-border-top)',
-                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)',
+                  background: 'var(--md-surface-container)',
                   color: 'var(--md-on-surface-variant)',
                   transition: 'all 0.2s',
                 }}
-                onMouseEnter={e => {
-                  if (!active) {
-                    e.currentTarget.style.background = 'var(--glass-bg-hi)'
-                    e.currentTarget.style.transform = 'translateY(-1px)'
-                  }
-                }}
-                onMouseLeave={e => {
-                  if (!active) {
-                    e.currentTarget.style.background = 'var(--glass-bg)'
-                    e.currentTarget.style.transform = ''
-                  }
-                }}
+                onMouseEnter={e => { if (!active) e.currentTarget.style.background = 'var(--md-surface-container-high)' }}
+                onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'var(--md-surface-container)' }}
               >
                 <span className="text-base leading-none">{tab.emoji}</span>
                 <span>{tab.label}</span>

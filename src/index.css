@@ -90,7 +90,6 @@ body {
     radial-gradient(ellipse 90% 55% at 12%  8%,  rgba(206,180,248,0.10) 0%, transparent 62%),
     radial-gradient(ellipse 65% 45% at 88% 92%,  rgba(244,193, 97,0.08) 0%, transparent 55%),
     radial-gradient(ellipse 55% 50% at 68% 32%,  rgba( 77,208,225,0.06) 0%, transparent 52%);
-  background-attachment: fixed;
   color: var(--md-on-surface);
   font-family: 'Noto Sans SC', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -282,14 +281,11 @@ body {
   transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1),
               box-shadow 0.22s ease,
               filter 0.18s ease;
-  backdrop-filter: var(--glass-blur-sm);
-  -webkit-backdrop-filter: var(--glass-blur-sm);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.10);
 }
 .link-chip:hover {
-  transform: translateY(-3px) scale(1.05);
-  filter: brightness(1.15) saturate(1.15);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.14);
+  transform: translateY(-2px) scale(1.05);
+  filter: brightness(1.15) saturate(1.1);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.28);
 }
 .link-chip:active { transform: scale(0.96); transition-duration: 0.08s; }
 
