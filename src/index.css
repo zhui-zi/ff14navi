@@ -147,16 +147,13 @@ body {
   background: var(--md-surface-container-high);
   border: 1px solid var(--md-outline-variant);
   color: var(--md-on-surface-variant);
-  overflow: hidden;
   white-space: nowrap;
-  max-width: 2.5rem;
-  transform: translateX(2.25rem);
-  transition: max-width 0.28s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  /* clip-path 是合成层属性，不触发 layout，动画完全流畅 */
+  clip-path: inset(0 0 0 calc(100% - 2.5rem) round 9999px);
+  transition: clip-path 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .feedback-trigger:hover .feedback-pill {
-  max-width: 16rem;
-  transform: translateX(0);
+  clip-path: inset(0 round 9999px);
 }
 .feedback-links {
   display: flex;
@@ -164,7 +161,7 @@ body {
   gap: 0.25rem;
   padding-right: 0.5rem;
   opacity: 0;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.18s ease 0.12s;
 }
 .feedback-trigger:hover .feedback-links {
   opacity: 1;

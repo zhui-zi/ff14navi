@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useCountdown } from '../hooks/useCountdown'
 
 // All times CST (UTC+8)
@@ -109,31 +110,82 @@ function ActivityCard({ accent, badge, title, subtitle, dates, rows, url }) {
   )
 }
 
-// ── Main component ───────────────────────────────────────────────────────────
-export default function GameInfo({ noWrap = false }) {
-  const content = (
-    <div className="space-y-3">
+const PATCH_751_NOTES = [
+  {
+    category: '绝境战',
+    color: '#F87171',
+    items: [
+      '追加「妖星乱舞绝境战」',
+      '完成零式登天斗技场重量级4后开放',
+      '8人组队，限时120分钟',
+      '通关可换取绝境战专属武器',
+    ],
+  },
+  {
+    category: '宇宙探索',
+    color: '#4DD0E1',
+    items: [
+      '追加全新星球「奥克塞西亚行星」',
+      '追加熟练度探索任务（需宇宙工具满级）',
+      '宇宙工具可进一步强化',
+      '追加奥克塞西亚信用点与探索计划票据',
+    ],
+  },
+  {
+    category: '老主顾交易',
+    color: '#F4C161',
+    items: [
+      '追加老主顾「缇索加」',
+      '可获得金币、经验值、巧手/大地票据',
+      '每周共可进行12次交易',
+      '完成主线「明日的路标」后开放',
+    ],
+  },
+  {
+    category: '道具 / 系统',
+    color: '#A78BFA',
+    items: [
+      '染色系统：7种色素整合为统一「色素」',
+      '追加新坐骑、宠物、时尚配饰',
+      '追加新情感动作与九宫幻卡',
+      '肖像追加新装饰与可设置动作',
+    ],
+  },
+  {
+    category: '房屋 / 其他',
+    color: '#81C784',
+    items: [
+      '家具超400件时临时停用隐藏机制',
+      '新增支线任务（宇宙探索相关）',
+      '追加全新制作配方与采集道具',
+      '修复多项职业技能与副本问题',
+    ],
+  },
+]
 
-      <a
-        href="https://actff1.web.sdo.com/project/20240927dawntrail/patch75/index.html"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="relative flex items-center gap-4 rounded-2xl px-5 py-3.5 cursor-pointer overflow-hidden"
+// ── Version banner with expandable patch notes ────────────────────────────────
+function VersionBanner() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div
+      className="relative rounded-2xl overflow-hidden"
+      style={{
+        background: 'var(--md-primary-container)',
+        border: `2px solid ${open ? 'var(--md-primary)' : 'var(--md-primary)'}`,
+        color: 'var(--md-on-primary-container)',
+      }}
+    >
+      {/* Header row */}
+      <div
+        className="relative flex items-center gap-4 px-5 py-3.5 cursor-pointer"
         style={{
-          background: 'var(--md-primary-container)',
-          border: '2px solid var(--md-primary)',
-          color: 'var(--md-on-primary-container)',
-          transition: 'transform 0.22s cubic-bezier(0.34,1.56,0.64,1), filter 0.18s ease',
           minHeight: '4.5rem',
+          transition: 'filter 0.18s ease',
         }}
-        onMouseEnter={e => {
-          e.currentTarget.style.transform = 'translateY(-2px)'
-          e.currentTarget.style.filter = 'brightness(1.12)'
-        }}
-        onMouseLeave={e => {
-          e.currentTarget.style.transform = ''
-          e.currentTarget.style.filter = ''
-        }}
+        onClick={() => setOpen(v => !v)}
+        onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.1)')}
+        onMouseLeave={e => (e.currentTarget.style.filter = '')}
       >
         <div className="flex-1 min-w-0 z-10">
           <div className="text-xs mb-0.5 opacity-55">当前版本</div>
@@ -144,10 +196,92 @@ export default function GameInfo({ noWrap = false }) {
             7.51 天际的行路
           </div>
         </div>
-        <div className="relative flex-shrink-0 z-10 text-right">
-          <div className="text-xs opacity-35">查看专题站➡️</div>
+        <div className="relative flex-shrink-0 z-10 flex items-center gap-3">
+          <a
+            href="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/387965"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs opacity-50 hover:opacity-90"
+            style={{ transition: 'opacity 0.15s' }}
+            onClick={e => e.stopPropagation()}
+          >
+            更新说明 ↗
+          </a>
+          <span
+            className="text-lg select-none"
+            style={{
+              display: 'inline-block',
+              transition: 'transform 0.25s cubic-bezier(0.34,1.56,0.64,1)',
+              transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
+              opacity: 0.6,
+            }}
+          >
+            ▾
+          </span>
         </div>
-      </a>
+      </div>
+
+      {/* Expandable notes */}
+      <div
+        style={{
+          maxHeight: open ? '800px' : '0',
+          overflow: 'hidden',
+          transition: 'max-height 0.4s cubic-bezier(0.4,0,0.2,1)',
+        }}
+      >
+        <div
+          className="px-5 pb-4 grid gap-3"
+          style={{
+            borderTop: '1px solid var(--md-primary)',
+            paddingTop: '0.75rem',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+          }}
+        >
+          {PATCH_751_NOTES.map(section => (
+            <div key={section.category}>
+              <div
+                className="text-xs font-semibold mb-1.5 px-2 py-0.5 rounded-full inline-block"
+                style={{ backgroundColor: `${section.color}28`, color: section.color }}
+              >
+                {section.category}
+              </div>
+              <ul className="space-y-1">
+                {section.items.map((item, i) => (
+                  <li
+                    key={i}
+                    className="text-xs leading-snug"
+                    style={{ color: 'var(--md-on-primary-container)', opacity: 0.8, paddingLeft: '0.75rem', position: 'relative' }}
+                  >
+                    <span style={{ position: 'absolute', left: 0, opacity: 0.5 }}>·</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <div className="px-5 pb-3 text-right">
+          <a
+            href="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/387965"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs"
+            style={{ color: 'var(--md-primary)', opacity: 0.75 }}
+          >
+            查看完整更新说明 →
+          </a>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ── Main component ───────────────────────────────────────────────────────────
+export default function GameInfo({ noWrap = false }) {
+  const content = (
+    <div className="space-y-3">
+
+      <VersionBanner />
 
       {/* Activity grid — 2×2 on md+, 1 col on mobile */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
