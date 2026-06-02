@@ -211,6 +211,7 @@ export const categories = [
       { name: '天气查询',     icon: 'sun',    style: 'basic', url: 'https://asvel.github.io/ffxiv-weather/' },
       { name: '光之演奏家',                   style: 'basic', url: 'https://fffff.games/' },
       { name: '罗薇娜的手抄本',              style: 'basic', url: 'https://www.ff14pvp.top/#/' },
+      { name: '网页战术板',                  style: 'basic', url: 'https://plan.xivstrat.cn/' },
     ],
   },
   {
