@@ -12,14 +12,15 @@ function parseRSS(xml) {
   if (doc.querySelector('parsererror')) throw new Error('RSS 解析失败')
   return [...doc.getElementsByTagName('item')].slice(0, 3).map(item => {
     const title   = get(item, 'title')
-    const link    = get(item, 'link') || get(item, 'guid')
+    const linkEl  = item.getElementsByTagName('link')[0]
+    const link    = linkEl?.textContent?.trim() || linkEl?.getAttribute('href') || get(item, 'guid')
     const pubDate = get(item, 'pubDate')
     const date    = pubDate ? new Date(pubDate) : null
     const dateStr = date && !isNaN(date)
       ? `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`
       : ''
     return { title, link, dateStr }
-  })
+  }).filter(item => item.link.startsWith('http'))
 }
 
 export default function NewsBoard({ noWrap = false }) {
