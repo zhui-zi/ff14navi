@@ -135,6 +135,7 @@ export const categories = [
       { name: '配方计算器',   icon: 'calc',  style: 'basic',  url: 'https://5p.nbbjack.com/#/cal' },
       { name: '赐福计算器',   icon: 'calc',  style: 'basic',  url: 'https://5p.nbbjack.com/#/blessed' },
       { name: '工坊计算器',   icon: 'calc',  style: 'basic',  url: 'https://5p.nbbjack.com/#/workshop' },
+      { name: '无人岛工坊模拟器',            style: 'basic',  url: 'https://island.ffxiv.cyou/#/' },
       { name: '天钢工具攻略',              style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=21672716' },
       { name: '潜水艇攻略',                style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=23490578' },
       { name: 'Teamcraft工具箱',           style: 'basic',  url: 'https://ffxivteamcraft.com/' },

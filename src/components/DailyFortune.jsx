@@ -160,7 +160,7 @@ function buildFortune() {
   const activity = pick(rand, ACTIVITIES)
   const texts    = TEXTS[level.label]
   const text     = pick(rand, texts)
-  const luckyNum = Math.floor(rand() * 9) + 1
+  const luckyNum = Math.floor(rand() * 10)
 
   return { dateStr, level, job, element, activity, text, luckyNum }
 }
