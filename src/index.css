@@ -205,6 +205,23 @@ body {
   box-shadow: 0 0 32px rgba(206, 180, 248, 0.16), 0 0 8px rgba(206, 180, 248, 0.08);
 }
 
+/* ── Search button ── */
+.search-btn {
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.2s ease,
+              filter 0.2s ease;
+}
+.search-btn:hover {
+  transform: translateY(-1px) scale(1.04);
+  box-shadow: 0 4px 16px rgba(206, 180, 248, 0.35);
+  filter: brightness(1.1);
+}
+.search-btn:active {
+  transform: scale(0.95);
+  transition-duration: 0.08s;
+  box-shadow: none;
+}
+
 /* ── Multi-column layout ── */
 .category-block {
   break-inside: avoid;

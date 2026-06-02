@@ -160,7 +160,7 @@ function buildFortune() {
   const activity = pick(rand, ACTIVITIES)
   const texts    = TEXTS[level.label]
   const text     = pick(rand, texts)
-  const luckyNum = Math.floor(rand() * 9000) + 1000
+  const luckyNum = Math.floor(rand() * 9) + 1
 
   return { dateStr, level, job, element, activity, text, luckyNum }
 }
@@ -278,7 +278,7 @@ export default function DailyFortune({ noWrap = false }) {
               { label: '幸运职业', value: fortune.job.name, sub: ROLE_LABEL[fortune.job.role], color: fortune.job.color },
               { label: '幸运属性', value: `${fortune.element.sym} ${fortune.element.name}`, color: fortune.element.color },
               { label: '今日宜',   value: fortune.activity, color: 'var(--md-on-surface-variant)' },
-              { label: '幸运数字', value: fortune.luckyNum.toLocaleString(), color: accent, mono: true },
+              { label: '幸运数字', value: String(fortune.luckyNum), color: accent, mono: true },
             ].map((item, i) => (
               <div
                 key={i}

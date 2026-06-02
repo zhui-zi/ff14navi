@@ -49,38 +49,40 @@ export default function SearchBar() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 pt-8 pb-4">
-      <div
-        className="search-bar-wrap flex items-center rounded-full overflow-hidden"
-        style={{ background: 'var(--md-surface-container)', border: '2px solid var(--md-outline-variant)', transition: 'border-color 0.25s, box-shadow 0.3s' }}
-        onFocusCapture={e => e.currentTarget.style.borderColor = 'var(--md-primary)'}
-        onBlurCapture={e  => e.currentTarget.style.borderColor = 'var(--md-outline-variant)'}
-      >
-        <span className="pl-5 text-lg" style={{ color: 'var(--md-outline)' }}>{current?.icon}</span>
-        <input
-          ref={inputRef}
-          type="text"
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder={current?.placeholder ?? `在 ${current?.label} 中搜索，回车确认`}
-          className="flex-1 px-4 py-4 text-base outline-none bg-transparent"
-          style={{ color: 'var(--md-on-surface)' }}
-        />
-        {query && (
-          <button
-            onClick={() => { setQuery(''); inputRef.current?.focus() }}
-            className="px-3 text-xl leading-none"
-            style={{ color: 'var(--md-outline)' }}
-            aria-label="清空"
-          >×</button>
-        )}
+      <div className="flex items-center gap-2">
+        {/* Input pill */}
+        <div
+          className="search-bar-wrap flex-1 flex items-center rounded-full overflow-hidden"
+          style={{ background: 'var(--md-surface-container)', border: '2px solid var(--md-outline-variant)', transition: 'border-color 0.25s, box-shadow 0.3s' }}
+          onFocusCapture={e => e.currentTarget.style.borderColor = 'var(--md-primary)'}
+          onBlurCapture={e  => e.currentTarget.style.borderColor = 'var(--md-outline-variant)'}
+        >
+          <span className="pl-5 text-lg" style={{ color: 'var(--md-outline)' }}>{current?.icon}</span>
+          <input
+            ref={inputRef}
+            type="text"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder={current?.placeholder ?? `在 ${current?.label} 中搜索，回车确认`}
+            className="flex-1 px-4 py-4 text-base outline-none bg-transparent"
+            style={{ color: 'var(--md-on-surface)' }}
+          />
+          {query && (
+            <button
+              onClick={() => { setQuery(''); inputRef.current?.focus() }}
+              className="px-3 text-xl leading-none"
+              style={{ color: 'var(--md-outline)' }}
+              aria-label="清空"
+            >×</button>
+          )}
+        </div>
+
+        {/* Search button — standalone pill */}
         <button
           onClick={() => doSearch(query)}
-          className="px-7 py-4 text-sm font-bold rounded-r-full"
-          style={{
-            background: 'linear-gradient(to right, transparent, var(--md-primary) 48%)',
-            color: 'var(--md-on-primary)',
-          }}
+          className="search-btn flex-shrink-0 px-6 py-4 rounded-full text-sm font-bold"
+          style={{ background: 'var(--md-primary)', color: 'var(--md-on-primary)' }}
         >
           搜索
         </button>
