@@ -114,8 +114,9 @@ export const categories = [
   {
     id: 'weapons',
     tab: 'crafting',
-    name: '成长型武器',
+    name: '特殊场景探索',
     links: [
+      { name: '特殊场景探索群号汇总', style: 'basic', url: 'https://docs.qq.com/sheet/DVnZ1UXpRVnhyenVt?nlc=1&tab=BB08J2' },
       { name: '古武&魂武流程攻略', style: 'basic', url: 'https://bbs.nga.cn/read.php?tid=13014248' },
       { name: 'Eureka Tracker',    style: 'basic', url: 'https://ffxiv-eureka.com/' },
       { name: '博兹雅监控板',      style: 'basic', url: 'https://bzy.mocca-works.site/#/' },
