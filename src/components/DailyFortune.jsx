@@ -208,76 +208,103 @@ export default function DailyFortune({ noWrap = false }) {
       {!revealed ? (
         /* ── Unrevealed state ── */
         <button
-          className="relative w-full flex flex-col items-center justify-center gap-3 py-8 px-5 transition-all"
+          className="relative flex-1 w-full flex flex-col items-center justify-center gap-3 px-5"
           style={{ background: 'transparent', border: 'none', cursor: 'pointer', transition: 'background 0.2s' }}
           onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
           onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
           onClick={handleReveal}
         >
-          <div style={{ fontSize: '2.2rem', lineHeight: 1 }}>🔮</div>
+          <div style={{ fontSize: '2.4rem', lineHeight: 1 }}>🔮</div>
           <div className="text-sm font-medium" style={{ color: 'var(--md-on-surface-variant)' }}>
             点击占卜今日运势
           </div>
-          <div className="text-xs" style={{ color: 'var(--md-outline)', opacity: 0.55 }}>
+          <div className="text-xs" style={{ color: 'var(--md-outline)', opacity: 0.5 }}>
             每日重置 · 今日运势对所有冒险者相同
           </div>
         </button>
       ) : (
         /* ── Revealed state ── */
-        <div className="relative px-5 py-5 flex gap-4 items-center flex-1">
+        <div className="relative flex flex-col flex-1">
 
-          {/* Fortune level */}
-          <div
-            className="flex-shrink-0 flex flex-col items-center justify-center gap-0.5 self-stretch pr-4"
-            style={{ borderRight: '1px solid var(--md-outline-variant)', minWidth: '3.2rem' }}
-          >
+          {/* Main body — fortune level + text */}
+          <div className="flex gap-0 flex-1">
+
+            {/* Fortune level column */}
             <div
-              className="font-black leading-none"
-              style={{
-                fontSize: '2rem',
-                color: accent,
-                textShadow: `0 0 24px ${accent}55`,
-                fontFamily: '"Noto Serif SC", serif',
-              }}
+              className="flex-shrink-0 flex flex-col items-center justify-center gap-1 px-5 py-4"
+              style={{ borderRight: `1px solid ${accent}22`, minWidth: '5.5rem' }}
             >
-              {fortune.level.label}
+              <div
+                className="font-black leading-none"
+                style={{
+                  fontSize: '2.8rem',
+                  color: accent,
+                  textShadow: `0 0 32px ${accent}60`,
+                  fontFamily: '"Noto Serif SC", serif',
+                  letterSpacing: '-0.02em',
+                }}
+              >
+                {fortune.level.label}
+              </div>
+              <div className="text-xs font-medium tracking-widest" style={{ color: accent, opacity: 0.55 }}>
+                今日运势
+              </div>
             </div>
-            <div className="text-xs" style={{ color: accent, opacity: 0.65 }}>今日运势</div>
+
+            {/* Fortune text column */}
+            <div className="flex-1 min-w-0 flex items-center px-5 py-4">
+              <p
+                className="leading-loose"
+                style={{
+                  fontSize: '0.875rem',
+                  color: 'var(--md-on-surface)',
+                  opacity: 0.88,
+                  letterSpacing: '0.02em',
+                }}
+              >
+                {fortune.text}
+              </p>
+            </div>
           </div>
 
-          {/* All info — fills remaining width naturally */}
-          <div className="flex-1 min-w-0 flex flex-col justify-center">
-            <div className="flex flex-wrap gap-1.5 mb-2.5">
-              <span
-                className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-0.5 rounded-full"
-                style={{ background: `${fortune.job.color}20`, color: fortune.job.color }}
+          {/* Footer metadata bar */}
+          <div
+            className="grid grid-cols-4"
+            style={{ borderTop: `1px solid ${accent}20`, background: `${accent}08` }}
+          >
+            {[
+              { label: '幸运职业', value: fortune.job.name, sub: ROLE_LABEL[fortune.job.role], color: fortune.job.color },
+              { label: '幸运属性', value: `${fortune.element.sym} ${fortune.element.name}`, color: fortune.element.color },
+              { label: '今日宜',   value: fortune.activity, color: 'var(--md-on-surface-variant)' },
+              { label: '幸运数字', value: fortune.luckyNum.toLocaleString(), color: accent, mono: true },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="flex flex-col items-center justify-center gap-0.5 py-2.5 px-2"
+                style={{ borderRight: i < 3 ? `1px solid ${accent}15` : 'none' }}
               >
-                幸运职业 · {fortune.job.name}
-                <span style={{ opacity: 0.6, fontSize: '0.65rem' }}>({ROLE_LABEL[fortune.job.role]})</span>
-              </span>
-              <span
-                className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-0.5 rounded-full"
-                style={{ background: `${fortune.element.color}20`, color: fortune.element.color }}
-              >
-                {fortune.element.sym} {fortune.element.name}属性
-              </span>
-              <span
-                className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-0.5 rounded-full"
-                style={{ background: 'var(--md-surface-container-high)', color: 'var(--md-on-surface-variant)' }}
-              >
-                今日宜 · {fortune.activity}
-              </span>
-              <span
-                className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-0.5 rounded-full tabular-nums"
-                style={{ background: `${accent}18`, color: accent, fontFamily: 'ui-monospace, "Cascadia Code", monospace' }}
-              >
-                幸运数字 · {fortune.luckyNum.toLocaleString()}
-              </span>
-            </div>
-            <p className="text-xs leading-relaxed" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.85 }}>
-              {fortune.text}
-            </p>
+                <div className="text-xs" style={{ color: 'var(--md-outline)', opacity: 0.55, fontSize: '0.65rem', letterSpacing: '0.05em' }}>
+                  {item.label}
+                </div>
+                <div
+                  className="font-semibold leading-tight text-center"
+                  style={{
+                    fontSize: '0.75rem',
+                    color: item.color,
+                    fontFamily: item.mono ? 'ui-monospace, "Cascadia Code", monospace' : undefined,
+                  }}
+                >
+                  {item.value}
+                  {item.sub && (
+                    <span style={{ opacity: 0.55, fontSize: '0.6rem', marginLeft: '0.2rem' }}>
+                      {item.sub}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
+
         </div>
       )}
     </div>
