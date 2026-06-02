@@ -30,11 +30,27 @@ function loadColumns() {
 }
 
 function loadCatOrder() {
+  const allIds = categories.map(c => c.id)
   try {
     const saved = JSON.parse(localStorage.getItem(CAT_ORDER_KEY))
-    if (Array.isArray(saved) && saved.length > 0) return saved
+    if (Array.isArray(saved) && saved.length > 0) {
+      const missing = allIds.filter(id => !saved.includes(id))
+      if (missing.length === 0) return saved
+      // Insert each missing ID at its natural position based on neighbors in categories
+      const result = [...saved]
+      for (const id of missing) {
+        const nat = allIds.indexOf(id)
+        let pos = result.length
+        for (let i = nat - 1; i >= 0; i--) {
+          const p = result.indexOf(allIds[i])
+          if (p !== -1) { pos = p + 1; break }
+        }
+        result.splice(pos, 0, id)
+      }
+      return result
+    }
   } catch {}
-  return categories.map(c => c.id)
+  return allIds
 }
 
 export default function App() {
@@ -56,6 +72,13 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem(CAT_ORDER_KEY, JSON.stringify(catOrder))
   }, [catOrder])
+
+  // Sync catOrder if new categories were added since last visit
+  useEffect(() => {
+    const allIds = categories.map(c => c.id)
+    const hasMissing = allIds.some(id => !catOrder.includes(id))
+    if (hasMissing) setCatOrder(loadCatOrder())
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const [isSorting, setIsSorting] = useState(false)
   useEffect(() => { setIsSorting(false) }, [activeTab])
