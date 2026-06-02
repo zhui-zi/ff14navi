@@ -61,7 +61,7 @@ function CountdownRow({ label, target, expired, accentColor }) {
   )
 }
 
-function ActivityCard({ accent, badge, title, subtitle, dates, rows, url }) {
+function ActivityCard({ accent, badge, title, subtitle, dates, rows, url, nextPatch }) {
   return (
     <a
       href={url}
@@ -106,6 +106,30 @@ function ActivityCard({ accent, badge, title, subtitle, dates, rows, url }) {
       {rows.map((r, i) => (
         <CountdownRow key={i} {...r} accentColor={accent} />
       ))}
+
+      {nextPatch && (
+        <div
+          className="mt-3 pt-2.5"
+          style={{ borderTop: `1px solid ${accent}33` }}
+          onClick={e => e.preventDefault()}
+        >
+          <div className="text-xs font-medium mb-1.5" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.5 }}>
+            下个版本 · {nextPatch.version}
+          </div>
+          <ul className="space-y-0.5">
+            {nextPatch.items.map((item, i) => (
+              <li
+                key={i}
+                className="text-xs leading-snug"
+                style={{ color: 'var(--md-on-surface-variant)', opacity: 0.6, paddingLeft: '0.75rem', position: 'relative' }}
+              >
+                <span style={{ position: 'absolute', left: 0, opacity: 0.4 }}>·</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </a>
   )
 }
@@ -282,86 +306,12 @@ function VersionBanner() {
   )
 }
 
-const PATCH_755_NOTES = [
-  '大型战斗任务「蜃景幻境新月岛北征之章」',
-  '武器强化任务「幻境武器」',
-  '非著名调查员 金曦之章',
-  '友好部族盟友任务 金曦之章',
-]
-
-function NextVersionBanner() {
-  const [open, setOpen] = useState(false)
-
-  return (
-    <div
-      className="relative rounded-2xl overflow-hidden"
-      style={{
-        background: 'var(--md-surface-container)',
-        border: '2px solid var(--md-outline-variant)',
-        color: 'var(--md-on-surface)',
-      }}
-    >
-      <div
-        className="relative flex items-center gap-4 px-5 py-3 cursor-pointer"
-        style={{ transition: 'filter 0.18s ease' }}
-        onClick={() => setOpen(v => !v)}
-        onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.08)')}
-        onMouseLeave={e => (e.currentTarget.style.filter = '')}
-      >
-        <div className="flex-1 min-w-0 z-10">
-          <div className="text-xs mb-0.5 opacity-45">下个版本</div>
-          <div className="font-semibold leading-tight" style={{ fontSize: '0.95rem' }}>
-            7.55 &nbsp;
-            <span className="text-xs font-normal opacity-50">预计上线时间未定</span>
-          </div>
-        </div>
-        <span
-          className="text-base select-none"
-          style={{
-            display: 'inline-block',
-            transition: 'transform 0.25s cubic-bezier(0.34,1.56,0.64,1)',
-            transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
-            opacity: 0.4,
-          }}
-        >
-          ▾
-        </span>
-      </div>
-
-      <div
-        style={{
-          maxHeight: open ? '400px' : '0',
-          overflow: 'hidden',
-          transition: 'max-height 0.35s cubic-bezier(0.4,0,0.2,1)',
-        }}
-      >
-        <ul
-          className="px-5 pb-4 space-y-1.5"
-          style={{ borderTop: '1px solid var(--md-outline-variant)', paddingTop: '0.65rem' }}
-        >
-          {PATCH_755_NOTES.map((item, i) => (
-            <li
-              key={i}
-              className="text-xs leading-snug"
-              style={{ color: 'var(--md-on-surface-variant)', paddingLeft: '0.75rem', position: 'relative' }}
-            >
-              <span style={{ position: 'absolute', left: 0, opacity: 0.4 }}>·</span>
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  )
-}
-
 // ── Main component ───────────────────────────────────────────────────────────
 export default function GameInfo({ noWrap = false }) {
   const content = (
     <div className="space-y-3">
 
       <VersionBanner />
-      <NextVersionBanner />
 
       {/* Activity grid — 2×2 on md+, 1 col on mobile */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
@@ -372,6 +322,15 @@ export default function GameInfo({ noWrap = false }) {
           dates={['2026年6月2日 正式上线']}
           rows={[{ target: T_PATCH_751, expired: '已上线 ✓' }]}
           url="https://actff1.web.sdo.com/project/20240927dawntrail/patch75/index.html"
+          nextPatch={{
+            version: '7.55（时间未定）',
+            items: [
+              '大型战斗任务「蜃景幻境新月岛北征之章」',
+              '武器强化任务「幻境武器」',
+              '非著名调查员 金曦之章',
+              '友好部族盟友任务 金曦之章',
+            ],
+          }}
         />
 
         <ActivityCard
