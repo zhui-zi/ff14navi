@@ -29,6 +29,16 @@
   --header-glow-3:    rgba(126,203,232,0.15);
   --header-subtitle:  #9B95B0;
   --header-crystal:   #CEB4F8;
+
+  /* ── Liquid Glass ── */
+  --glass-bg:          rgba(18, 16, 22, 0.58);
+  --glass-bg-hi:       rgba(28, 26, 34, 0.52);
+  --glass-border:      rgba(255,255,255, 0.08);
+  --glass-border-top:  rgba(255,255,255, 0.18);
+  --glass-shadow:      0 8px 32px rgba(0,0,0,0.45);
+  --glass-inset:       inset 0 1px 0 rgba(255,255,255,0.13);
+  --glass-blur:        blur(20px) saturate(160%);
+  --glass-blur-sm:     blur(12px) saturate(140%);
 }
 
 /* ══════════════════════════════════════════════
@@ -57,6 +67,16 @@
   --header-glow-3:   rgba(0,96,115,0.10);
   --header-subtitle: #49454F;
   --header-crystal:  #6750A4;
+
+  /* ── Liquid Glass (light) ── */
+  --glass-bg:          rgba(255,255,252, 0.68);
+  --glass-bg-hi:       rgba(243,237,247, 0.72);
+  --glass-border:      rgba(0,0,0, 0.05);
+  --glass-border-top:  rgba(255,255,255, 0.92);
+  --glass-shadow:      0 4px 24px rgba(0,0,0,0.10);
+  --glass-inset:       inset 0 1px 0 rgba(255,255,255,0.85);
+  --glass-blur:        blur(20px) saturate(160%);
+  --glass-blur-sm:     blur(12px) saturate(140%);
 }
 
 /* ══════════════════════════════════════════════
@@ -66,10 +86,20 @@
 html { scroll-behavior: smooth; transition: background-color 0.25s, color 0.25s; }
 body {
   background-color: var(--md-surface);
+  background-image:
+    radial-gradient(ellipse 90% 55% at 12%  8%,  rgba(206,180,248,0.10) 0%, transparent 62%),
+    radial-gradient(ellipse 65% 45% at 88% 92%,  rgba(244,193, 97,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 50% at 68% 32%,  rgba( 77,208,225,0.06) 0%, transparent 52%);
+  background-attachment: fixed;
   color: var(--md-on-surface);
   font-family: 'Noto Sans SC', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   transition: background-color 0.25s, color 0.25s;
+}
+.theme-light body {
+  background-image:
+    radial-gradient(ellipse 80% 55% at 15% 10%, rgba(103, 80,164,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 85% 85%, rgba(125, 87,  0,0.06) 0%, transparent 52%);
 }
 
 /* ── Scrollbar ── */
@@ -146,7 +176,12 @@ body {
   align-items: center;
   height: 2.5rem;
   border-radius: 9999px;
-  background: var(--md-surface-container);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  border: 1px solid var(--glass-border);
+  border-top-color: var(--glass-border-top);
+  box-shadow: var(--glass-shadow), var(--glass-inset);
   color: var(--md-on-surface-variant);
   overflow: hidden;
   white-space: nowrap;
@@ -186,7 +221,12 @@ body {
   align-items: center;
   height: 2.5rem;
   border-radius: 9999px;
-  background: var(--md-surface-container);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  border: 1px solid var(--glass-border);
+  border-top-color: var(--glass-border-top);
+  box-shadow: var(--glass-shadow), var(--glass-inset);
   color: var(--md-on-surface-variant);
   overflow: hidden;
   white-space: nowrap;
@@ -239,10 +279,19 @@ body {
      light → tonal container bg + on-container text
    ══════════════════════════════════════════════ */
 .link-chip {
-  transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+  transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1),
+              box-shadow 0.22s ease,
+              filter 0.18s ease;
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.10);
 }
-.link-chip:hover  { filter: brightness(1.25) saturate(1.1); transform: scale(1.04); }
-.link-chip:active { transform: scale(0.97); transition-duration: 0.08s; }
+.link-chip:hover {
+  transform: translateY(-3px) scale(1.05);
+  filter: brightness(1.15) saturate(1.15);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.14);
+}
+.link-chip:active { transform: scale(0.96); transition-duration: 0.08s; }
 
 /* ── Dark chip colours ── */
 .chip-blue   { background: rgba(33,150,243,0.18);  color: #90CAF9; }

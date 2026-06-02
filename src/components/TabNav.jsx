@@ -36,14 +36,31 @@ export default function TabNav({ tabs, activeTab, setActiveTab, columnCount, set
                   background: 'var(--md-primary)',
                   color: 'var(--md-on-primary)',
                   fontWeight: '700',
-                  transition: 'all 0.2s',
+                  boxShadow: '0 0 20px var(--md-primary), 0 4px 12px rgba(0,0,0,0.30), inset 0 1px 0 rgba(255,255,255,0.20)',
+                  transform: 'scale(1.04)',
+                  transition: 'all 0.25s cubic-bezier(0.34,1.56,0.64,1)',
                 } : {
-                  background: 'var(--md-surface-container)',
+                  background: 'var(--glass-bg)',
+                  backdropFilter: 'var(--glass-blur-sm)',
+                  WebkitBackdropFilter: 'var(--glass-blur-sm)',
+                  border: '1px solid var(--glass-border)',
+                  borderTopColor: 'var(--glass-border-top)',
+                  boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.08)',
                   color: 'var(--md-on-surface-variant)',
                   transition: 'all 0.2s',
                 }}
-                onMouseEnter={e => { if (!active) e.currentTarget.style.background = 'var(--md-surface-container-high)' }}
-                onMouseLeave={e => { if (!active) e.currentTarget.style.background = 'var(--md-surface-container)' }}
+                onMouseEnter={e => {
+                  if (!active) {
+                    e.currentTarget.style.background = 'var(--glass-bg-hi)'
+                    e.currentTarget.style.transform = 'translateY(-1px)'
+                  }
+                }}
+                onMouseLeave={e => {
+                  if (!active) {
+                    e.currentTarget.style.background = 'var(--glass-bg)'
+                    e.currentTarget.style.transform = ''
+                  }
+                }}
               >
                 <span className="text-base leading-none">{tab.emoji}</span>
                 <span>{tab.label}</span>
@@ -55,7 +72,14 @@ export default function TabNav({ tabs, activeTab, setActiveTab, columnCount, set
         {/* Column picker + sort toggle — single pill group */}
         <div
           className="flex-shrink-0 flex items-center gap-1 p-1 rounded-full"
-          style={{ background: 'var(--md-surface-container)' }}
+          style={{
+            background: 'var(--glass-bg)',
+            backdropFilter: 'var(--glass-blur-sm)',
+            WebkitBackdropFilter: 'var(--glass-blur-sm)',
+            border: '1px solid var(--glass-border)',
+            borderTopColor: 'var(--glass-border-top)',
+            boxShadow: 'var(--glass-shadow), var(--glass-inset)',
+          }}
         >
           {isSorting ? (
             /* Sort mode: replace column buttons with a reset option */
@@ -79,8 +103,12 @@ export default function TabNav({ tabs, activeTab, setActiveTab, columnCount, set
                 style={columnCount === n ? {
                   background: 'var(--md-primary)',
                   color: 'var(--md-on-primary)',
+                  boxShadow: '0 0 12px var(--md-primary)',
+                  transform: 'scale(1.08)',
+                  transition: 'all 0.2s cubic-bezier(0.34,1.56,0.64,1)',
                 } : {
                   color: 'var(--md-on-surface-variant)',
+                  transition: 'all 0.15s ease',
                 }}
                 title={`${n} 栏`}
                 aria-label={`${n} 栏布局`}
@@ -101,6 +129,8 @@ export default function TabNav({ tabs, activeTab, setActiveTab, columnCount, set
             style={isSorting ? {
               background: 'var(--md-primary)',
               color: 'var(--md-on-primary)',
+              boxShadow: '0 0 12px var(--md-primary)',
+              transform: 'scale(1.08)',
             } : {
               color: 'var(--md-on-surface-variant)',
             }}

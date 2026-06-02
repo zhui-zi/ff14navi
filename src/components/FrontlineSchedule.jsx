@@ -86,8 +86,12 @@ export default function FrontlineSchedule({ noWrap = false }) {
     <div
       className="rounded-2xl overflow-hidden"
       style={{
-        background: 'var(--md-surface-container)',
-        border: `1.5px solid var(--md-outline-variant)`,
+        background: `linear-gradient(145deg, var(--glass-bg) 40%, ${accent}16 100%)`,
+        backdropFilter: 'var(--glass-blur)',
+        WebkitBackdropFilter: 'var(--glass-blur)',
+        border: `1px solid ${accent}30`,
+        borderTopColor: `${accent}55`,
+        boxShadow: `var(--glass-shadow), 0 0 40px ${accent}10, var(--glass-inset)`,
         position: 'relative',
       }}
     >
@@ -95,14 +99,14 @@ export default function FrontlineSchedule({ noWrap = false }) {
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: `radial-gradient(ellipse 70% 60% at 100% 0%, ${accent}14 0%, transparent 65%)`,
+          background: `radial-gradient(ellipse 80% 55% at 100% 5%, ${accent}20 0%, transparent 60%)`,
         }}
       />
 
       {/* Header */}
       <div
         className="relative flex items-center justify-between px-5 py-2.5"
-        style={{ borderBottom: '1px solid var(--md-outline-variant)' }}
+        style={{ borderBottom: `1px solid ${accent}20` }}
       >
         <div className="flex items-center gap-2">
           <span style={{ color: 'var(--md-primary)', opacity: 0.7, fontSize: '0.75rem' }}>⚔</span>
@@ -122,8 +126,13 @@ export default function FrontlineSchedule({ noWrap = false }) {
         <div className="flex items-center gap-4">
           {/* Icon + mode */}
           <div
-            className="flex-shrink-0 w-14 h-14 rounded-xl flex flex-col items-center justify-center gap-0.5"
-            style={{ background: `${accent}22`, border: `1.5px solid ${accent}55` }}
+            className="flex-shrink-0 w-14 h-14 rounded-2xl flex flex-col items-center justify-center gap-0.5"
+            style={{
+              background: `${accent}22`,
+              border: `1px solid ${accent}50`,
+              borderTopColor: `${accent}80`,
+              boxShadow: `0 4px 16px ${accent}30, inset 0 1px 0 rgba(255,255,255,0.15)`,
+            }}
           >
             <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>{todayMap.icon}</span>
             <span className="text-xs font-medium" style={{ color: accent, fontSize: '0.6rem', letterSpacing: '0.05em' }}>
@@ -158,8 +167,12 @@ export default function FrontlineSchedule({ noWrap = false }) {
           {nextMaps.map((m, i) => (
             <div
               key={i}
-              className="flex-1 flex items-center gap-2 rounded-lg px-3 py-2"
-              style={{ background: 'var(--md-surface-container-high)' }}
+              className="flex-1 flex items-center gap-2 rounded-xl px-3 py-2"
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.07)',
+                borderTopColor: 'rgba(255,255,255,0.12)',
+              }}
             >
               <span style={{ fontSize: '0.9rem' }}>{m.icon}</span>
               <div className="min-w-0">

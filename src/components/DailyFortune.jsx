@@ -171,23 +171,27 @@ export default function DailyFortune({ noWrap = false }) {
     <div
       className="rounded-2xl overflow-hidden"
       style={{
-        background: 'var(--md-surface-container)',
-        border: '1.5px solid var(--md-outline-variant)',
+        background: `linear-gradient(145deg, ${accent}14 0%, var(--glass-bg) 50%)`,
+        backdropFilter: 'var(--glass-blur)',
+        WebkitBackdropFilter: 'var(--glass-blur)',
+        border: `1px solid ${accent}30`,
+        borderTopColor: `${accent}55`,
+        boxShadow: `var(--glass-shadow), 0 0 40px ${accent}10, var(--glass-inset)`,
         position: 'relative',
       }}
     >
-      {/* Subtle accent glow */}
+      {/* Ambient glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: `radial-gradient(ellipse 60% 80% at 0% 0%, ${accent}12 0%, transparent 70%)`,
+          background: `radial-gradient(ellipse 70% 60% at 5% 10%, ${accent}18 0%, transparent 65%)`,
         }}
       />
 
       {/* Header bar */}
       <div
         className="relative flex items-center justify-between px-5 py-2.5"
-        style={{ borderBottom: '1px solid var(--md-outline-variant)' }}
+        style={{ borderBottom: `1px solid ${accent}20` }}
       >
         <div className="flex items-center gap-2">
           <span style={{ color: 'var(--md-primary)', opacity: 0.7, fontSize: '0.75rem' }}>✦</span>
@@ -205,8 +209,8 @@ export default function DailyFortune({ noWrap = false }) {
         /* ── Unrevealed state ── */
         <button
           className="relative w-full flex flex-col items-center justify-center gap-3 py-8 px-5 transition-all"
-          style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
-          onMouseEnter={e => e.currentTarget.style.background = 'var(--md-surface-container-high)'}
+          style={{ background: 'transparent', border: 'none', cursor: 'pointer', transition: 'background 0.2s' }}
+          onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
           onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
           onClick={handleReveal}
         >

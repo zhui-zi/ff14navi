@@ -89,6 +89,9 @@ export default function Header({ theme, isDark, cycleTheme }) {
           style={{ background: `radial-gradient(circle, var(--header-glow-2) 0%, transparent 65%)` }} />
         <div className="absolute top-0 -right-16 w-80 h-80 rounded-full"
           style={{ background: `radial-gradient(circle, var(--header-glow-3) 0%, transparent 65%)` }} />
+        {/* Liquid Glass specular strip at bottom */}
+        <div className="absolute bottom-0 left-0 right-0 h-px"
+          style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(206,180,248,0.35) 30%, rgba(244,193,97,0.25) 60%, transparent 100%)' }} />
       </div>
 
       <ThemeButton theme={theme} cycleTheme={cycleTheme} />

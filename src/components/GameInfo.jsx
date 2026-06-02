@@ -66,21 +66,23 @@ function ActivityCard({ accent, badge, title, subtitle, dates, rows, url }) {
       href={url}
       target="_blank"
       rel="noopener noreferrer"
-      className="block rounded-xl px-4 py-3.5 cursor-pointer"
+      className="block rounded-2xl px-4 py-3.5 cursor-pointer"
       style={{
-        backgroundColor: 'var(--md-surface-container-high)',
-        backgroundImage: `linear-gradient(160deg, ${accent}0d 0%, transparent 50%)`,
-        border: `1.5px solid ${accent}`,
-        boxShadow: `0 2px 8px rgba(0,0,0,0.1)`,
-        transition: 'transform 0.18s ease, box-shadow 0.22s ease',
+        background: `linear-gradient(145deg, ${accent}20 0%, var(--glass-bg) 55%)`,
+        backdropFilter: 'var(--glass-blur)',
+        WebkitBackdropFilter: 'var(--glass-blur)',
+        border: `1px solid ${accent}45`,
+        borderTopColor: `${accent}70`,
+        boxShadow: `0 4px 20px rgba(0,0,0,0.35), 0 0 0 0 ${accent}00, inset 0 1px 0 rgba(255,255,255,0.10)`,
+        transition: 'transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease',
       }}
       onMouseEnter={e => {
-        e.currentTarget.style.transform = 'translateY(-3px)'
-        e.currentTarget.style.boxShadow = `0 10px 28px rgba(0,0,0,0.22), 0 0 20px ${accent}3a`
+        e.currentTarget.style.transform = 'translateY(-5px) scale(1.02)'
+        e.currentTarget.style.boxShadow = `0 16px 40px rgba(0,0,0,0.50), 0 0 28px ${accent}40, inset 0 1px 0 rgba(255,255,255,0.15)`
       }}
       onMouseLeave={e => {
         e.currentTarget.style.transform = ''
-        e.currentTarget.style.boxShadow = `0 2px 8px rgba(0,0,0,0.1)`
+        e.currentTarget.style.boxShadow = `0 4px 20px rgba(0,0,0,0.35), 0 0 0 0 ${accent}00, inset 0 1px 0 rgba(255,255,255,0.10)`
       }}
     >
       <span
@@ -120,15 +122,26 @@ export default function GameInfo({ noWrap = false }) {
         href="https://actff1.web.sdo.com/project/20240927dawntrail/patch75/index.html"
         target="_blank"
         rel="noopener noreferrer"
-        className="relative flex items-center gap-4 rounded-xl px-5 py-3.5 cursor-pointer overflow-hidden"
+        className="relative flex items-center gap-4 rounded-2xl px-5 py-3.5 cursor-pointer overflow-hidden"
         style={{
-          background: 'var(--md-primary-container)',
+          background: 'linear-gradient(135deg, var(--md-primary-container) 0%, rgba(85,51,135,0.70) 100%)',
+          backdropFilter: 'var(--glass-blur)',
+          WebkitBackdropFilter: 'var(--glass-blur)',
+          border: '1px solid rgba(206,180,248,0.25)',
+          borderTopColor: 'rgba(206,180,248,0.45)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12)',
           color: 'var(--md-on-primary-container)',
-          transition: 'filter 0.15s ease',
+          transition: 'transform 0.22s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.22s ease',
           minHeight: '4.5rem',
         }}
-        onMouseEnter={e => e.currentTarget.style.filter = 'brightness(1.07)'}
-        onMouseLeave={e => e.currentTarget.style.filter = ''}
+        onMouseEnter={e => {
+          e.currentTarget.style.transform = 'translateY(-2px)'
+          e.currentTarget.style.boxShadow = '0 10px 32px rgba(0,0,0,0.45), 0 0 24px rgba(206,180,248,0.25), inset 0 1px 0 rgba(255,255,255,0.16)'
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.transform = ''
+          e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.12)'
+        }}
       >
         <div className="flex-1 min-w-0 z-10">
           <div className="text-xs mb-0.5 opacity-55">当前版本</div>
