@@ -5,12 +5,13 @@ const FEED_PATHS = {
 
 // Ordered by expected reliability from Cloudflare egress IPs.
 // rsshub.app blocks CF-to-CF requests; independent instances are listed first.
+// rss.injahow.cn returns only 3 items with broken ff.sdo.com links — deprioritized.
 const INSTANCES = [
-  'https://rss.injahow.cn',
   'https://rsshub.rssforever.com',
   'https://rss.shab.fun',
   'https://rsshub.fly.dev',
   'https://rsshub.app',
+  'https://rss.injahow.cn',
 ]
 
 const CORS = {

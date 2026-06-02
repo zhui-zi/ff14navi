@@ -9,11 +9,13 @@ const CN_NEWS_LIST = 'https://ff.sdo.com/web8/index.html#/newstab/newslist'
 
 const get = (el, tag) => el.getElementsByTagName(tag)[0]?.textContent?.trim() || ''
 
-// RSSHub FF14 CN route generates broken SPA links like /web8/555 instead of /web8/index.html#/...
+// RSSHub FF14 CN route uses stale ff.sdo.com domain (correct: ff.web.sdo.com)
+// and omits index.html#/ for SPA routes like /web8/555
 function fixLink(url) {
   if (!url?.startsWith('http')) return ''
-  const m = url.match(/^(https:\/\/ff\.sdo\.com\/web8\/)(\d+)$/)
-  return m ? `${m[1]}index.html#/newstab/newsdetail/${m[2]}` : url
+  url = url.replace('https://ff.sdo.com/web8/', 'https://ff.web.sdo.com/web8/')
+  const m = url.match(/^(https:\/\/ff\.web\.sdo\.com\/web8\/)(\d+)$/)
+  return m ? `${m[1]}index.html#/newstab/newscont/${m[2]}` : url
 }
 
 function parseRSS(xml) {
