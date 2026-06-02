@@ -43,7 +43,40 @@ function FeedbackButton() {
   )
 }
 
-export default function Header() {
+function ThemeToggle({ pref, effective, cycle }) {
+  const ICON  = { auto: effective === 'light' ? '☀' : '☽', light: '☀', dark: '☽' }
+  const LABEL = { auto: '跟随系统', light: '浅色模式', dark: '深色模式' }
+  return (
+    <button
+      onClick={cycle}
+      className="theme-toggle-btn"
+      title={`${LABEL[pref]}（点击切换）`}
+      aria-label={LABEL[pref]}
+      style={{
+        position: 'absolute',
+        top: '1rem',
+        right: '1rem',
+        width: '2.25rem',
+        height: '2.25rem',
+        borderRadius: '50%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'rgba(255,255,255,0.12)',
+        border: '1px solid rgba(255,255,255,0.20)',
+        backdropFilter: 'blur(6px)',
+        color: 'var(--header-crystal)',
+        cursor: 'pointer',
+        fontSize: '1rem',
+        zIndex: 10,
+      }}
+    >
+      <span key={pref} className="theme-icon">{ICON[pref]}</span>
+    </button>
+  )
+}
+
+export default function Header({ themePref = 'auto', themeEffective = 'dark', onCycleTheme }) {
   return (
     <div
       className="relative select-none"
@@ -59,9 +92,10 @@ export default function Header() {
           style={{ background: `radial-gradient(circle, var(--header-glow-3) 0%, transparent 65%)` }} />
         {/* Liquid Glass specular strip at bottom */}
         <div className="absolute bottom-0 left-0 right-0 h-px"
-          style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(206,180,248,0.35) 30%, rgba(244,193,97,0.25) 60%, transparent 100%)' }} />
+          style={{ background: 'var(--header-strip)' }} />
       </div>
 
+      <ThemeToggle pref={themePref} effective={themeEffective} cycle={onCycleTheme} />
       <FeedbackButton />
 
       {/* Content */}

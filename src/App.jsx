@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
+import { useTheme } from './hooks/useTheme'
 import Header from './components/Header'
 import SearchBar from './components/SearchBar'
 import GameInfo from './components/GameInfo'
@@ -37,6 +38,7 @@ function loadCatOrder() {
 }
 
 export default function App() {
+  const { pref, effective, cycle } = useTheme()
   const [activeTab, setActiveTab]     = useState('all')
   const [customLinks, setCustomLinks] = useState(loadCustomLinks)
   const [showModal, setShowModal]     = useState(false)
@@ -72,7 +74,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--md-surface)', color: 'var(--md-on-surface)' }}>
-      <Header />
+      <Header themePref={pref} themeEffective={effective} onCycleTheme={cycle} />
       <main className="pb-28">
         <SearchBar />
         <div className="max-w-7xl mx-auto px-4 mb-6 flex flex-col lg:flex-row gap-4 items-stretch">
@@ -120,7 +122,7 @@ export default function App() {
         />
       )}
 
-      <footer className="text-center py-10 px-4" style={{ borderTop: '1px solid #201E25', color: 'var(--md-outline)' }}>
+      <footer className="text-center py-10 px-4" style={{ borderTop: '1px solid var(--md-outline-variant)', color: 'var(--md-outline)' }}>
         <p className="text-sm font-medium mb-4" style={{ color: 'var(--md-on-surface-variant)' }}>
           固执己见的最终幻想14导航站。其中 100% 的代码由 LLM 生成。
         </p>

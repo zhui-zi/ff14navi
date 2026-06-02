@@ -2,6 +2,13 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
+    <script>
+      (function(){
+        var p=localStorage.getItem('ff14navi-theme');
+        var dark=p==='dark'||(p!=='light'&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.classList.add(dark?'dark':'light');
+      })();
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>背水咖啡厅 The Last Stand · FF14 工具导航站</title>
     <meta name="description" content="最终幻想XIV游戏工具、攻略、资源导航站" />
