@@ -136,7 +136,7 @@ export default function GameInfo({ noWrap = false }) {
             className="font-bold leading-tight"
             style={{ fontFamily: '"Noto Serif SC", serif', fontSize: 'clamp(1.05rem, 2.2vw, 1.35rem)' }}
           >
-            7.5 天际的行路
+            7.51 天际的行路
           </div>
         </div>
         <div className="relative flex-shrink-0 z-10 text-right">
@@ -148,7 +148,7 @@ export default function GameInfo({ noWrap = false }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
         <ActivityCard
           accent="#4DD0E1"
-          badge="下个版本"
+          badge="当前版本"
           title="7.51 版本"
           dates={['2026年6月2日 正式上线']}
           rows={[{ target: T_PATCH_751, expired: '已上线 ✓' }]}

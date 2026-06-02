@@ -1,5 +1,5 @@
 const FEED_PATHS = {
-  cn:  '/ff14/zh/news',
+  cn:  '/ff14/zh/all',
   int: '/ff14/global/na/all',
 }
 
