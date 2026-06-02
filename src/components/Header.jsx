@@ -44,7 +44,7 @@ function FeedbackButton() {
 }
 
 function ThemeToggle({ pref, effective, cycle }) {
-  const ICON  = { auto: effective === 'light' ? '☀' : '☽', light: '☀', dark: '☽' }
+  const ICON  = { auto: '✦', light: '☀', dark: '☽' }
   const LABEL = { auto: '跟随系统', light: '浅色模式', dark: '深色模式' }
   return (
     <button
