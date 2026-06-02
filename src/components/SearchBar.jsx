@@ -76,8 +76,11 @@ export default function SearchBar() {
         )}
         <button
           onClick={() => doSearch(query)}
-          className="px-5 py-4 text-sm font-bold rounded-r-full"
-          style={{ background: 'var(--md-primary-container)', color: 'var(--md-on-primary-container)' }}
+          className="px-7 py-4 text-sm font-bold rounded-r-full"
+          style={{
+            background: 'linear-gradient(to right, transparent, var(--md-primary) 48%)',
+            color: 'var(--md-on-primary)',
+          }}
         >
           搜索
         </button>
