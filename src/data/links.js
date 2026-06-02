@@ -121,7 +121,7 @@ export const categories = [
   },
   {
     id: 'weapons',
-    tab: 'crafting',
+    tab: 'combat',
     name: '特殊场景探索',
     links: [
       { name: '特殊场景探索群号汇总', style: 'basic', url: 'https://docs.qq.com/sheet/DVnZ1UXpRVnhyenVt?nlc=1&tab=BB08J2' },

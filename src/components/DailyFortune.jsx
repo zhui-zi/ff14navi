@@ -183,9 +183,7 @@ export default function DailyFortune({ noWrap = false }) {
       className="rounded-2xl overflow-hidden h-full flex flex-col"
       style={{
         background: 'var(--md-surface-container)',
-        border: `2px solid ${accent}50`,
-        borderLeftWidth: '4px',
-        borderLeftColor: accent,
+        border: `1px solid ${accent}55`,
         position: 'relative',
       }}
     >

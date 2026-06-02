@@ -87,9 +87,7 @@ export default function FrontlineSchedule({ noWrap = false }) {
       className="rounded-2xl overflow-hidden h-full"
       style={{
         background: 'var(--md-surface-container)',
-        border: `2px solid ${accent}50`,
-        borderTopWidth: '4px',
-        borderTopColor: accent,
+        border: `1px solid ${accent}55`,
         position: 'relative',
       }}
     >

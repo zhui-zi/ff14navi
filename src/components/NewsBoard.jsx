@@ -57,9 +57,7 @@ export default function NewsBoard({ noWrap = false }) {
       className="rounded-2xl overflow-hidden h-full flex flex-col"
       style={{
         background: 'var(--md-surface-container)',
-        border: '2px solid var(--md-outline-variant)',
-        borderTopWidth: '4px',
-        borderTopColor: 'var(--md-primary)',
+        border: '1px solid var(--md-primary-container)',
       }}
     >
       {/* Header */}
