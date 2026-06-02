@@ -97,16 +97,17 @@ function ActivityCard({ accent, badge, title, subtitle, dates, rows, url, compac
       )}
 
       {compact ? (
-        <div className="flex flex-wrap gap-1 mt-1">
-          {dates?.map((d, i) => (
-            <span
-              key={i}
-              className="text-xs px-1.5 py-0.5 rounded"
-              style={{ background: `${accent}15`, color: 'var(--md-on-surface-variant)', opacity: 0.85, lineHeight: '1.4' }}
-            >
+        <div className="mt-1">
+          {dates?.slice(0, 2).map((d, i) => (
+            <div key={i} className="text-xs leading-relaxed truncate" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.55 }}>
               {d}
-            </span>
+            </div>
           ))}
+          {dates?.length > 2 && (
+            <div className="text-xs mt-0.5" style={{ color: accent, opacity: 0.6 }}>
+              +{dates.length - 2} 项内容
+            </div>
+          )}
         </div>
       ) : (
         dates?.map((d, i) => (
