@@ -6,6 +6,7 @@ import TabNav from './components/TabNav'
 import LinksSection from './components/LinksSection'
 import AddLinkModal from './components/AddLinkModal'
 import NewsBoard from './components/NewsBoard'
+import DailyFortune from './components/DailyFortune'
 import { tabs, categories } from './data/links'
 
 const STORAGE_KEY   = 'ff14navi-custom-links'
@@ -120,6 +121,7 @@ const handleAddLink = useCallback((link) => {
             <NewsBoard noWrap />
           </div>
         </div>
+        <DailyFortune />
         <TabNav
           tabs={tabs}
           activeTab={activeTab}
