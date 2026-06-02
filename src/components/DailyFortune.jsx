@@ -169,7 +169,7 @@ export default function DailyFortune({ noWrap = false }) {
 
   const content = (
     <div
-      className="rounded-2xl overflow-hidden h-full"
+      className="rounded-2xl overflow-hidden h-full flex flex-col"
       style={{
         background: `linear-gradient(145deg, ${accent}14 0%, var(--glass-bg) 50%)`,
         backdropFilter: 'var(--glass-blur)',
@@ -224,7 +224,7 @@ export default function DailyFortune({ noWrap = false }) {
         </button>
       ) : (
         /* ── Revealed state ── */
-        <div className="relative px-5 py-4 flex gap-4 items-start">
+        <div className="relative px-5 py-4 flex gap-4 items-start flex-1">
 
           {/* Fortune level */}
           <div
