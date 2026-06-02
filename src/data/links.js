@@ -91,7 +91,7 @@ export const categories = [
       { name: '警察网',              style: 'basic',  url: 'https://xivanalysis.com/' },
       { name: '导随记录',            style: 'basic',  url: 'https://dlog.luyulight.cn/' },
       { name: '招募查询',            style: 'basic',  url: 'https://xivpf.ff14.xin/' },
-      { name: '高难进度查询 酥卷 SuMeMo', style: 'basic', url: 'https://sumemo.dev/' },
+      { name: '高难进度查询 酥卷',   style: 'basic',  url: 'https://sumemo.dev/' },
       { name: 'NGA幻想书库',         style: 'wheat',  url: 'https://bbs.nga.cn/thread.php?fid=698' },
     ],
   },
