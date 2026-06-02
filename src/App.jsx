@@ -7,6 +7,7 @@ import LinksSection from './components/LinksSection'
 import AddLinkModal from './components/AddLinkModal'
 import NewsBoard from './components/NewsBoard'
 import DailyFortune from './components/DailyFortune'
+import FrontlineSchedule from './components/FrontlineSchedule'
 import { tabs, categories } from './data/links'
 
 const STORAGE_KEY   = 'ff14navi-custom-links'
@@ -121,7 +122,14 @@ const handleAddLink = useCallback((link) => {
             <NewsBoard noWrap />
           </div>
         </div>
-        <DailyFortune />
+        <div className="max-w-7xl mx-auto px-4 mb-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="lg:col-span-2">
+            <DailyFortune noWrap />
+          </div>
+          <div>
+            <FrontlineSchedule noWrap />
+          </div>
+        </div>
         <TabNav
           tabs={tabs}
           activeTab={activeTab}
