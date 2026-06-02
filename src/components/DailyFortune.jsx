@@ -220,11 +220,13 @@ export default function DailyFortune({ noWrap = false }) {
         </button>
       ) : (
         /* ── Revealed state ── */
-        <div className="relative px-5 py-4 flex flex-col sm:flex-row gap-4 sm:items-center">
+        <div className="relative px-5 py-4 flex gap-4 items-start">
 
           {/* Fortune level */}
-          <div className="flex-shrink-0 flex flex-col items-center gap-1 sm:pr-4"
-            style={{ borderRight: '1px solid var(--md-outline-variant)', minWidth: '4rem' }}>
+          <div
+            className="flex-shrink-0 flex flex-col items-center gap-0.5 pt-0.5 pr-4"
+            style={{ borderRight: '1px solid var(--md-outline-variant)', minWidth: '3.2rem' }}
+          >
             <div
               className="font-black leading-none"
               style={{
@@ -236,21 +238,18 @@ export default function DailyFortune({ noWrap = false }) {
             >
               {fortune.level.label}
             </div>
-            <div className="text-xs" style={{ color: accent, opacity: 0.7 }}>今日运势</div>
+            <div className="text-xs" style={{ color: accent, opacity: 0.65 }}>今日运势</div>
           </div>
 
-          {/* Main info */}
+          {/* All info — fills remaining width naturally */}
           <div className="flex-1 min-w-0">
-            {/* Tags row */}
             <div className="flex flex-wrap gap-1.5 mb-2.5">
               <span
                 className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-0.5 rounded-full"
                 style={{ background: `${fortune.job.color}20`, color: fortune.job.color }}
               >
                 幸运职业 · {fortune.job.name}
-                <span style={{ opacity: 0.65, fontSize: '0.65rem' }}>
-                  ({ROLE_LABEL[fortune.job.role]})
-                </span>
+                <span style={{ opacity: 0.6, fontSize: '0.65rem' }}>({ROLE_LABEL[fortune.job.role]})</span>
               </span>
               <span
                 className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-0.5 rounded-full"
@@ -260,37 +259,20 @@ export default function DailyFortune({ noWrap = false }) {
               </span>
               <span
                 className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-0.5 rounded-full"
-                style={{
-                  background: 'var(--md-surface-container-high)',
-                  color: 'var(--md-on-surface-variant)',
-                }}
+                style={{ background: 'var(--md-surface-container-high)', color: 'var(--md-on-surface-variant)' }}
               >
                 今日宜 · {fortune.activity}
               </span>
+              <span
+                className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-0.5 rounded-full tabular-nums"
+                style={{ background: `${accent}18`, color: accent, fontFamily: 'ui-monospace, "Cascadia Code", monospace' }}
+              >
+                幸运数字 · {fortune.luckyNum.toLocaleString()}
+              </span>
             </div>
-
-            {/* Fortune text */}
             <p className="text-xs leading-relaxed" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.85 }}>
               {fortune.text}
             </p>
-          </div>
-
-          {/* Lucky number */}
-          <div
-            className="flex-shrink-0 flex flex-col items-end sm:pl-4"
-            style={{ borderLeft: '1px solid var(--md-outline-variant)' }}
-          >
-            <div className="text-xs mb-0.5" style={{ color: 'var(--md-outline)', opacity: 0.6 }}>幸运数字</div>
-            <div
-              className="font-bold tabular-nums leading-none"
-              style={{
-                fontSize: '1.4rem',
-                color: accent,
-                fontFamily: 'ui-monospace, "Cascadia Code", monospace',
-              }}
-            >
-              {fortune.luckyNum.toLocaleString()}
-            </div>
           </div>
         </div>
       )}
