@@ -70,42 +70,45 @@ export default function TabNav({ tabs, activeTab, setActiveTab, columnCount, set
             border: '1px solid var(--md-outline-variant)',
           }}
         >
-          {isSorting ? (
-            /* Sort mode: replace column buttons with a reset option */
-            <button
-              onClick={onResetCatOrder}
-              className="px-3 h-8 rounded-full text-xs transition-colors duration-150"
-              style={{ color: 'var(--md-on-surface-variant)' }}
-              onMouseEnter={e => e.currentTarget.style.background = 'var(--md-surface-container-high)'}
-              onMouseLeave={e => e.currentTarget.style.background = ''}
-              title="重置分类顺序"
-            >
-              重置顺序
-            </button>
-          ) : (
-            /* Normal mode: column count buttons */
-            [1, 2, 3, 4].map(n => (
+          {/* Column picker — hidden on narrow screens where multi-col has no effect */}
+          <div className="hidden md:contents">
+            {isSorting ? (
+              /* Sort mode: replace column buttons with a reset option */
               <button
-                key={n}
-                onClick={() => setColumnCount(n)}
-                className="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-150"
-                style={columnCount === n ? {
-                  background: 'var(--md-primary)',
-                  color: 'var(--md-on-primary)',
-                } : {
-                  color: 'var(--md-on-surface-variant)',
-                }}
-                title={`${n} 栏`}
-                aria-label={`${n} 栏布局`}
+                onClick={onResetCatOrder}
+                className="px-3 h-8 rounded-full text-xs transition-colors duration-150"
+                style={{ color: 'var(--md-on-surface-variant)' }}
+                onMouseEnter={e => e.currentTarget.style.background = 'var(--md-surface-container-high)'}
+                onMouseLeave={e => e.currentTarget.style.background = ''}
+                title="重置分类顺序"
               >
-                <ColIcon n={n} />
+                重置顺序
               </button>
-            ))
-          )}
+            ) : (
+              /* Normal mode: column count buttons */
+              [1, 2, 3, 4].map(n => (
+                <button
+                  key={n}
+                  onClick={() => setColumnCount(n)}
+                  className="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-150"
+                  style={columnCount === n ? {
+                    background: 'var(--md-primary)',
+                    color: 'var(--md-on-primary)',
+                  } : {
+                    color: 'var(--md-on-surface-variant)',
+                  }}
+                  title={`${n} 栏`}
+                  aria-label={`${n} 栏布局`}
+                >
+                  <ColIcon n={n} />
+                </button>
+              ))
+            )}
 
-          {/* Divider */}
-          <div className="w-px h-4 rounded-full flex-shrink-0 mx-0.5"
-            style={{ background: 'var(--md-outline-variant)' }} />
+            {/* Divider */}
+            <div className="w-px h-4 rounded-full flex-shrink-0 mx-0.5"
+              style={{ background: 'var(--md-outline-variant)' }} />
+          </div>
 
           {/* Category reorder toggle */}
           <button
