@@ -144,6 +144,24 @@ body {
   z-index: 20;
   cursor: default;
 }
+/* Full circle border for collapsed state — clip-path clips the pill's own border,
+   so we overlay a separate circle that fades out when the pill expands. */
+.feedback-trigger::after {
+  content: '';
+  position: absolute;
+  right: 1rem;
+  top: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 9999px;
+  border: 1px solid var(--md-outline-variant);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.feedback-trigger:hover::after {
+  opacity: 0;
+}
 .feedback-pill {
   position: absolute;
   right: 1rem;
