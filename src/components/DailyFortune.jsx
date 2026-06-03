@@ -222,9 +222,6 @@ export default function DailyFortune({ noWrap = false }) {
           <div className="text-sm font-medium" style={{ color: 'var(--md-on-surface-variant)' }}>
             点击占卜今日运势
           </div>
-          <div className="text-xs" style={{ color: 'var(--md-outline)', opacity: 0.5 }}>
-            每日重置 · 每位冒险者独享专属运势
-          </div>
         </button>
       ) : (
         /* ── Revealed state ── */
