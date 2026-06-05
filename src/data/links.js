@@ -85,6 +85,7 @@ export const categories = [
       { name: '顾跑跑',           style: 'basic', url: 'https://space.bilibili.com/1783244/video' },
       { name: 'Zafir的职业攻略', style: 'basic', url: 'https://space.bilibili.com/23105654/lists/3736677?type=season' },
       { name: '叫我m酱',          style: 'pink',  url: 'https://space.bilibili.com/143567' },
+      { name: '洒金笺',           style: 'basic', url: 'https://b23.tv/WA0Osni' },
     ],
   },
   {
