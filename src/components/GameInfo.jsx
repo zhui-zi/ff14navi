@@ -9,8 +9,8 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 
 const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
 const T_STAR_END      = cst(2026, 6,  9, 22, 59)
-const T_TRIAL_CH_END  = cst(2026, 5, 31, 23, 59)
-const T_TRIAL_REG_END = cst(2026, 6,  4, 13,  0)
+const T_TRIAL_CH_END  = cst(2026, 6,  7, 23, 59)
+const T_TRIAL_REG_END = cst(2026, 6, 11, 13,  0)
 
 function Countdown({ target, expired, accentColor }) {
   const t = useCountdown(target)
@@ -347,8 +347,8 @@ export default function GameInfo({ noWrap = false }) {
         <ActivityCard
           accent="#FFAB76"
           badge="运营活动"
-          title="黄金的试炼 第65期"
-          subtitle="水妖幻园多恩美格禁园"
+          title="黄金的试炼 第66期"
+          subtitle="修行古刹星导寺"
           rows={[
             { label: '挑战期', target: T_TRIAL_CH_END,  expired: '已截止' },
             { label: '登记期', target: T_TRIAL_REG_END, expired: '已截止' },
