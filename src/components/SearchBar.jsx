@@ -5,6 +5,7 @@ const STORAGE_KEY = 'ff14navi-search-mode'
 const MODES = [
   { id: 'wiki',   label: 'WIKI搜索', icon: '📖', placeholder: '在中文维基中搜索，回车确认' },
   { id: 'item',   label: '物品搜索', icon: '🔮', placeholder: '在中文维基中搜索，回车确认' },
+  { id: 'nga',    label: 'NGA',      icon: '📋' },
   { id: 'google', label: 'Google',   icon: '🌐' },
   { id: 'bing',   label: 'Bing',     icon: '🔷' },
   { id: 'baidu',  label: '百度',     icon: '🔵' },
@@ -13,6 +14,7 @@ const MODES = [
 const SEARCH_URL = {
   wiki:   q => `https://ff14.huijiwiki.com/index.php?title=%E7%89%B9%E6%AE%8A:%E6%90%9C%E7%B4%A2&profile=default&search=${encodeURIComponent(q)}&sort=just_match`,
   item:   q => `https://ff14.huijiwiki.com/wiki/ItemSearch?name=${encodeURIComponent(q)}`,
+  nga:    q => `https://nga.178.com/thread.php?key=${encodeURIComponent(q)}&fid=-362960&content=4`,
   google: q => `https://www.google.com/search?q=${encodeURIComponent(q)}`,
   bing:   q => `https://www.bing.com/search?q=${encodeURIComponent(q)}`,
   baidu:  q => `https://www.baidu.com/s?wd=${encodeURIComponent(q)}`,
