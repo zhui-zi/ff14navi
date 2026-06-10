@@ -30,6 +30,7 @@ export function useTheme() {
   }, [])
 
   // Cycle: auto → light → dark → auto
+  // 'auto' removes the key entirely so getSaved() falls back to 'auto' without storing the string
   const cycle = () => setPref(p => {
     const next = p === 'auto' ? 'light' : p === 'light' ? 'dark' : 'auto'
     next === 'auto' ? localStorage.removeItem(KEY) : localStorage.setItem(KEY, next)

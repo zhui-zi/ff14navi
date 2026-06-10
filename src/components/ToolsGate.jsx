@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+// Must match TOOLS_KEY in LinksSection.jsx — LinksSection polls this key to reactively show tools content
 const STORAGE_KEY = 'ff14navi-tools-unlocked'
 
 export default function ToolsGate({ children }) {

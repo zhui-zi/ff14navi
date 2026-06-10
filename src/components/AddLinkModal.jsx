@@ -45,8 +45,10 @@ export default function AddLinkModal({ onAdd, onClose }) {
     if (!name.trim()) { setError('请输入链接名称'); return }
     let normalizedUrl = url.trim()
     if (!normalizedUrl) { setError('请输入链接地址'); return }
+    // Prepend https:// so users can paste bare domains (e.g. "example.com")
     if (!/^https?:\/\//i.test(normalizedUrl)) normalizedUrl = 'https://' + normalizedUrl
     try { new URL(normalizedUrl) } catch { setError('链接地址格式不正确'); return }
+    // Timestamp string as ID — sufficient for client-side uniqueness without a library
     onAdd({ id: Date.now().toString(), name: name.trim(), url: normalizedUrl, style })
     onClose()
   }

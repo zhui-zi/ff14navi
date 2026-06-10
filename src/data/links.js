@@ -1,3 +1,16 @@
+// ── 数据说明 ─────────────────────────────────────────────────────────────────
+// tab ID:  official | general | combat | crafting | life | tools
+// 链接对象字段:
+//   name   — 显示名称（必填）
+//   url    — 目标地址（必填）
+//   style  — 芯片颜色 key，对应 CSS chip-* 类：
+//            basic/blue/green/red/pink/orange/teal/violet/yellow/brown/wheat/grey/olive/navy/purple
+//   icon   — 图标 key（可选）：
+//            品牌 SVG：qq / youtube / twitter / reddit
+//            Emoji：见 LinkChip.jsx 的 EMOJI 映射表
+//            省略则渲染纯文字芯片
+// ─────────────────────────────────────────────────────────────────────────────
+
 export const tabs = [
   { id: 'all',      label: '全部',     emoji: '◈' },
   { id: 'official', label: '官方资源', emoji: '🏛' },

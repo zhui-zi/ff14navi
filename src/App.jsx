@@ -36,7 +36,9 @@ function loadCatOrder() {
     if (Array.isArray(saved) && saved.length > 0) {
       const missing = allIds.filter(id => !saved.includes(id))
       if (missing.length === 0) return saved
-      // Insert each missing ID at its natural position based on neighbors in categories
+      // For each new category, search backward through its natural neighbors to find
+      // the closest preceding sibling already in the saved order, then insert after it.
+      // This keeps user-customized ordering intact while slotting new categories naturally.
       const result = [...saved]
       for (const id of missing) {
         const nat = allIds.indexOf(id)
@@ -82,6 +84,7 @@ export default function App() {
 
   const [isSorting,  setIsSorting]  = useState(false)
   const [linkSort,   setLinkSort]   = useState('default')
+  // Reset sort mode on tab switch so each tab always opens in its default view
   useEffect(() => { setIsSorting(false) }, [activeTab])
 
   const resetCatOrder = useCallback(() => {

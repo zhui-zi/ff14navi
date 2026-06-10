@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 
+// Returns null when the target has passed; callers treat null as "expired"
 function calc(target) {
   const diff = target - Date.now()
   if (diff <= 0) return null

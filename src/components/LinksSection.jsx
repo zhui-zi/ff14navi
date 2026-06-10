@@ -3,6 +3,7 @@ import { categories } from '../data/links'
 import LinkChip from './LinkChip'
 import ToolsGate from './ToolsGate'
 
+// Must match STORAGE_KEY in ToolsGate.jsx — both components read/write the same entry
 const TOOLS_KEY = 'ff14navi-tools-unlocked'
 
 function CustomChip({ link, onDelete, editMode }) {
@@ -190,6 +191,7 @@ export default function LinksSection({ activeTab, customLinks, onDeleteCustomLin
     return [...cats].sort((a, b) => {
       const ai = catOrder.indexOf(a.id)
       const bi = catOrder.indexOf(b.id)
+      // -1 means the category isn't in catOrder yet (added between syncs); push it to the end
       if (ai === -1 && bi === -1) return 0
       if (ai === -1) return 1
       if (bi === -1) return -1
@@ -247,6 +249,8 @@ export default function LinksSection({ activeTab, customLinks, onDeleteCustomLin
   )
 
   return (
+    // onClick delegates to checkUnlocked: when ToolsGate confirms and sets the localStorage key,
+    // the next click inside this container picks it up and re-renders the tools content
     <div className="max-w-7xl mx-auto px-4" onClick={checkUnlocked}>
       {activeTab === 'tools' ? (
         <ToolsGate>{mainContent}</ToolsGate>

@@ -20,6 +20,7 @@ const SEARCH_URL = {
   baidu:  q => `https://www.baidu.com/s?wd=${encodeURIComponent(q)}`,
 }
 
+// Falls back to 'wiki' if the stored value no longer matches any MODES entry (e.g. after removing a mode)
 function loadMode() {
   const saved = localStorage.getItem(STORAGE_KEY)
   return MODES.some(m => m.id === saved) ? saved : 'wiki'
@@ -44,7 +45,7 @@ export default function SearchBar() {
 
   const handleKeyDown = e => {
     if (e.key === 'Enter')  doSearch(query)
-    if (e.key === 'Escape') { setQuery(''); inputRef.current?.blur() }
+    if (e.key === 'Escape') { setQuery(''); inputRef.current?.blur() }  // Escape clears and dismisses
   }
 
   return (

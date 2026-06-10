@@ -3,12 +3,11 @@ import { useCountdown } from '../hooks/useCountdown'
 import { useTheme } from '../hooks/useTheme'
 import { adaptForLight } from '../utils/color'
 
-// All times CST (UTC+8)
+// Helper: enter times in CST (UTC+8); h - 8 converts to UTC for Date.UTC
 const cst = (y, mo, d, h = 0, mi = 0) =>
   new Date(Date.UTC(y, mo - 1, d, h - 8, mi))
 
 const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
-const T_STAR_END      = cst(2026, 6,  9, 22, 59)
 const T_TRIAL_CH_END  = cst(2026, 6,  7, 23, 59)
 const T_TRIAL_REG_END = cst(2026, 6, 11, 13,  0)
 
@@ -333,15 +332,6 @@ export default function GameInfo({ noWrap = false }) {
           dates={['5月29日 16:00 – 6月24日 22:59']}
           rows={[{ label: '距结束', target: T_GOLD_SAU_END, expired: '已结束' }]}
           url="https://actff1.web.sdo.com/project/20260519the_make_it_rain_campaign/86z02yp9k67o/index.html"
-        />
-
-        <ActivityCard
-          accent="#F48FB1"
-          badge="运营活动"
-          title="星辰祈愿"
-          dates={['5月26日 23:00 – 6月9日 22:59']}
-          rows={[{ label: '距结束', target: T_STAR_END, expired: '已结束' }]}
-          url="https://actff1.web.sdo.com/20260301__StarPray/#/index"
         />
 
         <ActivityCard

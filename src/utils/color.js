@@ -1,6 +1,7 @@
 // Adapt a bright dark-mode accent color to be readable on light backgrounds
 // Uses HSL: keeps the hue, boosts saturation slightly, cuts lightness in half
 
+// Returns [h(0-360), s(0-100), l(0-100)]
 function hexToHsl(hex) {
   const r = parseInt(hex.slice(1, 3), 16) / 255
   const g = parseInt(hex.slice(3, 5), 16) / 255
@@ -18,6 +19,7 @@ function hexToHsl(hex) {
   return [h * 360, s * 100, l * 100]
 }
 
+// Intermediate helper for HSL→RGB conversion (standard algorithm)
 function hue2rgb(p, q, t) {
   if (t < 0) t += 1
   if (t > 1) t -= 1
