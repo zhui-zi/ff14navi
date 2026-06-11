@@ -172,6 +172,7 @@ export const categories = [
       { name: '素素无人岛',               style: 'blue',   url: 'https://wrd.ffxiv.cn/' },
       { name: '宇宙探索攻略',             style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=43895399' },
       { name: '宇宙天气预报',             style: 'basic',  url: 'https://wks.ff14.xin/' },
+      { name: '罗薇娜的手抄本',           style: 'basic',  url: 'https://www.ff14pvp.top/#/' },
     ],
   },
   {
@@ -224,7 +225,6 @@ export const categories = [
       { name: 'むーむーのネタ帳', style: 'basic', url: 'https://ff14moomoo.com/' },
       { name: '天气查询',     icon: 'sun',    style: 'basic', url: 'https://asvel.github.io/ffxiv-weather/' },
       { name: '光之演奏家',                   style: 'basic', url: 'https://fffff.games/' },
-      { name: '罗薇娜的手抄本',              style: 'basic', url: 'https://www.ff14pvp.top/#/' },
       { name: '网页战术板',                  style: 'basic', url: 'https://plan.xivstrat.cn/' },
     ],
   },
