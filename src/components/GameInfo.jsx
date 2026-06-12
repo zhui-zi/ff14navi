@@ -357,8 +357,7 @@ export default function GameInfo({ noWrap = false }) {
 
       <VersionBanner />
 
-      {/* Activity grid — 2×2 on md+, 1 col on mobile */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
+      <div className="grid gap-3 items-start" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))' }}>
         <ActivityCard
           accent="#4DD0E1"
           badge="下个版本"

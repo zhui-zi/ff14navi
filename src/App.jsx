@@ -104,19 +104,13 @@ export default function App() {
       <Header themePref={pref} themeEffective={effective} onCycleTheme={cycle} />
       <main className="pb-28">
         <SearchBar />
-        <div className="max-w-7xl mx-auto px-4 mb-6 flex flex-col lg:flex-row gap-4 items-stretch">
-          <div className="flex-1 min-w-0">
+        <div className="max-w-7xl mx-auto px-4 mb-6 flex flex-col lg:flex-row gap-4 items-start">
+          <div className="flex-1 min-w-0 flex flex-col gap-4">
             <GameInfo noWrap />
-          </div>
-          <div className="w-full lg:w-72 xl:w-80 flex-shrink-0">
-            <NewsBoard noWrap />
-          </div>
-        </div>
-        <div className="max-w-7xl mx-auto px-4 mb-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div className="lg:col-span-2">
             <DailyFortune noWrap />
           </div>
-          <div>
+          <div className="w-full lg:w-72 xl:w-80 flex-shrink-0 flex flex-col gap-4">
+            <NewsBoard noWrap />
             <FrontlineSchedule noWrap />
           </div>
         </div>
