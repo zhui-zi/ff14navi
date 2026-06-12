@@ -94,14 +94,19 @@ function ToggleBtn({ open, accent }) {
         ].join(', '),
       }}
     >
-      <span style={{
-        display: 'inline-block',
-        fontSize: '0.82rem', fontWeight: 500, lineHeight: 1,
-        transition: `transform 0.42s ${SPRING}`,
-        transform: open ? 'rotate(90deg)' : 'rotate(0deg)',
-      }}>
-        ›
-      </span>
+      <svg
+        width="9" height="9" viewBox="0 0 9 9"
+        fill="none" stroke="currentColor" strokeWidth="1.8"
+        strokeLinecap="round" strokeLinejoin="round"
+        style={{
+          display: 'block',
+          transition: `transform 0.42s ${SPRING}`,
+          transform: open ? 'rotate(90deg)' : 'rotate(0deg)',
+          transformOrigin: 'center',
+        }}
+      >
+        <path d="M2.5 1.5 L6.5 4.5 L2.5 7.5" />
+      </svg>
     </div>
   )
 }
@@ -125,7 +130,6 @@ function CapsulePill({ accent, badge, title, open, onToggle, children }) {
           ? `linear-gradient(135deg, ${accent}2E 0%, var(--md-surface-container) 55%)`
           : `linear-gradient(135deg, ${accent}1E 0%, var(--md-surface-container) 60%)`,
         border: `1.5px solid ${open ? accent + 'BB' : accent + '50'}`,
-        boxShadow: open ? `0 2px 16px ${accent}28` : 'none',
         cursor: 'pointer',
         outline: 'none',
         userSelect: 'none',
@@ -134,20 +138,13 @@ function CapsulePill({ accent, badge, title, open, onToggle, children }) {
         transition: [
           `background 0.25s ${EASE}`,
           `border-color 0.2s ${EASE}`,
-          `box-shadow 0.2s ${EASE}`,
         ].join(', '),
       }}
       onMouseEnter={e => {
-        if (!open) {
-          e.currentTarget.style.borderColor = `${accent}88`
-          e.currentTarget.style.boxShadow = `0 2px 10px ${accent}22`
-        }
+        if (!open) e.currentTarget.style.borderColor = `${accent}88`
       }}
       onMouseLeave={e => {
-        if (!open) {
-          e.currentTarget.style.borderColor = `${accent}50`
-          e.currentTarget.style.boxShadow = 'none'
-        }
+        if (!open) e.currentTarget.style.borderColor = `${accent}50`
       }}
     >
       {/* Row 1: dot + title + toggle */}
