@@ -128,10 +128,11 @@ export default function NewsBoard({ noWrap = false }) {
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col px-4 py-3 gap-0.5"
+                className="flex flex-col px-4 py-3 gap-0.5 w-full min-w-0"
                 style={{
                   borderBottom: i < items.length - 1 ? '1px solid var(--md-outline-variant)' : 'none',
                   transition: 'background 0.15s ease',
+                  overflow: 'hidden',
                 }}
                 onMouseEnter={e => e.currentTarget.style.background = 'var(--md-surface-container-high)'}
                 onMouseLeave={e => e.currentTarget.style.background = ''}

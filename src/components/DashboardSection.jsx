@@ -114,7 +114,9 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
 
-      {/* Pill — shape never changes */}
+      {/* Pill — shape never changes.
+          2-row inner layout: title on top, badge+countdown below.
+          title uses word-break so it never truncates, countdown always visible. */}
       <div
         role="button"
         tabIndex={0}
@@ -122,18 +124,16 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
         onClick={() => setOpen(v => !v)}
         onKeyDown={e => e.key === 'Enter' && setOpen(v => !v)}
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          padding: '0.5rem 0.625rem 0.5rem 0.75rem',
+          padding: '0.55rem 0.625rem 0.55rem 0.875rem',
           borderRadius: '9999px',
           background: `linear-gradient(135deg, ${accent}1A 0%, var(--md-surface-container) 60%)`,
           border: `1.5px solid ${open ? accent + 'AA' : accent + '40'}`,
           boxShadow: open ? `0 2px 12px ${accent}20` : 'none',
           cursor: 'pointer',
           outline: 'none',
-          minHeight: 44,
           userSelect: 'none',
+          maxWidth: '100%',
+          overflow: 'hidden',
           transition: [`border-color 0.2s ${EASE}`, `box-shadow 0.2s ${EASE}`].join(', '),
         }}
         onMouseEnter={e => {
@@ -149,43 +149,51 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
           }
         }}
       >
-        <span style={{
-          width: 7, height: 7, borderRadius: '50%',
-          background: accent, flexShrink: 0, opacity: 0.85,
-        }} />
-
-        <span style={{
-          fontSize: '0.62rem', fontWeight: 700,
-          color: accent, opacity: 0.65,
-          letterSpacing: '0.05em', flexShrink: 0,
-          textTransform: 'uppercase',
-        }}>
-          {badge}
-        </span>
-
-        <span style={{
-          flex: 1, minWidth: 0,
-          fontFamily: '"Noto Serif SC", serif',
-          fontWeight: 700,
-          fontSize: '0.875rem',
-          color: 'var(--md-on-surface)',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-        }}>
-          {title}
-        </span>
-
-        {primaryRow && (
-          <span style={{ color: accent, flexShrink: 0 }}>
-            <CountdownCompact target={primaryRow.target} expired={primaryRow.expired} />
+        {/* Row 1: dot + title + toggle */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+          <span style={{
+            width: 7, height: 7, borderRadius: '50%',
+            background: accent, flexShrink: 0, opacity: 0.85,
+            marginTop: '0.35rem',
+          }} />
+          <span style={{
+            flex: 1, minWidth: 0,
+            fontFamily: '"Noto Serif SC", serif',
+            fontWeight: 700,
+            fontSize: '0.9rem',
+            color: 'var(--md-on-surface)',
+            lineHeight: 1.3,
+            wordBreak: 'break-word',
+            overflowWrap: 'break-word',
+          }}>
+            {title}
           </span>
-        )}
+          <ToggleBtn
+            open={open} accent={accent}
+            onClick={e => { e.stopPropagation(); setOpen(v => !v) }}
+          />
+        </div>
 
-        <ToggleBtn
-          open={open} accent={accent}
-          onClick={e => { e.stopPropagation(); setOpen(v => !v) }}
-        />
+        {/* Row 2: badge + countdown, indented past the dot */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '0.375rem',
+          paddingLeft: '1.1875rem',
+          marginTop: '0.2rem',
+        }}>
+          <span style={{
+            fontSize: '0.6rem', fontWeight: 700,
+            color: accent, opacity: 0.6,
+            letterSpacing: '0.05em', textTransform: 'uppercase',
+            flexShrink: 0,
+          }}>
+            {badge}
+          </span>
+          {primaryRow && (
+            <span style={{ color: accent }}>
+              <CountdownCompact target={primaryRow.target} expired={primaryRow.expired} />
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Detail panel — slides below the pill, border-radius: 16px stays fixed */}
@@ -358,7 +366,7 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions }) 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
 
-      {/* Pill */}
+      {/* Pill — 2-row layout matching ActivityCapsule */}
       <div
         role="button"
         tabIndex={0}
@@ -366,18 +374,16 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions }) 
         onClick={() => setOpen(v => !v)}
         onKeyDown={e => e.key === 'Enter' && setOpen(v => !v)}
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          padding: '0.5rem 0.625rem 0.5rem 0.75rem',
+          padding: '0.55rem 0.625rem 0.55rem 0.875rem',
           borderRadius: '9999px',
           background: `linear-gradient(135deg, ${accent}1A 0%, var(--md-surface-container) 60%)`,
           border: `1.5px solid ${open ? accent + 'AA' : accent + '40'}`,
           boxShadow: open ? `0 2px 12px ${accent}20` : 'none',
           cursor: 'pointer',
           outline: 'none',
-          minHeight: 44,
           userSelect: 'none',
+          maxWidth: '100%',
+          overflow: 'hidden',
           transition: [`border-color 0.2s ${EASE}`, `box-shadow 0.2s ${EASE}`].join(', '),
         }}
         onMouseEnter={e => {
@@ -393,50 +399,57 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions }) 
           }
         }}
       >
-        <span style={{
-          width: 7, height: 7, borderRadius: '50%',
-          background: accent, flexShrink: 0, opacity: 0.85,
-        }} />
-
-        <span style={{
-          fontSize: '0.62rem', fontWeight: 700,
-          color: accent, opacity: 0.65,
-          letterSpacing: '0.05em', flexShrink: 0,
-          textTransform: 'uppercase',
-        }}>
-          {badge}
-        </span>
-
-        <span style={{
-          flex: 1, minWidth: 0,
-          fontFamily: '"Noto Serif SC", serif',
-          fontWeight: 700,
-          fontSize: '0.875rem',
-          color: 'var(--md-on-surface)',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-        }}>
-          {title}
-        </span>
-
-        <span style={{
-          fontSize: '0.65rem', color: 'var(--md-on-surface-variant)',
-          opacity: 0.4, flexShrink: 0, whiteSpace: 'nowrap',
-        }}>
-          {predictions.length} 场
-        </span>
-
-        {soonestDeadline && (
-          <span style={{ color: accent, flexShrink: 0 }}>
-            <CountdownCompact target={soonestDeadline} expired="已截止" />
+        {/* Row 1: dot + title + toggle */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+          <span style={{
+            width: 7, height: 7, borderRadius: '50%',
+            background: accent, flexShrink: 0, opacity: 0.85,
+            marginTop: '0.35rem',
+          }} />
+          <span style={{
+            flex: 1, minWidth: 0,
+            fontFamily: '"Noto Serif SC", serif',
+            fontWeight: 700,
+            fontSize: '0.9rem',
+            color: 'var(--md-on-surface)',
+            lineHeight: 1.3,
+            wordBreak: 'break-word',
+            overflowWrap: 'break-word',
+          }}>
+            {title}
           </span>
-        )}
+          <ToggleBtn
+            open={open} accent={accent}
+            onClick={e => { e.stopPropagation(); setOpen(v => !v) }}
+          />
+        </div>
 
-        <ToggleBtn
-          open={open} accent={accent}
-          onClick={e => { e.stopPropagation(); setOpen(v => !v) }}
-        />
+        {/* Row 2: badge + match count + soonest countdown */}
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: '0.375rem',
+          paddingLeft: '1.1875rem',
+          marginTop: '0.2rem',
+        }}>
+          <span style={{
+            fontSize: '0.6rem', fontWeight: 700,
+            color: accent, opacity: 0.6,
+            letterSpacing: '0.05em', textTransform: 'uppercase',
+            flexShrink: 0,
+          }}>
+            {badge}
+          </span>
+          <span style={{
+            fontSize: '0.6rem', color: 'var(--md-on-surface-variant)',
+            opacity: 0.4, flexShrink: 0,
+          }}>
+            {predictions.length} 场
+          </span>
+          {soonestDeadline && (
+            <span style={{ color: accent }}>
+              <CountdownCompact target={soonestDeadline} expired="已截止" />
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Detail panel */}
@@ -657,12 +670,7 @@ export default function DashboardSection() {
     <div className="max-w-7xl mx-auto px-4 mb-6">
       <div className="bento-grid">
 
-        {/* ① Version banner — z-index raised when dropdown is open */}
-        <div className="bento-cell bento-banner" style={{ zIndex: bannerOpen ? 50 : 0 }}>
-          <VersionBanner onToggle={setBannerOpen} />
-        </div>
-
-        {/* ② Activity capsule row — flex-wrap, each capsule expands independently */}
+        {/* ① Activity capsule row — flex-wrap, each capsule expands independently */}
         <div className="bento-cell bento-acts">
           <div className="acts-grid">
             <ActivityCapsule
@@ -713,6 +721,11 @@ export default function DashboardSection() {
               ]}
             />
           </div>
+        </div>
+
+        {/* ② Version banner — z-index raised when dropdown is open */}
+        <div className="bento-cell bento-banner" style={{ zIndex: bannerOpen ? 50 : 0 }}>
+          <VersionBanner onToggle={setBannerOpen} />
         </div>
 
         {/* ③ Fortune + Frontline — fixed 2-col sub-grid */}

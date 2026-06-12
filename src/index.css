@@ -525,8 +525,8 @@ body {
   gap: 12px;
   grid-template-columns: 1fr;
   grid-template-areas:
-    "banner"
     "acts"
+    "banner"
     "bottom"
     "news";
 }
@@ -534,15 +534,16 @@ body {
   .bento-grid {
     grid-template-columns: 1fr 272px;
     grid-template-areas:
-      "banner news"
       "acts   news"
+      "banner news"
       "bottom news";
   }
 }
 .bento-banner { grid-area: banner; overflow: visible; }
 .bento-acts   { grid-area: acts; }
 .bento-bottom { grid-area: bottom; }
-.bento-news   { grid-area: news; }
+/* overflow:hidden + min-width:0 prevent long news titles from stretching the cell on mobile */
+.bento-news   { grid-area: news; overflow: hidden; min-width: 0; }
 
 /* ── Activity capsule row ──
    Capsules sit side-by-side and wrap naturally.
