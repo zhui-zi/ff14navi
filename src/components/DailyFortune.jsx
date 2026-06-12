@@ -346,14 +346,14 @@ export default function DailyFortune({ noWrap = false }) {
         /* ── Revealed state ── */
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
 
-          {/* Main row: display-level level text + body text */}
+          {/* Main row: display-level + body text, spacing-only separation */}
           <div style={{
             flex: 1, minHeight: 0,
             display: 'flex', alignItems: 'center',
             padding: '0.25rem 1.25rem 0.375rem',
-            gap: '1rem',
+            gap: '1.125rem',
           }}>
-            {/* Fortune level — expressive display type, no background */}
+            {/* Fortune level — expressive display type */}
             <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <div style={{
                 fontFamily: '"Noto Serif SC", serif',
@@ -370,9 +370,6 @@ export default function DailyFortune({ noWrap = false }) {
                 今日运势
               </div>
             </div>
-
-            {/* Thin structural rule — M3 outline-variant, not a color block */}
-            <div style={{ width: 1, alignSelf: 'stretch', background: 'var(--md-outline-variant)', flexShrink: 0 }} />
 
             {/* Fortune text — body secondary */}
             <div style={{ flex: 1, minWidth: 0 }}>
@@ -391,10 +388,10 @@ export default function DailyFortune({ noWrap = false }) {
             </div>
           </div>
 
-          {/* Metadata footer */}
+          {/* Metadata footer — spacing only, no dividers */}
           <div style={{
-            display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-            borderTop: '1px solid var(--md-outline-variant)',
+            display: 'flex', justifyContent: 'space-around',
+            padding: '0.25rem 0.5rem 0.625rem',
             flexShrink: 0,
           }}>
             {[
@@ -406,8 +403,9 @@ export default function DailyFortune({ noWrap = false }) {
               <div key={i} style={{
                 display: 'flex', flexDirection: 'column',
                 alignItems: 'center', justifyContent: 'center',
-                gap: '0.2rem', padding: '0.5rem 0.375rem',
-                borderRight: i < 3 ? '1px solid var(--md-outline-variant)' : 'none',
+                gap: '0.2rem', flex: 1,
+                padding: '0.25rem 0.25rem',
+                minWidth: 0,
               }}>
                 <div style={{ fontSize: '0.6rem', color: 'var(--md-outline)', opacity: 0.45, letterSpacing: '0.04em' }}>
                   {item.label}
