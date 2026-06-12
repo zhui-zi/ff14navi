@@ -302,8 +302,8 @@ export default function DailyFortune({ noWrap = false }) {
       className="rounded-3xl overflow-hidden"
       style={{
         height: '196px',
-        background: 'var(--md-surface-container)',
-        border: `1px solid ${accent}44`,
+        background: `radial-gradient(ellipse 100% 90% at -5% 55%, ${accent}20 0%, var(--md-surface-container) 55%)`,
+        border: `1px solid ${accent}30`,
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -312,7 +312,6 @@ export default function DailyFortune({ noWrap = false }) {
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '0.625rem 1.25rem 0.5rem',
-        borderBottom: `1px solid ${accent}20`,
         flexShrink: 0,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
@@ -350,43 +349,37 @@ export default function DailyFortune({ noWrap = false }) {
         /* ── Revealed state ── */
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
 
-          {/* Main row: tonal level hero + fortune text */}
-          <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
-
-            {/* Fortune level — tonal gradient column */}
-            <div style={{
-              flexShrink: 0, width: '4.75rem',
-              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-              background: `linear-gradient(160deg, ${accent}28 0%, ${accent}10 100%)`,
-              borderRight: `1px solid ${accent}20`,
-              padding: '0.5rem 0',
-            }}>
+          {/* Main row: fortune level (primary) + text (secondary) — no column blocks */}
+          <div style={{
+            display: 'flex', alignItems: 'center', flex: 1, minHeight: 0,
+            padding: '0.375rem 1.25rem 0.375rem',
+            gap: '0.875rem',
+          }}>
+            {/* Fortune level — dominant, typography-driven, no background block */}
+            <div style={{ flexShrink: 0 }}>
               <div style={{
                 fontFamily: '"Noto Serif SC", serif',
-                fontSize: '2rem', fontWeight: 900,
+                fontSize: '2.5rem', fontWeight: 900,
                 color: accent,
-                textShadow: `0 0 20px ${accent}60`,
                 lineHeight: 1,
+                textShadow: `0 0 30px ${accent}88, 0 0 10px ${accent}55`,
+                letterSpacing: '-0.02em',
               }}>
                 {fortune.level.label}
               </div>
               <div style={{
-                fontSize: '0.57rem', fontWeight: 700,
-                color: accent, opacity: 0.5,
-                marginTop: '0.3rem', letterSpacing: '0.06em',
+                fontSize: '0.58rem', color: accent, opacity: 0.45,
+                marginTop: '0.25rem', letterSpacing: '0.08em', textAlign: 'center',
               }}>
                 今日运势
               </div>
             </div>
 
-            {/* Fortune text */}
-            <div style={{
-              flex: 1, minWidth: 0, display: 'flex', alignItems: 'center',
-              padding: '0.625rem 1rem',
-            }}>
+            {/* Fortune text — secondary, muted */}
+            <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{
                 fontSize: '0.8rem', lineHeight: 1.75,
-                color: 'var(--md-on-surface)', opacity: 0.85,
+                color: 'var(--md-on-surface)', opacity: 0.72,
                 letterSpacing: '0.02em',
                 overflow: 'hidden',
                 display: '-webkit-box',
@@ -399,11 +392,10 @@ export default function DailyFortune({ noWrap = false }) {
             </div>
           </div>
 
-          {/* Footer metadata bar */}
+          {/* Footer metadata — tertiary, subtle */}
           <div style={{
             display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-            borderTop: `1px solid ${accent}20`,
-            background: `${accent}08`,
+            borderTop: `1px solid ${accent}15`,
             flexShrink: 0,
           }}>
             {[
@@ -416,10 +408,10 @@ export default function DailyFortune({ noWrap = false }) {
                 display: 'flex', flexDirection: 'column',
                 alignItems: 'center', justifyContent: 'center',
                 gap: '0.2rem', padding: '0.5rem 0.375rem',
-                borderRight: i < 3 ? `1px solid ${accent}15` : 'none',
+                borderRight: i < 3 ? `1px solid ${accent}12` : 'none',
               }}>
                 <div style={{
-                  fontSize: '0.6rem', color: 'var(--md-outline)', opacity: 0.5,
+                  fontSize: '0.6rem', color: 'var(--md-outline)', opacity: 0.45,
                   letterSpacing: '0.04em',
                 }}>
                   {item.label}
@@ -433,7 +425,7 @@ export default function DailyFortune({ noWrap = false }) {
                 }}>
                   {item.value}
                   {item.sub && (
-                    <span style={{ opacity: 0.55, fontSize: '0.57rem', marginLeft: '0.15rem' }}>
+                    <span style={{ opacity: 0.5, fontSize: '0.57rem', marginLeft: '0.15rem' }}>
                       {item.sub}
                     </span>
                   )}
