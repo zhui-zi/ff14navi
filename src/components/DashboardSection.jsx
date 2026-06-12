@@ -570,16 +570,11 @@ const PATCH_751_NOTES = [
 ]
 
 // ── Version banner ────────────────────────────────────────────────────────────
-function VersionBanner({ onToggle }) {
-  const [open, setOpen] = useState(false)
+function VersionBanner({ open, onToggle }) {
   const { effective } = useTheme()
   const panelShadow = effective === 'light' ? '0 4px 16px rgba(0,0,0,0.12)' : '0 12px 40px rgba(0,0,0,0.50)'
 
-  const toggle = () => {
-    const next = !open
-    setOpen(next)
-    onToggle?.(next)
-  }
+  const toggle = () => onToggle?.(!open)
 
   return (
     <div className="relative">
@@ -690,13 +685,34 @@ function VersionBanner({ onToggle }) {
 export default function DashboardSection() {
   const [openId,     setOpenId]     = useState(null)
   const [bannerOpen, setBannerOpen] = useState(false)
-  const [actsZ, setActsZ] = useState(false)
-  const actsTimerRef  = useRef(null)
-  const closeTimerRef = useRef(null)
+  const [actsZ,   setActsZ]   = useState(false)
+  const [bannerZ, setBannerZ] = useState(false)
+  const actsTimerRef   = useRef(null)
+  const closeTimerRef  = useRef(null)
+  const bannerTimerRef = useRef(null)
 
-  // Click toggle — keeps touch/keyboard working
+  // Banner toggle — closes all activity panels; z-index held during close animation
+  const handleBannerToggle = useCallback((next) => {
+    setBannerOpen(next)
+    clearTimeout(bannerTimerRef.current)
+    if (next) {
+      setBannerZ(true)
+      // close any open activity panel
+      setOpenId(null)
+      clearTimeout(actsTimerRef.current)
+      actsTimerRef.current = setTimeout(() => setActsZ(false), 500)
+    } else {
+      bannerTimerRef.current = setTimeout(() => setBannerZ(false), 400)
+    }
+  }, [])
+
+  // Click toggle — closes banner; keeps touch/keyboard working
   const toggle = useCallback((id) => {
     clearTimeout(closeTimerRef.current)
+    // close banner if open
+    setBannerOpen(false)
+    clearTimeout(bannerTimerRef.current)
+    bannerTimerRef.current = setTimeout(() => setBannerZ(false), 400)
     setOpenId(v => {
       const next = v === id ? null : id
       clearTimeout(actsTimerRef.current)
@@ -706,9 +722,12 @@ export default function DashboardSection() {
     })
   }, [])
 
-  // Hover open — immediate
+  // Hover open — closes banner; immediate
   const openPanel = useCallback((id) => {
     clearTimeout(closeTimerRef.current)
+    setBannerOpen(false)
+    clearTimeout(bannerTimerRef.current)
+    bannerTimerRef.current = setTimeout(() => setBannerZ(false), 400)
     setOpenId(id)
     clearTimeout(actsTimerRef.current)
     setActsZ(true)
@@ -727,8 +746,8 @@ export default function DashboardSection() {
     <div className="max-w-7xl mx-auto px-4 mb-6">
       <div className="bento-grid">
 
-        {/* ① Activity capsule row — z-index delayed so closing panels don't clip behind siblings */}
-        <div className="bento-cell bento-acts" style={{ zIndex: actsZ ? 50 : 0 }}>
+        {/* ① Activity capsule row — z-index 60 > banner's 50, delayed so closing panels don't clip */}
+        <div className="bento-cell bento-acts" style={{ zIndex: actsZ ? 60 : 0 }}>
           <div className="acts-grid">
             <ActivityCapsule
               accent="#4DD0E1"
@@ -806,9 +825,9 @@ export default function DashboardSection() {
           </div>
         </div>
 
-        {/* ② Version banner — z-index raised when dropdown is open */}
-        <div className="bento-cell bento-banner" style={{ zIndex: bannerOpen ? 50 : 0 }}>
-          <VersionBanner onToggle={setBannerOpen} />
+        {/* ② Version banner — z-index held during open + close animation */}
+        <div className="bento-cell bento-banner" style={{ zIndex: bannerZ ? 50 : 0 }}>
+          <VersionBanner open={bannerOpen} onToggle={handleBannerToggle} />
         </div>
 
         {/* ③ Fortune + Frontline */}
