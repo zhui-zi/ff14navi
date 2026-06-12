@@ -109,29 +109,31 @@ export default function FrontlineSchedule({ noWrap = false }) {
         </div>
       </div>
 
-      {/* ── Today — flex:0, compact ───────────────────────────────────────── */}
-      <div style={{
-        flexShrink: 0,
-        display: 'flex', alignItems: 'center',
-        padding: '0.375rem 1.25rem 0.375rem', gap: '0.75rem',
-      }}>
-        {/* M3 tonal icon container */}
+      {/* ── Body: left = today, right = upcoming ─────────────────────────── */}
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', alignItems: 'stretch' }}>
+
+        {/* Left — today */}
         <div style={{
-          width: '2.375rem', height: '2.375rem', flexShrink: 0,
-          borderRadius: '0.875rem',
-          background: `${accent}22`,
-          border: `1.5px solid ${accent}44`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '1.25rem',
+          display: 'flex', flexDirection: 'column',
+          alignItems: 'center', justifyContent: 'center',
+          padding: '0.25rem 1rem 0.5rem 1.25rem', gap: '0.3rem',
+          flexShrink: 0,
         }}>
-          {todayMap.icon}
-        </div>
-        <div>
+          <div style={{
+            width: '2.375rem', height: '2.375rem',
+            borderRadius: '0.875rem',
+            background: `${accent}22`,
+            border: `1.5px solid ${accent}44`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '1.25rem',
+          }}>
+            {todayMap.icon}
+          </div>
           <div style={{
             fontFamily: '"Noto Serif SC", serif',
-            fontSize: '1.15rem', fontWeight: 900,
+            fontSize: '1.05rem', fontWeight: 900,
             color: 'var(--md-on-surface)', lineHeight: 1.15,
-            marginBottom: '0.25rem',
+            textAlign: 'center',
           }}>
             {todayMap.name}
           </div>
@@ -144,40 +146,48 @@ export default function FrontlineSchedule({ noWrap = false }) {
             {todayMap.mode}
           </span>
         </div>
-      </div>
 
-      {/* ── Upcoming — flex:1, two list rows, no dividers ────────────────── */}
-      <div style={{
-        flex: 1, minHeight: 0,
-        display: 'flex', flexDirection: 'column', justifyContent: 'center',
-        padding: '0 1.25rem 0.5rem', gap: '0.35rem',
-      }}>
-        {nextMaps.map((m, i) => {
-          const mc = adapt(m.color)
-          return (
-            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              <span style={{
-                fontSize: '0.6rem', color: 'var(--md-on-surface-variant)',
-                opacity: 0.38, flexShrink: 0, minWidth: '1.75rem',
-              }}>
-                {i === 0 ? '明天' : '后天'}
-              </span>
-              <span style={{ fontSize: '0.85rem', flexShrink: 0, opacity: 0.55 }}>{m.icon}</span>
-              <span style={{
-                fontSize: '0.72rem', fontWeight: 700, color: mc, opacity: 0.8,
-                flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-              }}>
-                {m.name}
-              </span>
-              <span style={{
-                fontSize: '0.58rem', color: 'var(--md-on-surface-variant)',
-                opacity: 0.35, flexShrink: 0,
-              }}>
-                {m.mode}
-              </span>
-            </div>
-          )
-        })}
+        {/* Divider */}
+        <div style={{
+          width: 1, flexShrink: 0,
+          background: 'var(--md-outline-variant)', opacity: 0.35,
+          margin: '0.5rem 0',
+        }} />
+
+        {/* Right — upcoming */}
+        <div style={{
+          flex: 1, minWidth: 0,
+          display: 'flex', flexDirection: 'column', justifyContent: 'center',
+          padding: '0.25rem 1.25rem 0.5rem 0.875rem', gap: '0.45rem',
+        }}>
+          {nextMaps.map((m, i) => {
+            const mc = adapt(m.color)
+            return (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                <span style={{
+                  fontSize: '0.6rem', color: 'var(--md-on-surface-variant)',
+                  opacity: 0.38, flexShrink: 0, minWidth: '1.75rem',
+                }}>
+                  {i === 0 ? '明天' : '后天'}
+                </span>
+                <span style={{ fontSize: '0.85rem', flexShrink: 0, opacity: 0.55 }}>{m.icon}</span>
+                <span style={{
+                  fontSize: '0.72rem', fontWeight: 700, color: mc, opacity: 0.8,
+                  flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                }}>
+                  {m.name}
+                </span>
+                <span style={{
+                  fontSize: '0.58rem', color: 'var(--md-on-surface-variant)',
+                  opacity: 0.35, flexShrink: 0,
+                }}>
+                  {m.mode}
+                </span>
+              </div>
+            )
+          })}
+        </div>
+
       </div>
     </div>
   )
