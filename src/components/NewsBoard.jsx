@@ -95,9 +95,9 @@ export default function NewsBoard({ noWrap = false }) {
       {/* Loading skeleton */}
       {loading && (
         <div>
-          {[72, 55, 65].map((w, i) => (
+          {[72, 55, 65, 60].map((w, i) => (
             <div key={i} className="px-4 py-3.5"
-              style={{ borderBottom: i < 2 ? '1px solid var(--md-outline-variant)' : 'none' }}>
+              style={{ borderBottom: i < 3 ? '1px solid var(--md-outline-variant)' : 'none' }}>
               <div className="skeleton rounded-md mb-2" style={{ height: '14px', width: `${w}%` }} />
               <div className="skeleton rounded-md" style={{ height: '11px', width: '52px' }} />
             </div>
