@@ -10,6 +10,8 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
 const T_TRIAL_CH_END  = cst(2026, 6,  7, 23, 59)
 const T_TRIAL_REG_END = cst(2026, 6, 11, 13,  0)
+const T_BET_CAN_BIH   = cst(2026, 6, 13,  3,  0)
+const T_BET_USA_PAR   = cst(2026, 6, 13,  9,  0)
 
 function Countdown({ target, expired, accentColor }) {
   const t = useCountdown(target)
@@ -61,33 +63,44 @@ function CountdownRow({ label, target, expired, accentColor }) {
   )
 }
 
-function PredictionMatch({ homeFlag, homeName, awayFlag, awayName, homeWin, draw, awayWin, accent }) {
-  const bars = [
-    { label: homeName, pct: homeWin, color: accent },
-    { label: '平局',   pct: draw,    color: '#94A3B8' },
-    { label: awayName, pct: awayWin, color: '#F87171' },
+function PredictionMatch({ homeFlag, homeName, awayFlag, awayName, homeWin, draw, awayWin, accent, deadline }) {
+  const t = useCountdown(deadline)
+  const cd = t
+    ? `${t.d > 0 ? t.d + 'd ' : ''}${String(t.h).padStart(2,'0')}:${String(t.m).padStart(2,'0')}:${String(t.s).padStart(2,'0')}`
+    : '已截止'
+  const segments = [
+    { pct: homeWin, color: accent },
+    { pct: draw,    color: '#64748B' },
+    { pct: awayWin, color: '#F87171' },
   ]
   return (
-    <div className="mt-2.5">
-      <div className="flex items-center justify-between mb-1.5">
-        <span className="text-xs font-medium" style={{ color: 'var(--md-on-surface)', opacity: 0.85 }}>
+    <div className="mt-2">
+      <div className="flex items-center justify-between mb-1">
+        <span style={{ fontSize: '0.72rem', fontWeight: 500, color: 'var(--md-on-surface)', opacity: 0.85 }}>
           {homeFlag} {homeName}
         </span>
-        <span className="text-xs opacity-40" style={{ color: 'var(--md-on-surface)' }}>vs</span>
-        <span className="text-xs font-medium" style={{ color: 'var(--md-on-surface)', opacity: 0.85 }}>
+        <span className="tabular-nums" style={{
+          fontSize: '0.62rem', fontWeight: t ? 600 : 400,
+          fontFamily: 'ui-monospace, monospace',
+          color: t ? accent : 'var(--md-on-surface-variant)',
+          opacity: t ? 0.85 : 0.4,
+          whiteSpace: 'nowrap',
+        }}>
+          ⏱ {cd}
+        </span>
+        <span style={{ fontSize: '0.72rem', fontWeight: 500, color: 'var(--md-on-surface)', opacity: 0.85 }}>
           {awayFlag} {awayName}
         </span>
       </div>
-      <div className="flex rounded-full overflow-hidden" style={{ height: 6 }}>
-        {bars.map((b, i) => (
-          <div key={i} style={{ width: `${b.pct}%`, backgroundColor: b.color, transition: 'width 0.4s ease' }} />
-        ))}
-      </div>
-      <div className="flex justify-between mt-1">
-        {bars.map((b, i) => (
-          <span key={i} className="text-xs tabular-nums" style={{ color: b.color, opacity: 0.9, fontSize: '0.68rem' }}>
-            {b.pct}%
-          </span>
+      <div className="flex rounded-full overflow-hidden" style={{ height: 16 }}>
+        {segments.map((s, i) => (
+          <div key={i} style={{ width: `${s.pct}%`, backgroundColor: s.color, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'width 0.4s ease' }}>
+            {s.pct >= 22 && (
+              <span style={{ fontSize: '0.58rem', fontWeight: 700, color: 'rgba(255,255,255,0.85)' }}>
+                {s.pct}%
+              </span>
+            )}
+          </div>
         ))}
       </div>
     </div>
@@ -153,14 +166,9 @@ function ActivityCard({ accent: rawAccent, badge, title, subtitle, dates, rows, 
         ))
       )}
 
-      {predictions && (
-        <div className="mt-1">
-          <div className="text-xs mb-1" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.5 }}>🤖 AI 预测概率</div>
-          {predictions.map((p, i) => (
-            <PredictionMatch key={i} {...p} accent={accent} />
-          ))}
-        </div>
-      )}
+      {predictions?.map((p, i) => (
+        <PredictionMatch key={i} {...p} accent={accent} />
+      ))}
 
       {rows.map((r, i) => (
         <CountdownRow key={i} {...r} accentColor={accent} />
@@ -392,11 +400,12 @@ export default function GameInfo({ noWrap = false }) {
           accent="#4CAF50"
           badge="运营活动"
           title="世界杯竞猜"
+          subtitle="🤖 AI 概率预测"
           rows={[]}
           url="https://actff1.web.sdo.com/20240520_NewJingCai/index.html#/index"
           predictions={[
-            { homeFlag: '🇨🇦', homeName: '加拿大', awayFlag: '🇧🇦', awayName: '波黑', homeWin: 45, draw: 28, awayWin: 27 },
-            { homeFlag: '🇺🇸', homeName: '美国',   awayFlag: '🇵🇾', awayName: '巴拉圭', homeWin: 55, draw: 25, awayWin: 20 },
+            { homeFlag: '🇨🇦', homeName: '加拿大', awayFlag: '🇧🇦', awayName: '波黑',   homeWin: 45, draw: 28, awayWin: 27, deadline: T_BET_CAN_BIH },
+            { homeFlag: '🇺🇸', homeName: '美国',   awayFlag: '🇵🇾', awayName: '巴拉圭', homeWin: 55, draw: 25, awayWin: 20, deadline: T_BET_USA_PAR },
           ]}
         />
       </div>
