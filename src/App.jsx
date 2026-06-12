@@ -104,22 +104,23 @@ export default function App() {
       <Header themePref={pref} themeEffective={effective} onCycleTheme={cycle} />
       <main className="pb-28">
         <SearchBar />
-        {/* Game info: version banner + activity cards + predictions strip */}
-        <div className="max-w-7xl mx-auto px-4 mb-4">
-          <GameInfo noWrap />
-        </div>
-
-        {/* Info widgets row: news | fortune | frontline */}
         <div className="max-w-7xl mx-auto px-4 mb-6 flex flex-col lg:flex-row gap-4 items-start">
-          <div className="w-full lg:w-64 xl:w-72 flex-shrink-0">
+
+          {/* Left main column — game info stacked vertically, no cross-height comparison */}
+          <div className="flex-1 min-w-0 flex flex-col gap-3">
+            <GameInfo noWrap />
+            {/* Fortune + Frontline — 2-col grid, both h-full so they stretch equally */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <DailyFortune noWrap />
+              <FrontlineSchedule noWrap />
+            </div>
+          </div>
+
+          {/* Right sidebar — news feed only, fully independent height */}
+          <div className="w-full lg:w-72 xl:w-80 flex-shrink-0">
             <NewsBoard noWrap />
           </div>
-          <div className="flex-1 min-w-0">
-            <DailyFortune noWrap />
-          </div>
-          <div className="w-full lg:w-56 xl:w-64 flex-shrink-0">
-            <FrontlineSchedule noWrap />
-          </div>
+
         </div>
         <TabNav
           tabs={tabs}
