@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import { useCountdown } from '../hooks/useCountdown'
 import { useTheme } from '../hooks/useTheme'
 import { adaptForLight } from '../utils/color'
@@ -182,6 +182,7 @@ function CapsulePill({ accent, badge, title, open, onToggle, children }) {
 function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, rows, url, compact, open, onToggle }) {
   const bodyRef = useRef(null)
   const [bodyH, setBodyH] = useState(0)
+  const [elevated, setElevated] = useState(false)
   const { effective } = useTheme()
   const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
 
@@ -189,10 +190,20 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
     if (bodyRef.current) setBodyH(bodyRef.current.scrollHeight)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Keep z-index elevated during closing animation so panel doesn't clip behind sibling cells
+  useEffect(() => {
+    if (open) {
+      setElevated(true)
+    } else {
+      const t = setTimeout(() => setElevated(false), 450)
+      return () => clearTimeout(t)
+    }
+  }, [open])
+
   const primaryRow = rows?.[0]
 
   return (
-    <div style={{ position: 'relative', zIndex: open ? 1 : 0 }}>
+    <div style={{ position: 'relative', zIndex: elevated ? 1 : 0 }}>
       <CapsulePill accent={accent} badge={badge} title={title} open={open} onToggle={onToggle}>
         {primaryRow && (
           <span style={{ color: accent }}>
@@ -217,8 +228,9 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
           style={{
             padding: '0.875rem 1rem 1rem',
             borderRadius: CARD_R,
-            background: 'var(--md-surface-container-highest)',
-            border: `1.5px solid var(--md-outline-variant)`,
+            background: `linear-gradient(145deg, ${accent}10, var(--md-surface-container) 70%)`,
+            border: `1.5px solid ${accent}30`,
+            boxShadow: `0 8px 24px rgba(0,0,0,0.28), 0 0 0 1px ${accent}18`,
           }}
         >
           {subtitle && (
@@ -359,6 +371,7 @@ function MatchRow({ homeCode, homeName, awayCode, awayName, homeWin, draw, awayW
 function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, open, onToggle }) {
   const bodyRef = useRef(null)
   const [bodyH, setBodyH] = useState(0)
+  const [elevated, setElevated] = useState(false)
   const { effective } = useTheme()
   const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
 
@@ -366,11 +379,20 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
     if (bodyRef.current) setBodyH(bodyRef.current.scrollHeight)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    if (open) {
+      setElevated(true)
+    } else {
+      const t = setTimeout(() => setElevated(false), 450)
+      return () => clearTimeout(t)
+    }
+  }, [open])
+
   const soonestDeadline = predictions.reduce((best, p) =>
     (!best || p.deadline < best) ? p.deadline : best, null)
 
   return (
-    <div style={{ position: 'relative', zIndex: open ? 1 : 0 }}>
+    <div style={{ position: 'relative', zIndex: elevated ? 1 : 0 }}>
       <CapsulePill accent={accent} badge={badge} title={title} open={open} onToggle={onToggle}>
         <span style={{ fontSize: '0.6rem', color: 'var(--md-on-surface-variant)', opacity: 0.4, flexShrink: 0 }}>
           {predictions.length} 场
@@ -398,8 +420,9 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
           style={{
             padding: '1rem',
             borderRadius: CARD_R,
-            background: 'var(--md-surface-container-highest)',
-            border: `1.5px solid var(--md-outline-variant)`,
+            background: `linear-gradient(145deg, ${accent}10, var(--md-surface-container) 70%)`,
+            border: `1.5px solid ${accent}30`,
+            boxShadow: `0 8px 24px rgba(0,0,0,0.28), 0 0 0 1px ${accent}18`,
           }}
         >
           {/* Panel header */}
@@ -590,19 +613,31 @@ function VersionBanner({ onToggle }) {
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 export default function DashboardSection() {
-  // Single openId ensures only one capsule is open at a time
   const [openId,     setOpenId]     = useState(null)
   const [bannerOpen, setBannerOpen] = useState(false)
+  // Delayed z-index: stays elevated during closing animation so panels don't clip behind sibling cells
+  const [actsZ, setActsZ] = useState(false)
+  const actsTimerRef = useRef(null)
 
-  const toggle = (id) => setOpenId(v => v === id ? null : id)
+  const toggle = useCallback((id) => {
+    setOpenId(v => {
+      const next = v === id ? null : id
+      clearTimeout(actsTimerRef.current)
+      if (next) {
+        setActsZ(true)
+      } else {
+        actsTimerRef.current = setTimeout(() => setActsZ(false), 500)
+      }
+      return next
+    })
+  }, [])
 
   return (
     <div className="max-w-7xl mx-auto px-4 mb-6">
       <div className="bento-grid">
 
-        {/* ① Activity capsule row — full width, floating panels, one open at a time */}
-        {/* z-index elevated when any capsule is open so panels float above cells below */}
-        <div className="bento-cell bento-acts" style={{ zIndex: openId ? 50 : 0 }}>
+        {/* ① Activity capsule row — z-index delayed so closing panels don't clip behind siblings */}
+        <div className="bento-cell bento-acts" style={{ zIndex: actsZ ? 50 : 0 }}>
           <div className="acts-grid">
             <ActivityCapsule
               accent="#4DD0E1"

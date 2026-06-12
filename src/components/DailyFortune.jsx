@@ -301,7 +301,7 @@ export default function DailyFortune({ noWrap = false }) {
     <div
       className="rounded-3xl overflow-hidden"
       style={{
-        height: '196px',
+        height: '150px',
         background: 'var(--md-surface-container)',
         border: `1px solid ${accent}30`,
         display: 'flex', flexDirection: 'column',
@@ -310,7 +310,7 @@ export default function DailyFortune({ noWrap = false }) {
       {/* Header bar */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0.625rem 1.25rem 0.5rem', flexShrink: 0,
+        padding: '0.5rem 1.25rem 0.375rem', flexShrink: 0,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
           <span style={{ color: accent, fontSize: '0.72rem' }}>✦</span>
@@ -350,14 +350,14 @@ export default function DailyFortune({ noWrap = false }) {
           <div style={{
             flex: 1, minHeight: 0,
             display: 'flex', alignItems: 'center',
-            padding: '0.25rem 1.25rem 0.375rem',
-            gap: '1.125rem',
+            padding: '0.25rem 1.25rem 0.25rem',
+            gap: '1rem',
           }}>
             {/* Fortune level — expressive display type */}
             <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <div style={{
                 fontFamily: '"Noto Serif SC", serif',
-                fontSize: '2.5rem', fontWeight: 900,
+                fontSize: '2.2rem', fontWeight: 900,
                 color: accent, lineHeight: 1,
                 letterSpacing: '-0.02em',
               }}>
@@ -365,7 +365,7 @@ export default function DailyFortune({ noWrap = false }) {
               </div>
               <div style={{
                 fontSize: '0.57rem', color: 'var(--md-on-surface-variant)',
-                opacity: 0.4, marginTop: '0.2rem', letterSpacing: '0.06em',
+                opacity: 0.4, marginTop: '0.15rem', letterSpacing: '0.06em',
               }}>
                 今日运势
               </div>
@@ -374,7 +374,7 @@ export default function DailyFortune({ noWrap = false }) {
             {/* Fortune text — body secondary */}
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{
-                fontSize: '0.8rem', lineHeight: 1.7,
+                fontSize: '0.72rem', lineHeight: 1.6,
                 color: 'var(--md-on-surface)', opacity: 0.75,
                 letterSpacing: '0.02em',
                 overflow: 'hidden',
@@ -391,7 +391,7 @@ export default function DailyFortune({ noWrap = false }) {
           {/* Metadata footer — spacing only, no dividers */}
           <div style={{
             display: 'flex', justifyContent: 'space-around',
-            padding: '0.25rem 0.5rem 0.625rem',
+            padding: '0.2rem 0.5rem 0.375rem',
             flexShrink: 0,
           }}>
             {[

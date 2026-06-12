@@ -21,7 +21,7 @@ function fixLink(url) {
 function parseRSS(xml) {
   const doc = new DOMParser().parseFromString(xml, 'application/xml')
   if (doc.querySelector('parsererror')) throw new Error('RSS 解析失败')
-  return [...doc.getElementsByTagName('item')].slice(0, 4).map(item => {
+  return [...doc.getElementsByTagName('item')].slice(0, 3).map(item => {
     const title   = get(item, 'title')
     const linkEl  = item.getElementsByTagName('link')[0]
     const rawLink = linkEl?.textContent?.trim() || linkEl?.getAttribute('href') || get(item, 'guid')
@@ -94,10 +94,10 @@ export default function NewsBoard({ noWrap = false }) {
 
       {/* Loading skeleton */}
       {loading && (
-        <div>
-          {[72, 55, 65, 60].map((w, i) => (
-            <div key={i} className="px-4 py-3.5"
-              style={{ borderBottom: i < 3 ? '1px solid var(--md-outline-variant)' : 'none' }}>
+        <div className="flex-1 flex flex-col">
+          {[72, 55, 65].map((w, i) => (
+            <div key={i} className="flex-1 flex flex-col justify-center px-4"
+              style={{ borderBottom: i < 2 ? '1px solid var(--md-outline-variant)' : 'none' }}>
               <div className="skeleton rounded-md mb-2" style={{ height: '14px', width: `${w}%` }} />
               <div className="skeleton rounded-md" style={{ height: '11px', width: '52px' }} />
             </div>
@@ -121,16 +121,16 @@ export default function NewsBoard({ noWrap = false }) {
 
       {/* Items */}
       {!loading && !error && (
-        <ul>
+        <ul className="flex-1 flex flex-col">
           {items.map((item, i) => (
-            <li key={i}>
+            <li key={i} className="flex-1 flex flex-col"
+              style={{ borderBottom: i < items.length - 1 ? '1px solid var(--md-outline-variant)' : 'none' }}>
               <a
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex flex-col px-4 py-3 gap-0.5 w-full min-w-0"
+                className="flex flex-col flex-1 justify-center px-4 gap-0.5 w-full min-w-0"
                 style={{
-                  borderBottom: i < items.length - 1 ? '1px solid var(--md-outline-variant)' : 'none',
                   transition: 'background 0.15s ease',
                   overflow: 'hidden',
                 }}
