@@ -251,8 +251,22 @@ function ActivityCard({ accent: rawAccent, badge, title, subtitle, dates, rows, 
   )
 }
 
+// ── Flag image — uses flagcdn.com so flags render on all platforms including Windows
+function FlagImg({ code, name }) {
+  return (
+    <img
+      src={`https://flagcdn.com/w40/${code}.png`}
+      width="22"
+      height="16"
+      alt={name}
+      loading="lazy"
+      style={{ borderRadius: 2, display: 'block', objectFit: 'cover' }}
+    />
+  )
+}
+
 // ── World Cup: match column ───────────────────────────────────────────────────
-function MatchColumn({ homeFlag, homeName, awayFlag, awayName, homeWin, draw, awayWin, accent, deadline }) {
+function MatchColumn({ homeCode, homeName, awayCode, awayName, homeWin, draw, awayWin, accent, deadline }) {
   const t = useCountdown(deadline)
   const cd = t
     ? `${t.d > 0 ? t.d + 'd ' : ''}${String(t.h).padStart(2, '0')}:${String(t.m).padStart(2, '0')}:${String(t.s).padStart(2, '0')}`
@@ -264,10 +278,10 @@ function MatchColumn({ homeFlag, homeName, awayFlag, awayName, homeWin, draw, aw
   ]
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0.625rem 0.5rem', background: 'var(--md-surface-container)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 3, marginBottom: 3 }}>
-        <span style={{ fontSize: '1.3rem', lineHeight: 1 }}>{homeFlag}</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 3 }}>
+        <FlagImg code={homeCode} name={homeName} />
         <span style={{ fontSize: '0.45rem', fontWeight: 700, color: 'var(--md-on-surface-variant)', opacity: 0.3 }}>VS</span>
-        <span style={{ fontSize: '1.3rem', lineHeight: 1 }}>{awayFlag}</span>
+        <FlagImg code={awayCode} name={awayName} />
       </div>
       <div style={{ display: 'flex', alignItems: 'center', width: '100%', gap: 2, marginBottom: 8 }}>
         <span style={{ flex: 1, textAlign: 'right', fontSize: '0.6rem', fontWeight: 500, color: 'var(--md-on-surface)', opacity: 0.8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{homeName}</span>
@@ -603,11 +617,11 @@ export default function DashboardSection() {
             title="世界杯竞猜"
             url="https://actff1.web.sdo.com/20240520_NewJingCai/index.html#/index"
             predictions={[
-              { homeFlag: '🇨🇦', homeName: '加拿大',   awayFlag: '🇧🇦', awayName: '波黑',   homeWin: 45, draw: 28, awayWin: 27, deadline: T_BET_CAN_BIH },
-              { homeFlag: '🇺🇸', homeName: '美国',     awayFlag: '🇵🇾', awayName: '巴拉圭', homeWin: 55, draw: 25, awayWin: 20, deadline: T_BET_USA_PAR },
-              { homeFlag: '🇧🇷', homeName: '巴西',     awayFlag: '🇲🇦', awayName: '摩洛哥', homeWin: 50, draw: 30, awayWin: 20, deadline: T_BET_BRA_MAR },
-              { homeFlag: '🇭🇹', homeName: '海地',     awayFlag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', awayName: '苏格兰', homeWin: 15, draw: 25, awayWin: 60, deadline: T_BET_HAI_SCO },
-              { homeFlag: '🇦🇺', homeName: '澳大利亚', awayFlag: '🇹🇷', awayName: '土耳其', homeWin: 30, draw: 30, awayWin: 40, deadline: T_BET_AUS_TUR },
+              { homeCode: 'ca', homeName: '加拿大',   awayCode: 'ba',     awayName: '波黑',   homeWin: 45, draw: 28, awayWin: 27, deadline: T_BET_CAN_BIH },
+              { homeCode: 'us', homeName: '美国',     awayCode: 'py',     awayName: '巴拉圭', homeWin: 55, draw: 25, awayWin: 20, deadline: T_BET_USA_PAR },
+              { homeCode: 'br', homeName: '巴西',     awayCode: 'ma',     awayName: '摩洛哥', homeWin: 50, draw: 30, awayWin: 20, deadline: T_BET_BRA_MAR },
+              { homeCode: 'ht', homeName: '海地',     awayCode: 'gb-sct', awayName: '苏格兰', homeWin: 15, draw: 25, awayWin: 60, deadline: T_BET_HAI_SCO },
+              { homeCode: 'au', homeName: '澳大利亚', awayCode: 'tr',     awayName: '土耳其', homeWin: 30, draw: 30, awayWin: 40, deadline: T_BET_AUS_TUR },
             ]}
           />
         </div>

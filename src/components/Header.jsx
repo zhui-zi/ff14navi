@@ -59,11 +59,13 @@ function PaletteSwitcher({ palette, setPalette }) {
       alignItems: 'center',
       gap: '0.375rem',
       zIndex: 10,
-      padding: '0.375rem 0.5rem',
+      // Match theme toggle: same height, same frosted-glass material
+      height: '2.25rem',
+      padding: '0 0.625rem',
       borderRadius: '9999px',
-      background: 'rgba(0,0,0,0.18)',
+      background: 'rgba(255,255,255,0.12)',
       backdropFilter: 'blur(6px)',
-      border: '1px solid rgba(255,255,255,0.12)',
+      border: '1px solid rgba(255,255,255,0.20)',
     }}>
       {SWATCHES.map(s => (
         <button
