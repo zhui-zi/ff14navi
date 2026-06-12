@@ -114,7 +114,7 @@ export default function FrontlineSchedule({ noWrap = false }) {
 
         {/* Left — today */}
         <div style={{
-          flex: 3,
+          flex: 1,
           display: 'flex', flexDirection: 'row',
           alignItems: 'center', justifyContent: 'center',
           padding: '0.25rem 1rem 0.5rem 1.25rem', gap: '0.75rem',
@@ -161,33 +161,37 @@ export default function FrontlineSchedule({ noWrap = false }) {
 
         {/* Right — upcoming */}
         <div style={{
-          flex: 2, minWidth: 0,
+          flex: 1, minWidth: 0,
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
           padding: '0.25rem 1.25rem 0.5rem 0.875rem', gap: '0.45rem',
         }}>
           {nextMaps.map((m, i) => {
             const mc = adapt(m.color)
             return (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.3rem' }}>
                 <span style={{
                   fontSize: '0.6rem', color: 'var(--md-on-surface-variant)',
-                  opacity: 'var(--t-faint)', flexShrink: 0, minWidth: '1.75rem',
+                  opacity: 'var(--t-faint)', flexShrink: 0, minWidth: '1.75rem', paddingTop: '0.15rem',
                 }}>
                   {i === 0 ? '明天' : '后天'}
                 </span>
-                <span style={{ fontSize: '0.85rem', flexShrink: 0, opacity: 'var(--t-secondary)' }}>{m.icon}</span>
-                <span style={{
-                  fontSize: '0.72rem', fontWeight: 700, color: mc, opacity: 0.8,
-                  flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                }}>
-                  {m.name}
-                </span>
-                <span style={{
-                  fontSize: '0.58rem', color: 'var(--md-on-surface-variant)',
-                  opacity: 'var(--t-faint)', flexShrink: 0,
-                }}>
-                  {m.mode}
-                </span>
+                <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', minWidth: 0 }}>
+                    <span style={{ fontSize: '0.8rem', flexShrink: 0, opacity: 'var(--t-secondary)' }}>{m.icon}</span>
+                    <span style={{
+                      fontSize: '0.72rem', fontWeight: 700, color: mc,
+                      flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                    }}>
+                      {m.name}
+                    </span>
+                  </div>
+                  <span style={{
+                    fontSize: '0.58rem', color: 'var(--md-on-surface-variant)',
+                    opacity: 'var(--t-faint)',
+                  }}>
+                    {m.mode}
+                  </span>
+                </div>
               </div>
             )
           })}

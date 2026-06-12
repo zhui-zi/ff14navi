@@ -585,7 +585,7 @@ function VersionBanner({ open, onToggle }) {
       }}>
         <div
           className="flex items-center gap-4 px-5 cursor-pointer rounded-3xl"
-          style={{ minHeight: '5rem', padding: '1.125rem 1.25rem', transition: `filter 0.18s ${EASE}` }}
+          style={{ minHeight: '6.5rem', padding: '1.5rem 1.25rem', transition: `filter 0.18s ${EASE}` }}
           onClick={toggle}
           onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.08)')}
           onMouseLeave={e => (e.currentTarget.style.filter = '')}
