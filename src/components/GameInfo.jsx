@@ -345,6 +345,14 @@ export default function GameInfo({ noWrap = false }) {
           ]}
           url="https://actff1.web.sdo.com/20241130_GoldTrial/#/index"
         />
+
+        <ActivityCard
+          accent="#4CAF50"
+          badge="运营活动"
+          title="世界杯竞猜"
+          rows={[]}
+          url="https://actff1.web.sdo.com/20240520_NewJingCai/index.html#/index"
+        />
       </div>
     </div>
   )
