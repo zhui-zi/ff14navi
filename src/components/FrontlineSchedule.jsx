@@ -114,10 +114,11 @@ export default function FrontlineSchedule({ noWrap = false }) {
 
         {/* Left — today */}
         <div style={{
+          flex: 3,
           display: 'flex', flexDirection: 'column',
           alignItems: 'center', justifyContent: 'center',
           padding: '0.25rem 1rem 0.5rem 1.25rem', gap: '0.3rem',
-          flexShrink: 0,
+          minWidth: 0,
         }}>
           <div style={{
             width: '2.375rem', height: '2.375rem',
@@ -156,7 +157,7 @@ export default function FrontlineSchedule({ noWrap = false }) {
 
         {/* Right — upcoming */}
         <div style={{
-          flex: 1, minWidth: 0,
+          flex: 2, minWidth: 0,
           display: 'flex', flexDirection: 'column', justifyContent: 'center',
           padding: '0.25rem 1.25rem 0.5rem 0.875rem', gap: '0.45rem',
         }}>

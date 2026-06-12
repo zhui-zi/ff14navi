@@ -137,11 +137,10 @@ function CapsulePill({ accent, badge, title, open, onToggle, children }) {
       }}
     >
       {/* Row 1: dot + title + toggle */}
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
         <span style={{
           width: 7, height: 7, borderRadius: '50%',
           background: accent, flexShrink: 0, opacity: 0.85,
-          marginTop: '0.35rem',
         }} />
         <span style={{
           flex: 1, minWidth: 0,
@@ -161,7 +160,7 @@ function CapsulePill({ accent, badge, title, open, onToggle, children }) {
 
       {/* Row 2: badge + secondary info (injected via children) */}
       <div style={{
-        display: 'flex', alignItems: 'center', gap: '0.375rem',
+        display: 'flex', alignItems: 'baseline', gap: '0.375rem',
         paddingLeft: '1.1875rem', marginTop: '0.2rem',
       }}>
         <span style={{
@@ -235,26 +234,69 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
             boxShadow: panelShadow,
           }}
         >
+          {/* Subtitle chip */}
           {subtitle && (
-            <p style={{
-              fontSize: '0.8rem', lineHeight: 1.6,
-              color: 'var(--md-on-surface-variant)', opacity: 0.75,
-              margin: '0 0 0.5rem',
+            <div style={{
+              display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
+              padding: '0.2rem 0.625rem 0.2rem 0.45rem',
+              borderRadius: '0.5rem',
+              background: `${accent}14`,
+              border: `1px solid ${accent}30`,
+              marginBottom: '0.625rem',
             }}>
-              {subtitle}
-            </p>
+              <span style={{ color: accent, fontSize: '0.58rem', opacity: 0.85, lineHeight: 1 }}>◈</span>
+              <span style={{
+                fontSize: '0.74rem', fontWeight: 500,
+                color: 'var(--md-on-surface-variant)',
+              }}>
+                {subtitle}
+              </span>
+            </div>
           )}
 
-          <div style={{ marginBottom: dates?.length ? '0.25rem' : 0 }}>
-            {dates?.map((d, i) => (
-              <p key={i} style={{
-                fontSize: '0.75rem', lineHeight: 1.65,
-                color: 'var(--md-on-surface-variant)', opacity: 0.55, margin: 0,
-              }}>
-                {d}
-              </p>
-            ))}
-          </div>
+          {/* Info block — each item auto-parsed: "label：value" gets label+value columns, otherwise bullet */}
+          {dates?.length > 0 && (
+            <div style={{
+              borderRadius: '0.625rem',
+              background: `${accent}08`,
+              border: `1px solid ${accent}1E`,
+              padding: '0.5rem 0.625rem',
+              marginBottom: rows?.length ? '0.5rem' : 0,
+              display: 'flex', flexDirection: 'column', gap: '0.3rem',
+            }}>
+              {dates.map((d, i) => {
+                const sep = d.indexOf('：')
+                const hasLabel = sep > 0 && sep <= 8
+                return (
+                  <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.45rem' }}>
+                    {hasLabel ? (
+                      <span style={{
+                        fontSize: '0.63rem', fontWeight: 600,
+                        color: accent, opacity: 0.8,
+                        flexShrink: 0, lineHeight: 1.55,
+                        minWidth: '4.25rem',
+                      }}>
+                        {d.slice(0, sep)}
+                      </span>
+                    ) : (
+                      <span style={{
+                        color: accent, opacity: 0.4, fontSize: '0.55rem',
+                        flexShrink: 0, lineHeight: 1, paddingTop: '0.25rem',
+                      }}>
+                        ▸
+                      </span>
+                    )}
+                    <span style={{
+                      fontSize: '0.72rem', lineHeight: 1.55,
+                      color: 'var(--md-on-surface-variant)', opacity: 0.8,
+                    }}>
+                      {hasLabel ? d.slice(sep + 1) : d}
+                    </span>
+                  </div>
+                )
+              })}
+            </div>
+          )}
 
           {rows?.map((r, i) => (
             <CountdownRow key={i} {...r} accentColor={accent} />
