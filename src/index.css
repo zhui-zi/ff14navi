@@ -203,15 +203,9 @@ body {
 }
 
 /* ── Header crystal glyph ── */
-@keyframes crystal-float {
-  0%, 100% { opacity: 0.90; transform: scale(1)    rotate(0deg); }
-  35%       { opacity: 0.45; transform: scale(0.80) rotate(12deg); }
-  70%       { opacity: 0.78; transform: scale(1.12) rotate(-7deg); }
-}
 .crystal-glyph {
   display: inline-block;
-  animation: crystal-float 5.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  transform-origin: center;
+  opacity: 0.90;
 }
 
 /* ── Search bar focus glow ── */
@@ -334,7 +328,6 @@ body {
 
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
-  .crystal-glyph  { animation: none !important; }
   .title-gradient { animation: none !important; background-size: 100% 100% !important; }
   .category-block { animation: none !important; }
   .theme-icon     { animation: none !important; }
