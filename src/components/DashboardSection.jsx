@@ -194,6 +194,8 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
   const { effective } = useTheme()
   const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
   const panelShadow = effective === 'light' ? 'none' : '0 8px 28px rgba(0,0,0,0.38)'
+  const wasTouchRef = useRef(false)
+  const touchResetRef = useRef(null)
 
   useEffect(() => {
     if (bodyRef.current) setBodyH(bodyRef.current.scrollHeight)
@@ -214,8 +216,10 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
   return (
     <div
       style={{ position: 'relative', zIndex: elevated ? 1 : 0, display: 'flex', flexDirection: 'column' }}
-      onMouseEnter={onHoverOpen}
-      onMouseLeave={onHoverClose}
+      onTouchStart={() => { clearTimeout(touchResetRef.current); wasTouchRef.current = true }}
+      onTouchEnd={() => { touchResetRef.current = setTimeout(() => { wasTouchRef.current = false }, 600) }}
+      onMouseEnter={() => { if (!wasTouchRef.current) onHoverOpen?.() }}
+      onMouseLeave={() => { if (!wasTouchRef.current) onHoverClose?.() }}
     >
       <CapsulePill accent={accent} badge={badge} title={title} open={open} onToggle={onToggle}>
         {primaryRow && (
@@ -437,6 +441,8 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
   const { effective } = useTheme()
   const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
   const panelShadow = effective === 'light' ? 'none' : '0 8px 28px rgba(0,0,0,0.38)'
+  const wasTouchRef = useRef(false)
+  const touchResetRef = useRef(null)
 
   useEffect(() => {
     if (bodyRef.current) setBodyH(bodyRef.current.scrollHeight)
@@ -457,8 +463,10 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
   return (
     <div
       style={{ position: 'relative', zIndex: elevated ? 1 : 0, display: 'flex', flexDirection: 'column' }}
-      onMouseEnter={onHoverOpen}
-      onMouseLeave={onHoverClose}
+      onTouchStart={() => { clearTimeout(touchResetRef.current); wasTouchRef.current = true }}
+      onTouchEnd={() => { touchResetRef.current = setTimeout(() => { wasTouchRef.current = false }, 600) }}
+      onMouseEnter={() => { if (!wasTouchRef.current) onHoverOpen?.() }}
+      onMouseLeave={() => { if (!wasTouchRef.current) onHoverClose?.() }}
     >
       <CapsulePill accent={accent} badge={badge} title={title} open={open} onToggle={onToggle}>
         <span style={{ fontSize: '0.6rem', color: 'var(--md-on-surface-variant)', opacity: 'var(--t-faint)', flexShrink: 0 }}>
