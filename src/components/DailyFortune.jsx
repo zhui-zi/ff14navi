@@ -299,27 +299,31 @@ export default function DailyFortune({ noWrap = false }) {
 
   const content = (
     <div
-      className="rounded-3xl overflow-hidden h-full flex flex-col"
+      className="rounded-3xl overflow-hidden"
       style={{
+        height: '196px',
         background: 'var(--md-surface-container)',
-        border: `1px solid ${accent}55`,
-        position: 'relative',
+        border: `1px solid ${accent}44`,
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-
       {/* Header bar */}
-      <div
-        className="relative flex items-center justify-between px-5 py-2.5"
-        style={{ borderBottom: `1px solid ${accent}30` }}
-      >
-        <div className="flex items-center gap-2">
-          <span style={{ color: 'var(--md-primary)', opacity: 0.7, fontSize: '0.75rem' }}>✦</span>
-          <span className="text-xs font-semibold tracking-widest uppercase"
-            style={{ color: 'var(--md-on-surface-variant)', letterSpacing: '0.15em' }}>
-            每日运势
-          </span>
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        padding: '0.625rem 1.25rem 0.5rem',
+        borderBottom: `1px solid ${accent}20`,
+        flexShrink: 0,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+          <span style={{ color: accent, fontSize: '0.72rem', opacity: 0.8 }}>✦</span>
+          <span style={{
+            fontSize: '0.68rem', fontWeight: 700,
+            letterSpacing: '0.12em', textTransform: 'uppercase',
+            color: 'var(--md-on-surface-variant)', opacity: 0.65,
+          }}>每日运势</span>
         </div>
-        <span className="text-xs" style={{ color: 'var(--md-outline)', opacity: 0.6 }}>
+        <span style={{ fontSize: '0.6rem', color: 'var(--md-outline)', opacity: 0.45 }}>
           {fortune.dateStr}
         </span>
       </div>
@@ -327,92 +331,109 @@ export default function DailyFortune({ noWrap = false }) {
       {!revealed ? (
         /* ── Unrevealed state ── */
         <button
-          className="relative flex-1 w-full flex flex-col items-center justify-center gap-3 px-5"
-          style={{ background: 'transparent', border: 'none', cursor: 'pointer', transition: 'background 0.2s' }}
-          onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.04)'}
-          onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+          style={{
+            flex: 1, width: '100%', display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center', gap: '0.625rem',
+            background: 'transparent', border: 'none', cursor: 'pointer',
+            transition: 'background 0.2s',
+          }}
+          onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.04)')}
+          onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
           onClick={handleReveal}
         >
-          <div style={{ fontSize: '2.4rem', lineHeight: 1 }}>🔮</div>
-          <div className="text-sm font-medium" style={{ color: 'var(--md-on-surface-variant)' }}>
+          <div style={{ fontSize: '2.2rem', lineHeight: 1 }}>🔮</div>
+          <div style={{ fontSize: '0.8rem', fontWeight: 500, color: 'var(--md-on-surface-variant)', opacity: 0.7 }}>
             点击占卜今日运势
           </div>
         </button>
       ) : (
         /* ── Revealed state ── */
-        <div className="relative flex flex-col flex-1">
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
 
-          {/* Main body — fortune level + text */}
-          <div className="flex gap-0 flex-1">
+          {/* Main row: tonal level hero + fortune text */}
+          <div style={{ display: 'flex', flex: 1, minHeight: 0 }}>
 
-            {/* Fortune level column */}
-            <div
-              className="flex-shrink-0 flex flex-col items-center justify-center gap-1 px-5 py-4"
-              style={{ borderRight: `1px solid ${accent}22`, minWidth: '5.5rem' }}
-            >
-              <div
-                className="font-black leading-none"
-                style={{
-                  fontSize: '2.8rem',
-                  color: accent,
-                  textShadow: `0 0 32px ${accent}60`,
-                  fontFamily: '"Noto Serif SC", serif',
-                  letterSpacing: '-0.02em',
-                }}
-              >
+            {/* Fortune level — tonal gradient column */}
+            <div style={{
+              flexShrink: 0, width: '4.75rem',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+              background: `linear-gradient(160deg, ${accent}28 0%, ${accent}10 100%)`,
+              borderRight: `1px solid ${accent}20`,
+              padding: '0.5rem 0',
+            }}>
+              <div style={{
+                fontFamily: '"Noto Serif SC", serif',
+                fontSize: '2rem', fontWeight: 900,
+                color: accent,
+                textShadow: `0 0 20px ${accent}60`,
+                lineHeight: 1,
+              }}>
                 {fortune.level.label}
               </div>
-              <div className="text-xs font-medium tracking-widest" style={{ color: accent, opacity: 0.55 }}>
+              <div style={{
+                fontSize: '0.57rem', fontWeight: 700,
+                color: accent, opacity: 0.5,
+                marginTop: '0.3rem', letterSpacing: '0.06em',
+              }}>
                 今日运势
               </div>
             </div>
 
-            {/* Fortune text column */}
-            <div className="flex-1 min-w-0 flex items-center px-5 py-4">
-              <p
-                className="leading-loose"
-                style={{
-                  fontSize: '0.875rem',
-                  color: 'var(--md-on-surface)',
-                  opacity: 0.88,
-                  letterSpacing: '0.02em',
-                }}
-              >
+            {/* Fortune text */}
+            <div style={{
+              flex: 1, minWidth: 0, display: 'flex', alignItems: 'center',
+              padding: '0.625rem 1rem',
+            }}>
+              <p style={{
+                fontSize: '0.8rem', lineHeight: 1.75,
+                color: 'var(--md-on-surface)', opacity: 0.85,
+                letterSpacing: '0.02em',
+                overflow: 'hidden',
+                display: '-webkit-box',
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: 'vertical',
+                margin: 0,
+              }}>
                 {fortune.text}
               </p>
             </div>
           </div>
 
           {/* Footer metadata bar */}
-          <div
-            className="grid grid-cols-4"
-            style={{ borderTop: `1px solid ${accent}20`, background: `${accent}08` }}
-          >
+          <div style={{
+            display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+            borderTop: `1px solid ${accent}20`,
+            background: `${accent}08`,
+            flexShrink: 0,
+          }}>
             {[
               { label: '幸运职业', value: fortune.job.name, sub: ROLE_LABEL[fortune.job.role], color: adapt(fortune.job.color) },
               { label: '幸运副本', value: fortune.dungeon, color: accent },
               { label: '今日宜',   value: fortune.activity, color: 'var(--md-on-surface-variant)' },
               { label: '幸运数字', value: String(fortune.luckyNum), color: accent, mono: true },
             ].map((item, i) => (
-              <div
-                key={i}
-                className="flex flex-col items-center justify-center gap-0.5 py-2.5 px-2"
-                style={{ borderRight: i < 3 ? `1px solid ${accent}15` : 'none' }}
-              >
-                <div className="text-xs" style={{ color: 'var(--md-outline)', opacity: 0.55, fontSize: '0.65rem', letterSpacing: '0.05em' }}>
+              <div key={i} style={{
+                display: 'flex', flexDirection: 'column',
+                alignItems: 'center', justifyContent: 'center',
+                gap: '0.2rem', padding: '0.5rem 0.375rem',
+                borderRight: i < 3 ? `1px solid ${accent}15` : 'none',
+              }}>
+                <div style={{
+                  fontSize: '0.6rem', color: 'var(--md-outline)', opacity: 0.5,
+                  letterSpacing: '0.04em',
+                }}>
                   {item.label}
                 </div>
-                <div
-                  className="font-semibold leading-tight text-center"
-                  style={{
-                    fontSize: '0.75rem',
-                    color: item.color,
-                    fontFamily: item.mono ? 'ui-monospace, "Cascadia Code", monospace' : undefined,
-                  }}
-                >
+                <div style={{
+                  fontSize: '0.72rem', fontWeight: 600, lineHeight: 1.2,
+                  color: item.color, textAlign: 'center',
+                  fontFamily: item.mono ? 'ui-monospace, "Cascadia Code", monospace' : undefined,
+                  overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                  maxWidth: '100%',
+                }}>
                   {item.value}
                   {item.sub && (
-                    <span style={{ opacity: 0.55, fontSize: '0.6rem', marginLeft: '0.2rem' }}>
+                    <span style={{ opacity: 0.55, fontSize: '0.57rem', marginLeft: '0.15rem' }}>
                       {item.sub}
                     </span>
                   )}
