@@ -43,6 +43,42 @@ function FeedbackButton() {
   )
 }
 
+const SWATCHES = [
+  { key: 'purple',  color: '#CEB4F8', label: '浅紫' },
+  { key: 'gold',    color: '#F4C161', label: '耀金' },
+  { key: 'crystal', color: '#7BE7FF', label: '水晶蓝' },
+]
+
+function PaletteSwitcher({ palette, setPalette }) {
+  return (
+    <div style={{
+      position: 'absolute',
+      top: '1rem',
+      right: 'calc(1rem + 2.25rem + 0.5rem)',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.375rem',
+      zIndex: 10,
+      padding: '0.375rem 0.5rem',
+      borderRadius: '9999px',
+      background: 'rgba(0,0,0,0.18)',
+      backdropFilter: 'blur(6px)',
+      border: '1px solid rgba(255,255,255,0.12)',
+    }}>
+      {SWATCHES.map(s => (
+        <button
+          key={s.key}
+          className={`palette-swatch${palette === s.key ? ' active' : ''}`}
+          title={s.label}
+          aria-label={`切换至${s.label}主题`}
+          onClick={() => setPalette(s.key)}
+          style={{ background: s.color }}
+        />
+      ))}
+    </div>
+  )
+}
+
 function ThemeToggle({ pref, effective, cycle }) {
   const ICON  = { auto: '✦', light: '☀', dark: '☽' }
   const LABEL = { auto: '跟随系统', light: '浅色模式', dark: '深色模式' }
@@ -76,13 +112,13 @@ function ThemeToggle({ pref, effective, cycle }) {
   )
 }
 
-export default function Header({ themePref = 'auto', themeEffective = 'dark', onCycleTheme }) {
+export default function Header({ themePref = 'auto', themeEffective = 'dark', onCycleTheme, palette = 'purple', onSetPalette }) {
   return (
     <div
       className="relative select-none"
       style={{ minHeight: 'clamp(140px, 22vw, 200px)', background: 'var(--header-bg)' }}
     >
-      {/* Ambient glows — overflow-hidden only here */}
+      {/* Ambient glows */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-32 -left-24 w-96 h-96 rounded-full"
           style={{ background: `radial-gradient(circle, var(--header-glow-1) 0%, transparent 65%)` }} />
@@ -90,12 +126,12 @@ export default function Header({ themePref = 'auto', themeEffective = 'dark', on
           style={{ background: `radial-gradient(circle, var(--header-glow-2) 0%, transparent 65%)` }} />
         <div className="absolute top-0 -right-16 w-80 h-80 rounded-full"
           style={{ background: `radial-gradient(circle, var(--header-glow-3) 0%, transparent 65%)` }} />
-        {/* Liquid Glass specular strip at bottom */}
         <div className="absolute bottom-0 left-0 right-0 h-px"
           style={{ background: 'var(--header-strip)' }} />
       </div>
 
       <ThemeToggle pref={themePref} effective={themeEffective} cycle={onCycleTheme} />
+      {onSetPalette && <PaletteSwitcher palette={palette} setPalette={onSetPalette} />}
       <FeedbackButton />
 
       {/* Content */}

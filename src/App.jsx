@@ -2,13 +2,10 @@ import { useState, useCallback, useEffect } from 'react'
 import { useTheme } from './hooks/useTheme'
 import Header from './components/Header'
 import SearchBar from './components/SearchBar'
-import GameInfo from './components/GameInfo'
+import DashboardSection from './components/DashboardSection'
 import TabNav from './components/TabNav'
 import LinksSection from './components/LinksSection'
 import AddLinkModal from './components/AddLinkModal'
-import NewsBoard from './components/NewsBoard'
-import DailyFortune from './components/DailyFortune'
-import FrontlineSchedule from './components/FrontlineSchedule'
 import { tabs, categories } from './data/links'
 
 const STORAGE_KEY   = 'ff14navi-custom-links'
@@ -36,9 +33,6 @@ function loadCatOrder() {
     if (Array.isArray(saved) && saved.length > 0) {
       const missing = allIds.filter(id => !saved.includes(id))
       if (missing.length === 0) return saved
-      // For each new category, search backward through its natural neighbors to find
-      // the closest preceding sibling already in the saved order, then insert after it.
-      // This keeps user-customized ordering intact while slotting new categories naturally.
       const result = [...saved]
       for (const id of missing) {
         const nat = allIds.indexOf(id)
@@ -56,7 +50,7 @@ function loadCatOrder() {
 }
 
 export default function App() {
-  const { pref, effective, cycle } = useTheme()
+  const { pref, effective, cycle, palette, setPalette } = useTheme()
   const [activeTab, setActiveTab]     = useState('all')
   const [customLinks, setCustomLinks] = useState(loadCustomLinks)
   const [showModal, setShowModal]     = useState(false)
@@ -75,16 +69,14 @@ export default function App() {
     localStorage.setItem(CAT_ORDER_KEY, JSON.stringify(catOrder))
   }, [catOrder])
 
-  // Sync catOrder if new categories were added since last visit
   useEffect(() => {
     const allIds = categories.map(c => c.id)
     const hasMissing = allIds.some(id => !catOrder.includes(id))
     if (hasMissing) setCatOrder(loadCatOrder())
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const [isSorting,  setIsSorting]  = useState(false)
-  const [linkSort,   setLinkSort]   = useState('default')
-  // Reset sort mode on tab switch so each tab always opens in its default view
+  const [isSorting, setIsSorting] = useState(false)
+  const [linkSort,  setLinkSort]  = useState('default')
   useEffect(() => { setIsSorting(false) }, [activeTab])
 
   const resetCatOrder = useCallback(() => {
@@ -101,27 +93,16 @@ export default function App() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--md-surface)', color: 'var(--md-on-surface)' }}>
-      <Header themePref={pref} themeEffective={effective} onCycleTheme={cycle} />
+      <Header
+        themePref={pref}
+        themeEffective={effective}
+        onCycleTheme={cycle}
+        palette={palette}
+        onSetPalette={setPalette}
+      />
       <main className="pb-28">
         <SearchBar />
-        <div className="max-w-7xl mx-auto px-4 mb-6 flex flex-col lg:flex-row gap-4 items-start">
-
-          {/* Left main column — game info stacked vertically, no cross-height comparison */}
-          <div className="flex-1 min-w-0 flex flex-col gap-3">
-            <GameInfo noWrap />
-            {/* Fortune + Frontline — 2-col grid, both h-full so they stretch equally */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <DailyFortune noWrap />
-              <FrontlineSchedule noWrap />
-            </div>
-          </div>
-
-          {/* Right sidebar — news feed only, fully independent height */}
-          <div className="w-full lg:w-72 xl:w-80 flex-shrink-0">
-            <NewsBoard noWrap />
-          </div>
-
-        </div>
+        <DashboardSection />
         <TabNav
           tabs={tabs}
           activeTab={activeTab}

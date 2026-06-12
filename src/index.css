@@ -34,6 +34,9 @@
   --body-glow-2: rgba(244,193, 97,0.08);
   --body-glow-3: rgba( 77,208,225,0.06);
 
+  --glow-color:        rgba(206,180,248,0.16);
+  --glow-color-strong: rgba(206,180,248,0.35);
+
   color-scheme: dark;
 }
 
@@ -216,7 +219,7 @@ body {
   transition: box-shadow 0.3s ease;
 }
 .search-bar-wrap:focus-within {
-  box-shadow: 0 0 32px rgba(206, 180, 248, 0.16), 0 0 8px rgba(206, 180, 248, 0.08);
+  box-shadow: 0 0 32px var(--glow-color), 0 0 8px var(--glow-color);
 }
 
 /* ── Search button ── */
@@ -227,7 +230,7 @@ body {
 }
 .search-btn:hover {
   transform: translateY(-1px) scale(1.04);
-  box-shadow: 0 4px 16px rgba(206, 180, 248, 0.35);
+  box-shadow: 0 4px 16px var(--glow-color-strong);
   filter: brightness(1.1);
 }
 .search-btn:active {
@@ -363,3 +366,230 @@ body {
 .chip-blog   { background: rgba(63,81,181,0.18);   color: #9FA8DA; }
 
 .chip-navy   { background: rgba(26,58,106,0.55); color: #7EB8F7; }
+
+/* ══════════════════════════════════════════════
+   Palette: 耀金 (Gold)
+   ══════════════════════════════════════════════ */
+:root.palette-gold {
+  --md-primary:                  #F4C161;
+  --md-on-primary:               #3D2A00;
+  --md-primary-container:        #5C3F00;
+  --md-on-primary-container:     #FFDEA8;
+  --md-tertiary:                 #C8E7A0;
+  --md-on-tertiary:              #1B3200;
+  --md-surface:                  #18130A;
+  --md-on-surface:               #ECE1D7;
+  --md-surface-container:        #241D12;
+  --md-surface-container-high:   #302616;
+  --md-surface-container-highest:#3D311F;
+  --md-on-surface-variant:       #CFC5BB;
+  --md-outline:                  #9C9083;
+  --md-outline-variant:          #4D4540;
+
+  --header-bg:       linear-gradient(135deg,#1A1000 0%,#2D1F05 45%,#150F00 100%);
+  --header-glow-1:   rgba(244,193, 97,0.22);
+  --header-glow-2:   rgba(255,220,140,0.15);
+  --header-glow-3:   rgba(200,231,160,0.12);
+  --header-subtitle: #A0906A;
+  --header-crystal:  #F4C161;
+  --header-strip:    linear-gradient(90deg, transparent 0%, rgba(244,193,97,0.40) 30%, rgba(200,231,160,0.20) 60%, transparent 100%);
+
+  --body-glow-1: rgba(244,193, 97,0.12);
+  --body-glow-2: rgba(200,231,160,0.08);
+  --body-glow-3: rgba(255,165,  0,0.06);
+
+  --glow-color:        rgba(244,193, 97,0.18);
+  --glow-color-strong: rgba(244,193, 97,0.40);
+}
+:root.palette-gold.light {
+  color-scheme: light;
+  --md-primary:                  #7B5800;
+  --md-on-primary:               #FFFFFF;
+  --md-primary-container:        #FFDEA8;
+  --md-on-primary-container:     #261900;
+  --md-tertiary:                 #456600;
+  --md-on-tertiary:              #FFFFFF;
+  --md-surface:                  #FFF8F0;
+  --md-on-surface:               #1E1B16;
+  --md-surface-container:        #F2EDE3;
+  --md-surface-container-high:   #EDE8DD;
+  --md-surface-container-highest:#E7E2D8;
+  --md-on-surface-variant:       #4A3F34;
+  --md-outline:                  #675C50;
+  --md-outline-variant:          #D0C5B8;
+
+  --header-bg:       linear-gradient(135deg,#FFF0D5 0%,#FFE4A8 45%,#FFF4DC 100%);
+  --header-glow-1:   rgba(123, 88,  0,0.12);
+  --header-glow-2:   rgba(180,130,  0,0.08);
+  --header-glow-3:   rgba(  0,150, 80,0.06);
+  --header-subtitle: #7B6A50;
+  --header-crystal:  #7B5800;
+  --header-strip:    linear-gradient(90deg, transparent 0%, rgba(123,88,0,0.22) 30%, rgba(0,150,80,0.12) 60%, transparent 100%);
+
+  --body-glow-1: rgba(123, 88,  0,0.07);
+  --body-glow-2: rgba(180,130,  0,0.05);
+  --body-glow-3: rgba(  0,120, 60,0.04);
+
+  --glow-color:        rgba(123, 88,  0,0.14);
+  --glow-color-strong: rgba(123, 88,  0,0.30);
+}
+
+/* ══════════════════════════════════════════════
+   Palette: 水晶蓝 (Crystal Blue)
+   ══════════════════════════════════════════════ */
+:root.palette-crystal {
+  --md-primary:                  #7BE7FF;
+  --md-on-primary:               #003542;
+  --md-primary-container:        #004E5E;
+  --md-on-primary-container:     #B8EEFF;
+  --md-tertiary:                 #BBC4FF;
+  --md-on-tertiary:              #252E6D;
+  --md-surface:                  #080F14;
+  --md-on-surface:               #DCE4E8;
+  --md-surface-container:        #111C22;
+  --md-surface-container-high:   #1C272E;
+  --md-surface-container-highest:#27323A;
+  --md-on-surface-variant:       #B2CBD3;
+  --md-outline:                  #82999F;
+  --md-outline-variant:          #3D4E53;
+
+  --header-bg:       linear-gradient(135deg,#040D14 0%,#092233 45%,#071521 100%);
+  --header-glow-1:   rgba(123,231,255,0.20);
+  --header-glow-2:   rgba(187,196,255,0.15);
+  --header-glow-3:   rgba(  0,200,230,0.12);
+  --header-subtitle: #6A8FA0;
+  --header-crystal:  #7BE7FF;
+  --header-strip:    linear-gradient(90deg, transparent 0%, rgba(123,231,255,0.35) 30%, rgba(187,196,255,0.20) 60%, transparent 100%);
+
+  --body-glow-1: rgba(123,231,255,0.10);
+  --body-glow-2: rgba(187,196,255,0.08);
+  --body-glow-3: rgba( 77,208,225,0.06);
+
+  --glow-color:        rgba(123,231,255,0.16);
+  --glow-color-strong: rgba(123,231,255,0.35);
+}
+:root.palette-crystal.light {
+  color-scheme: light;
+  --md-primary:                  #006879;
+  --md-on-primary:               #FFFFFF;
+  --md-primary-container:        #AAECFF;
+  --md-on-primary-container:     #001F26;
+  --md-tertiary:                 #3A5BC7;
+  --md-on-tertiary:              #FFFFFF;
+  --md-surface:                  #F0FBFF;
+  --md-on-surface:               #171D1F;
+  --md-surface-container:        #DFF4F9;
+  --md-surface-container-high:   #D9EFF4;
+  --md-surface-container-highest:#D3E9EF;
+  --md-on-surface-variant:       #3F5560;
+  --md-outline:                  #5D7A85;
+  --md-outline-variant:          #BFD4DC;
+
+  --header-bg:       linear-gradient(135deg,#D8F5FF 0%,#B8EEFF 45%,#D0F2FF 100%);
+  --header-glow-1:   rgba(  0,104,121,0.12);
+  --header-glow-2:   rgba(  0,140,160,0.08);
+  --header-glow-3:   rgba( 50,  0,180,0.06);
+  --header-subtitle: #5A7380;
+  --header-crystal:  #006879;
+  --header-strip:    linear-gradient(90deg, transparent 0%, rgba(0,104,121,0.22) 30%, rgba(50,0,180,0.12) 60%, transparent 100%);
+
+  --body-glow-1: rgba(  0,104,121,0.07);
+  --body-glow-2: rgba(  0,140,160,0.05);
+  --body-glow-3: rgba( 50,  0,180,0.04);
+
+  --glow-color:        rgba(  0,104,121,0.12);
+  --glow-color-strong: rgba(  0,104,121,0.28);
+}
+
+/* ══════════════════════════════════════════════
+   Bento Grid  —  Responsive CSS Grid skeleton
+   ══════════════════════════════════════════════ */
+@keyframes bento-spring-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+.bento-cell {
+  animation: bento-spring-in 0.52s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.bento-cell:nth-child(1) { animation-delay:   0ms; }
+.bento-cell:nth-child(2) { animation-delay:  55ms; }
+.bento-cell:nth-child(3) { animation-delay: 110ms; }
+.bento-cell:nth-child(4) { animation-delay: 155ms; }
+.bento-cell:nth-child(5) { animation-delay: 195ms; }
+.bento-cell:nth-child(6) { animation-delay: 238ms; }
+.bento-cell:nth-child(7) { animation-delay: 275ms; }
+.bento-cell:nth-child(8) { animation-delay: 310ms; }
+
+.bento-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "banner"
+    "c1"
+    "c2"
+    "c3"
+    "wc"
+    "fort"
+    "front"
+    "news";
+}
+@media (min-width: 640px) {
+  .bento-grid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "banner banner"
+      "c1     c2"
+      "c3     wc"
+      "fort   front"
+      "news   news";
+  }
+}
+@media (min-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: 1fr 1fr 1fr 272px;
+    grid-template-rows: auto auto auto 1fr;
+    grid-template-areas:
+      "banner banner banner news"
+      "c1     c2     c3     news"
+      "wc     wc     wc     news"
+      "fort   fort   front  news";
+  }
+}
+.bento-banner { grid-area: banner; overflow: visible; }
+.bento-c1     { grid-area: c1; }
+.bento-c2     { grid-area: c2; }
+.bento-c3     { grid-area: c3; }
+.bento-wc     { grid-area: wc; }
+.bento-fort   { grid-area: fort; }
+.bento-front  { grid-area: front; }
+.bento-news   { grid-area: news; }
+
+/* Palette swatch buttons */
+.palette-swatch {
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.22s cubic-bezier(0.34,1.56,0.64,1),
+              border-color 0.15s ease,
+              box-shadow 0.15s ease;
+  flex-shrink: 0;
+}
+.palette-swatch:hover {
+  transform: scale(1.25);
+}
+.palette-swatch.active {
+  border-color: rgba(255,255,255,0.70);
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.20);
+  transform: scale(1.15);
+}
+:root.light .palette-swatch.active {
+  border-color: rgba(0,0,0,0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bento-cell    { animation: none !important; }
+  .palette-swatch { transition: none !important; }
+}
