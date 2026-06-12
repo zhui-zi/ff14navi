@@ -21,7 +21,7 @@ function fixLink(url) {
 function parseRSS(xml) {
   const doc = new DOMParser().parseFromString(xml, 'application/xml')
   if (doc.querySelector('parsererror')) throw new Error('RSS 解析失败')
-  return [...doc.getElementsByTagName('item')].slice(0, 3).map(item => {
+  return [...doc.getElementsByTagName('item')].slice(0, 4).map(item => {
     const title   = get(item, 'title')
     const linkEl  = item.getElementsByTagName('link')[0]
     const rawLink = linkEl?.textContent?.trim() || linkEl?.getAttribute('href') || get(item, 'guid')
@@ -54,7 +54,7 @@ export default function NewsBoard({ noWrap = false }) {
 
   const board = (
     <div
-      className="rounded-2xl overflow-hidden h-full flex flex-col"
+      className="rounded-3xl overflow-hidden h-full flex flex-col"
       style={{
         background: 'var(--md-surface-container)',
         border: '1px solid var(--md-primary-container)',

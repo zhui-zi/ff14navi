@@ -534,7 +534,7 @@ body {
   .bento-grid {
     grid-template-columns: 1fr 272px;
     grid-template-areas:
-      "acts   news"
+      "acts   acts"
       "banner news"
       "bottom news";
   }

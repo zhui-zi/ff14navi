@@ -198,7 +198,7 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
 
       {/* Detail panel — slides below the pill, border-radius: 16px stays fixed */}
       <div style={{
-        maxHeight: open ? `${bodyH || 400}px` : 0,
+        maxHeight: open ? `${(bodyH || 400) + 4}px` : 0,
         overflow: 'hidden',
         transition: `max-height ${open ? `0.42s ${SPRING}` : `0.26s ${EASE}`}`,
       }}>
@@ -454,7 +454,7 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions }) 
 
       {/* Detail panel */}
       <div style={{
-        maxHeight: open ? `${bodyH || 400}px` : 0,
+        maxHeight: open ? `${(bodyH || 400) + 4}px` : 0,
         overflow: 'hidden',
         transition: `max-height ${open ? `0.42s ${SPRING}` : `0.26s ${EASE}`}`,
       }}>

@@ -299,7 +299,7 @@ export default function DailyFortune({ noWrap = false }) {
 
   const content = (
     <div
-      className="rounded-2xl overflow-hidden h-full flex flex-col"
+      className="rounded-3xl overflow-hidden h-full flex flex-col"
       style={{
         background: 'var(--md-surface-container)',
         border: `1px solid ${accent}55`,
