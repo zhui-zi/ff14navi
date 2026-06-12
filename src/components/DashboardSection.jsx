@@ -11,8 +11,8 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
   new Date(Date.UTC(y, mo - 1, d, h - 8, mi))
 
 const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
-const T_TRIAL_CH_END  = cst(2026, 6,  7, 23, 59)
-const T_TRIAL_REG_END = cst(2026, 6, 11, 13,  0)
+const T_TRIAL_CH_END  = cst(2026, 6, 14, 23, 59)
+const T_TRIAL_REG_END = cst(2026, 6, 18, 13,  0)
 const T_BET_CAN_BIH   = cst(2026, 6, 13,  3,  0)
 const T_BET_USA_PAR   = cst(2026, 6, 13,  9,  0)
 const T_BET_BRA_MAR   = cst(2026, 6, 14,  6,  0)
@@ -110,6 +110,7 @@ function CapsulePill({ accent, badge, title, open, onToggle, children }) {
       onClick={onToggle}
       onKeyDown={e => e.key === 'Enter' && onToggle()}
       style={{
+        flex: 1,
         padding: '0.55rem 0.625rem 0.55rem 0.875rem',
         borderRadius: CARD_R,
         background: `linear-gradient(135deg, ${accent}1A 0%, var(--md-surface-container) 60%)`,
@@ -185,6 +186,7 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
   const [elevated, setElevated] = useState(false)
   const { effective } = useTheme()
   const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
+  const panelShadow = effective === 'light' ? '0 4px 14px rgba(0,0,0,0.12)' : '0 8px 28px rgba(0,0,0,0.38)'
 
   useEffect(() => {
     if (bodyRef.current) setBodyH(bodyRef.current.scrollHeight)
@@ -203,7 +205,7 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
   const primaryRow = rows?.[0]
 
   return (
-    <div style={{ position: 'relative', zIndex: elevated ? 1 : 0 }}>
+    <div style={{ position: 'relative', zIndex: elevated ? 1 : 0, display: 'flex', flexDirection: 'column' }}>
       <CapsulePill accent={accent} badge={badge} title={title} open={open} onToggle={onToggle}>
         {primaryRow && (
           <span style={{ color: accent }}>
@@ -230,7 +232,7 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
             borderRadius: CARD_R,
             background: 'var(--md-surface-container-high)',
             border: `1.5px solid ${accent}44`,
-            boxShadow: '0 8px 28px rgba(0,0,0,0.38)',
+            boxShadow: panelShadow,
           }}
         >
           {subtitle && (
@@ -374,6 +376,7 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
   const [elevated, setElevated] = useState(false)
   const { effective } = useTheme()
   const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
+  const panelShadow = effective === 'light' ? '0 4px 14px rgba(0,0,0,0.12)' : '0 8px 28px rgba(0,0,0,0.38)'
 
   useEffect(() => {
     if (bodyRef.current) setBodyH(bodyRef.current.scrollHeight)
@@ -392,7 +395,7 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
     (!best || p.deadline < best) ? p.deadline : best, null)
 
   return (
-    <div style={{ position: 'relative', zIndex: elevated ? 1 : 0 }}>
+    <div style={{ position: 'relative', zIndex: elevated ? 1 : 0, display: 'flex', flexDirection: 'column' }}>
       <CapsulePill accent={accent} badge={badge} title={title} open={open} onToggle={onToggle}>
         <span style={{ fontSize: '0.6rem', color: 'var(--md-on-surface-variant)', opacity: 0.4, flexShrink: 0 }}>
           {predictions.length} 场
@@ -422,7 +425,7 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
             borderRadius: CARD_R,
             background: 'var(--md-surface-container-high)',
             border: `1.5px solid ${accent}44`,
-            boxShadow: '0 8px 28px rgba(0,0,0,0.38)',
+            boxShadow: panelShadow,
           }}
         >
           {/* Panel header */}
@@ -499,6 +502,8 @@ const PATCH_751_NOTES = [
 // ── Version banner ────────────────────────────────────────────────────────────
 function VersionBanner({ onToggle }) {
   const [open, setOpen] = useState(false)
+  const { effective } = useTheme()
+  const panelShadow = effective === 'light' ? '0 4px 16px rgba(0,0,0,0.12)' : '0 12px 40px rgba(0,0,0,0.50)'
 
   const toggle = () => {
     const next = !open
@@ -562,7 +567,7 @@ function VersionBanner({ onToggle }) {
         borderRadius: CARD_R,
         background: 'var(--md-surface-container-highest)',
         border: '1.5px solid var(--md-primary)',
-        boxShadow: '0 12px 40px rgba(0,0,0,0.50)',
+        boxShadow: panelShadow,
         overflow: 'hidden',
         opacity: open ? 1 : 0,
         transform: open ? 'translateY(0) scale(1)' : 'translateY(-10px) scale(0.97)',
@@ -660,7 +665,12 @@ export default function DashboardSection() {
               accent="#F4C161"
               badge="季节活动"
               title="金碟嘉年华 2026"
-              dates={['5月29日 16:00 – 6月24日 22:59']}
+              subtitle="任务接取地点：乌尔达哈"
+              dates={[
+                '5月29日 16:00 – 6月24日 22:59',
+                '活动奖励：宠物 獭獭先生、时尚配饰 獭獭先生背包',
+                '家具：金蝶嘉年华海报2025、金蝶嘉年华海报2025-2、金蝶嘉年华桌面海报2025-2',
+              ]}
               rows={[{ label: '距结束', target: T_GOLD_SAU_END, expired: '已结束' }]}
               url="https://actff1.web.sdo.com/project/20260519the_make_it_rain_campaign/86z02yp9k67o/index.html"
               open={openId === 'gold-sau'}
@@ -669,8 +679,13 @@ export default function DashboardSection() {
             <ActivityCapsule
               accent="#FFAB76"
               badge="运营活动"
-              title="黄金的试炼 第66期"
-              subtitle="修行古刹星导寺"
+              title="黄金的试炼 第67期"
+              subtitle="幻龙残骸密约之塔"
+              dates={[
+                '副本挑战期：6月12日 13:00 – 6月14日 23:59',
+                '试炼登记期：6月12日 13:00 – 6月18日 13:00',
+                '幸运奖励抽取：6月18日 13:00',
+              ]}
               rows={[
                 { label: '挑战期', target: T_TRIAL_CH_END,  expired: '已截止' },
                 { label: '登记期', target: T_TRIAL_REG_END, expired: '已截止' },
