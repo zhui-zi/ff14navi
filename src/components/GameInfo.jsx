@@ -61,7 +61,40 @@ function CountdownRow({ label, target, expired, accentColor }) {
   )
 }
 
-function ActivityCard({ accent: rawAccent, badge, title, subtitle, dates, rows, url, compact }) {
+function PredictionMatch({ homeFlag, homeName, awayFlag, awayName, homeWin, draw, awayWin, accent }) {
+  const bars = [
+    { label: homeName, pct: homeWin, color: accent },
+    { label: '平局',   pct: draw,    color: '#94A3B8' },
+    { label: awayName, pct: awayWin, color: '#F87171' },
+  ]
+  return (
+    <div className="mt-2.5">
+      <div className="flex items-center justify-between mb-1.5">
+        <span className="text-xs font-medium" style={{ color: 'var(--md-on-surface)', opacity: 0.85 }}>
+          {homeFlag} {homeName}
+        </span>
+        <span className="text-xs opacity-40" style={{ color: 'var(--md-on-surface)' }}>vs</span>
+        <span className="text-xs font-medium" style={{ color: 'var(--md-on-surface)', opacity: 0.85 }}>
+          {awayFlag} {awayName}
+        </span>
+      </div>
+      <div className="flex rounded-full overflow-hidden" style={{ height: 6 }}>
+        {bars.map((b, i) => (
+          <div key={i} style={{ width: `${b.pct}%`, backgroundColor: b.color, transition: 'width 0.4s ease' }} />
+        ))}
+      </div>
+      <div className="flex justify-between mt-1">
+        {bars.map((b, i) => (
+          <span key={i} className="text-xs tabular-nums" style={{ color: b.color, opacity: 0.9, fontSize: '0.68rem' }}>
+            {b.pct}%
+          </span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function ActivityCard({ accent: rawAccent, badge, title, subtitle, dates, rows, url, compact, predictions }) {
   const { effective } = useTheme()
   const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
   return (
@@ -118,6 +151,15 @@ function ActivityCard({ accent: rawAccent, badge, title, subtitle, dates, rows, 
             {d}
           </div>
         ))
+      )}
+
+      {predictions && (
+        <div className="mt-1">
+          <div className="text-xs mb-1" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.5 }}>🤖 AI 预测概率</div>
+          {predictions.map((p, i) => (
+            <PredictionMatch key={i} {...p} accent={accent} />
+          ))}
+        </div>
       )}
 
       {rows.map((r, i) => (
