@@ -302,24 +302,21 @@ export default function DailyFortune({ noWrap = false }) {
       className="rounded-3xl overflow-hidden"
       style={{
         height: '196px',
-        background: `radial-gradient(ellipse 100% 90% at -5% 55%, ${accent}20 0%, var(--md-surface-container) 55%)`,
+        background: 'var(--md-surface-container)',
         border: `1px solid ${accent}30`,
-        display: 'flex',
-        flexDirection: 'column',
+        display: 'flex', flexDirection: 'column',
       }}
     >
       {/* Header bar */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0.625rem 1.25rem 0.5rem',
-        flexShrink: 0,
+        padding: '0.625rem 1.25rem 0.5rem', flexShrink: 0,
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-          <span style={{ color: accent, fontSize: '0.72rem', opacity: 0.8 }}>✦</span>
+          <span style={{ color: accent, fontSize: '0.72rem' }}>✦</span>
           <span style={{
-            fontSize: '0.68rem', fontWeight: 700,
-            letterSpacing: '0.12em', textTransform: 'uppercase',
-            color: 'var(--md-on-surface-variant)', opacity: 0.65,
+            fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.12em',
+            textTransform: 'uppercase', color: 'var(--md-on-surface-variant)', opacity: 0.65,
           }}>每日运势</span>
         </div>
         <span style={{ fontSize: '0.6rem', color: 'var(--md-outline)', opacity: 0.45 }}>
@@ -349,37 +346,39 @@ export default function DailyFortune({ noWrap = false }) {
         /* ── Revealed state ── */
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
 
-          {/* Main row: fortune level (primary) + text (secondary) — no column blocks */}
+          {/* Main row: display-level level text + body text */}
           <div style={{
-            display: 'flex', alignItems: 'center', flex: 1, minHeight: 0,
-            padding: '0.375rem 1.25rem 0.375rem',
-            gap: '0.875rem',
+            flex: 1, minHeight: 0,
+            display: 'flex', alignItems: 'center',
+            padding: '0.25rem 1.25rem 0.375rem',
+            gap: '1rem',
           }}>
-            {/* Fortune level — dominant, typography-driven, no background block */}
-            <div style={{ flexShrink: 0 }}>
+            {/* Fortune level — expressive display type, no background */}
+            <div style={{ flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
               <div style={{
                 fontFamily: '"Noto Serif SC", serif',
                 fontSize: '2.5rem', fontWeight: 900,
-                color: accent,
-                lineHeight: 1,
-                textShadow: `0 0 30px ${accent}88, 0 0 10px ${accent}55`,
+                color: accent, lineHeight: 1,
                 letterSpacing: '-0.02em',
               }}>
                 {fortune.level.label}
               </div>
               <div style={{
-                fontSize: '0.58rem', color: accent, opacity: 0.45,
-                marginTop: '0.25rem', letterSpacing: '0.08em', textAlign: 'center',
+                fontSize: '0.57rem', color: 'var(--md-on-surface-variant)',
+                opacity: 0.4, marginTop: '0.2rem', letterSpacing: '0.06em',
               }}>
                 今日运势
               </div>
             </div>
 
-            {/* Fortune text — secondary, muted */}
+            {/* Thin structural rule — M3 outline-variant, not a color block */}
+            <div style={{ width: 1, alignSelf: 'stretch', background: 'var(--md-outline-variant)', flexShrink: 0 }} />
+
+            {/* Fortune text — body secondary */}
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{
-                fontSize: '0.8rem', lineHeight: 1.75,
-                color: 'var(--md-on-surface)', opacity: 0.72,
+                fontSize: '0.8rem', lineHeight: 1.7,
+                color: 'var(--md-on-surface)', opacity: 0.75,
                 letterSpacing: '0.02em',
                 overflow: 'hidden',
                 display: '-webkit-box',
@@ -392,10 +391,10 @@ export default function DailyFortune({ noWrap = false }) {
             </div>
           </div>
 
-          {/* Footer metadata — tertiary, subtle */}
+          {/* Metadata footer */}
           <div style={{
             display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
-            borderTop: `1px solid ${accent}15`,
+            borderTop: '1px solid var(--md-outline-variant)',
             flexShrink: 0,
           }}>
             {[
@@ -408,20 +407,16 @@ export default function DailyFortune({ noWrap = false }) {
                 display: 'flex', flexDirection: 'column',
                 alignItems: 'center', justifyContent: 'center',
                 gap: '0.2rem', padding: '0.5rem 0.375rem',
-                borderRight: i < 3 ? `1px solid ${accent}12` : 'none',
+                borderRight: i < 3 ? '1px solid var(--md-outline-variant)' : 'none',
               }}>
-                <div style={{
-                  fontSize: '0.6rem', color: 'var(--md-outline)', opacity: 0.45,
-                  letterSpacing: '0.04em',
-                }}>
+                <div style={{ fontSize: '0.6rem', color: 'var(--md-outline)', opacity: 0.45, letterSpacing: '0.04em' }}>
                   {item.label}
                 </div>
                 <div style={{
                   fontSize: '0.72rem', fontWeight: 600, lineHeight: 1.2,
                   color: item.color, textAlign: 'center',
                   fontFamily: item.mono ? 'ui-monospace, "Cascadia Code", monospace' : undefined,
-                  overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                  maxWidth: '100%',
+                  overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '100%',
                 }}>
                   {item.value}
                   {item.sub && (
