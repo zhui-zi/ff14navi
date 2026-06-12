@@ -6,7 +6,7 @@ import NewsBoard from './NewsBoard'
 import DailyFortune from './DailyFortune'
 import FrontlineSchedule from './FrontlineSchedule'
 
-// ── CST time helpers ─────────────────────────────────────────────────────────
+// ── CST time helpers ──────────────────────────────────────────────────────────
 const cst = (y, mo, d, h = 0, mi = 0) =>
   new Date(Date.UTC(y, mo - 1, d, h - 8, mi))
 
@@ -19,15 +19,14 @@ const T_BET_BRA_MAR   = cst(2026, 6, 14,  6,  0)
 const T_BET_HAI_SCO   = cst(2026, 6, 14,  9,  0)
 const T_BET_AUS_TUR   = cst(2026, 6, 14, 12,  0)
 
-// Spring easing shared across all container morphs
 const SPRING = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
 const EASE   = 'cubic-bezier(0.4, 0, 0.2, 1)'
 
-// ── Countdown ────────────────────────────────────────────────────────────────
-function Countdown({ target, expired, accentColor }) {
+// ── Compact inline countdown — shown inside pill ──────────────────────────────
+function CountdownCompact({ target, expired }) {
   const t = useCountdown(target)
   if (!t) return (
-    <span style={{ fontSize: '0.75rem', color: 'var(--md-on-surface-variant)', opacity: 0.5 }}>{expired}</span>
+    <span style={{ opacity: 0.35, fontSize: '0.7rem', fontWeight: 500 }}>{expired}</span>
   )
   const hh = String(t.h).padStart(2, '0')
   const mm = String(t.m).padStart(2, '0')
@@ -35,193 +34,205 @@ function Countdown({ target, expired, accentColor }) {
   return (
     <span className="tabular-nums" style={{
       fontFamily: 'ui-monospace, "Cascadia Code", monospace',
-      fontWeight: 700, fontSize: '1.15rem', color: accentColor, whiteSpace: 'nowrap',
+      fontSize: '0.72rem', fontWeight: 700,
     }}>
-      {t.d > 0 && <span style={{ marginRight: 3 }}>{t.d}<span style={{ fontSize: '0.7rem', fontWeight: 500, marginLeft: 1 }}>d</span></span>}
-      {hh}:{mm}:{ss}
+      {t.d > 0 ? `${t.d}d ` : ''}{hh}:{mm}:{ss}
     </span>
   )
 }
 
+// ── Full countdown row — shown inside detail panel ────────────────────────────
 function CountdownRow({ label, target, expired, accentColor }) {
+  const t = useCountdown(target)
   return (
     <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginTop: '0.5rem' }}>
-      {label && <span style={{ fontSize: '0.72rem', color: 'var(--md-on-surface-variant)', opacity: 0.6, flexShrink: 0 }}>{label}</span>}
-      <Countdown target={target} expired={expired} accentColor={accentColor} />
+      {label && (
+        <span style={{ fontSize: '0.72rem', color: 'var(--md-on-surface-variant)', opacity: 0.6, flexShrink: 0 }}>
+          {label}
+        </span>
+      )}
+      {t ? (
+        <span className="tabular-nums" style={{
+          fontFamily: 'ui-monospace, "Cascadia Code", monospace',
+          fontWeight: 700, fontSize: '1.15rem', color: accentColor, whiteSpace: 'nowrap',
+        }}>
+          {t.d > 0 && (
+            <span style={{ marginRight: 3 }}>
+              {t.d}<span style={{ fontSize: '0.7rem', fontWeight: 500, marginLeft: 1 }}>d</span>
+            </span>
+          )}
+          {String(t.h).padStart(2, '0')}:{String(t.m).padStart(2, '0')}:{String(t.s).padStart(2, '0')}
+        </span>
+      ) : (
+        <span style={{ fontSize: '0.75rem', color: 'var(--md-on-surface-variant)', opacity: 0.5 }}>{expired}</span>
+      )}
     </div>
   )
 }
 
-// ── Activity Card — Progressive Disclosure + Container Morph ─────────────────
-//
-// Collapsed: pill (border-radius: 9999px), shows accent dot + badge + title + "+"
-// Expanded:  M3 Expressive asymmetric card (28px 28px 28px 8px), body slides in
-//
-// The pill→card morph uses a spring transition on border-radius.
-// Body height is measured once on mount so max-height transitions precisely.
-function ActivityCard({ accent: rawAccent, badge, title, subtitle, dates, rows, url, compact }) {
+// ── Shared toggle button (+/×) ────────────────────────────────────────────────
+function ToggleBtn({ open, accent, onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={open ? '收起' : '展开'}
+      style={{
+        flexShrink: 0,
+        width: '1.5rem', height: '1.5rem',
+        borderRadius: '50%',
+        border: `1.5px solid ${accent}55`,
+        background: open ? `${accent}2A` : `${accent}14`,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        cursor: 'pointer',
+        color: accent,
+        fontSize: '1rem', fontWeight: 700, lineHeight: 1,
+        transition: [`transform 0.4s ${SPRING}`, `background 0.2s ${EASE}`].join(', '),
+        transform: open ? 'rotate(45deg)' : 'rotate(0deg)',
+      }}
+    >
+      +
+    </button>
+  )
+}
+
+// ── Activity Capsule ──────────────────────────────────────────────────────────
+// Pill stays pill always (border-radius: 9999px, no morphing).
+// Detail panel is a separate element that slides below the pill.
+function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, rows, url, compact }) {
   const [open, setOpen] = useState(false)
   const bodyRef = useRef(null)
   const [bodyH, setBodyH] = useState(0)
   const { effective } = useTheme()
   const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
 
-  // Measure the natural height of the body content once, before it's clipped
   useEffect(() => {
     if (bodyRef.current) setBodyH(bodyRef.current.scrollHeight)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const PILL_R   = '9999px'
-  // Bottom-right corner is deliberately small — creates an "origami fold" feel
-  const CARD_R   = '28px 28px 28px 8px'
+  const primaryRow = rows?.[0]
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      aria-expanded={open}
-      onClick={() => !open && setOpen(true)}
-      onKeyDown={e => e.key === 'Enter' && !open && setOpen(true)}
-      style={{
-        background: `linear-gradient(155deg, ${accent}1E 0%, var(--md-surface-container) 50%)`,
-        border: `1.5px solid ${open ? accent + 'BB' : accent + '44'}`,
-        borderRadius: open ? CARD_R : PILL_R,
-        boxShadow: open
-          ? `0 8px 32px ${accent}2E, 0 2px 8px ${accent}18, inset 0 1px 0 rgba(255,255,255,0.06)`
-          : 'none',
-        overflow: 'hidden',
-        cursor: open ? 'default' : 'pointer',
-        outline: 'none',
-        transition: [
-          `border-radius 0.46s ${SPRING}`,
-          `border-color 0.22s ${EASE}`,
-          `box-shadow 0.3s ${EASE}`,
-        ].join(', '),
-      }}
-      onMouseEnter={e => {
-        if (!open) {
-          e.currentTarget.style.borderColor = `${accent}88`
-          e.currentTarget.style.boxShadow = `0 4px 16px ${accent}22`
-        }
-      }}
-      onMouseLeave={e => {
-        if (!open) {
-          e.currentTarget.style.borderColor = `${accent}44`
-          e.currentTarget.style.boxShadow = ''
-        }
-      }}
-    >
-      {/* ── Pill header — always visible ── */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '0.5rem',
-        padding: open ? '0.875rem 1rem 0.5rem' : '0.625rem 0.875rem',
-        transition: `padding 0.32s ${EASE}`,
-        minHeight: 48,
-      }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
 
-        {/* Accent dot — pulses slightly when expanded */}
+      {/* Pill — shape never changes */}
+      <div
+        role="button"
+        tabIndex={0}
+        aria-expanded={open}
+        onClick={() => setOpen(v => !v)}
+        onKeyDown={e => e.key === 'Enter' && setOpen(v => !v)}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          padding: '0.5rem 0.625rem 0.5rem 0.75rem',
+          borderRadius: '9999px',
+          background: `linear-gradient(135deg, ${accent}1A 0%, var(--md-surface-container) 60%)`,
+          border: `1.5px solid ${open ? accent + 'AA' : accent + '40'}`,
+          boxShadow: open ? `0 2px 12px ${accent}20` : 'none',
+          cursor: 'pointer',
+          outline: 'none',
+          minHeight: 44,
+          userSelect: 'none',
+          transition: [`border-color 0.2s ${EASE}`, `box-shadow 0.2s ${EASE}`].join(', '),
+        }}
+        onMouseEnter={e => {
+          if (!open) {
+            e.currentTarget.style.borderColor = `${accent}77`
+            e.currentTarget.style.boxShadow = `0 2px 8px ${accent}18`
+          }
+        }}
+        onMouseLeave={e => {
+          if (!open) {
+            e.currentTarget.style.borderColor = `${accent}40`
+            e.currentTarget.style.boxShadow = 'none'
+          }
+        }}
+      >
         <span style={{
-          width: 8, height: 8, borderRadius: '50%',
-          background: accent, flexShrink: 0, opacity: 0.9,
-          transform: open ? 'scale(1.4)' : 'scale(1)',
-          transition: `transform 0.36s ${SPRING}`,
+          width: 7, height: 7, borderRadius: '50%',
+          background: accent, flexShrink: 0, opacity: 0.85,
         }} />
 
-        {/* Badge */}
         <span style={{
-          fontSize: '0.65rem', fontWeight: 700,
-          color: accent, opacity: 0.7,
-          letterSpacing: '0.06em', flexShrink: 0,
+          fontSize: '0.62rem', fontWeight: 700,
+          color: accent, opacity: 0.65,
+          letterSpacing: '0.05em', flexShrink: 0,
           textTransform: 'uppercase',
         }}>
           {badge}
         </span>
 
-        {/* Title */}
         <span style={{
           flex: 1, minWidth: 0,
           fontFamily: '"Noto Serif SC", serif',
           fontWeight: 700,
-          fontSize: open ? '1rem' : '0.875rem',
+          fontSize: '0.875rem',
           color: 'var(--md-on-surface)',
-          whiteSpace: open ? 'normal' : 'nowrap',
+          whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          transition: `font-size 0.28s ${EASE}`,
         }}>
           {title}
         </span>
 
-        {/* Toggle button: + rotates to × */}
-        <button
+        {primaryRow && (
+          <span style={{ color: accent, flexShrink: 0 }}>
+            <CountdownCompact target={primaryRow.target} expired={primaryRow.expired} />
+          </span>
+        )}
+
+        <ToggleBtn
+          open={open} accent={accent}
           onClick={e => { e.stopPropagation(); setOpen(v => !v) }}
-          aria-label={open ? '收起' : '展开'}
-          style={{
-            flexShrink: 0,
-            width: '1.5rem', height: '1.5rem',
-            borderRadius: '50%',
-            border: `1.5px solid ${accent}55`,
-            background: open ? `${accent}2A` : `${accent}14`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer',
-            color: accent,
-            fontSize: '1rem', fontWeight: 700, lineHeight: 1,
-            transition: [
-              `transform 0.4s ${SPRING}`,
-              `background 0.2s ${EASE}`,
-            ].join(', '),
-            transform: open ? 'rotate(45deg)' : 'rotate(0deg)',
-          }}
-        >
-          +
-        </button>
+        />
       </div>
 
-      {/* ── Expandable body — slides in/out with measured max-height ── */}
+      {/* Detail panel — slides below the pill, border-radius: 16px stays fixed */}
       <div style={{
         maxHeight: open ? `${bodyH || 400}px` : 0,
         overflow: 'hidden',
-        // Expand slightly slower (spring), collapse faster (ease-in)
-        transition: `max-height ${open ? `0.46s ${SPRING}` : `0.28s ${EASE}`}`,
+        transition: `max-height ${open ? `0.42s ${SPRING}` : `0.26s ${EASE}`}`,
       }}>
-        <div ref={bodyRef} style={{ padding: '0 1rem 1rem' }}>
-
+        <div
+          ref={bodyRef}
+          style={{
+            padding: '0.875rem 1rem 1rem',
+            borderRadius: 16,
+            background: `linear-gradient(155deg, ${accent}12 0%, var(--md-surface-container) 60%)`,
+            border: `1.5px solid ${accent}44`,
+          }}
+        >
           {subtitle && (
             <p style={{
               fontSize: '0.8rem', lineHeight: 1.6,
               color: 'var(--md-on-surface-variant)', opacity: 0.75,
-              marginBottom: '0.5rem', margin: '0 0 0.5rem',
+              margin: '0 0 0.5rem',
             }}>
               {subtitle}
             </p>
           )}
 
-          {compact ? (
-            <div style={{ marginBottom: '0.25rem' }}>
-              {dates?.map((d, i) => (
-                <p key={i} style={{ fontSize: '0.75rem', lineHeight: 1.65, color: 'var(--md-on-surface-variant)', opacity: 0.55, margin: 0 }}>{d}</p>
-              ))}
-            </div>
-          ) : (
-            <div style={{ marginBottom: dates?.length ? '0.125rem' : 0 }}>
-              {dates?.map((d, i) => (
-                <p key={i} style={{ fontSize: '0.75rem', lineHeight: 1.65, color: 'var(--md-on-surface-variant)', opacity: 0.55, margin: 0 }}>{d}</p>
-              ))}
-            </div>
-          )}
+          <div style={{ marginBottom: dates?.length ? '0.25rem' : 0 }}>
+            {dates?.map((d, i) => (
+              <p key={i} style={{
+                fontSize: '0.75rem', lineHeight: 1.65,
+                color: 'var(--md-on-surface-variant)', opacity: 0.55,
+                margin: 0,
+              }}>
+                {d}
+              </p>
+            ))}
+          </div>
 
           {rows?.map((r, i) => (
             <CountdownRow key={i} {...r} accentColor={accent} />
           ))}
 
-          {/* Navigation chip — only meaningful after expansion */}
           <a
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={e => e.stopPropagation()}
             style={{
               display: 'inline-flex', alignItems: 'center', gap: '0.25rem',
               marginTop: '0.875rem',
@@ -251,22 +262,19 @@ function ActivityCard({ accent: rawAccent, badge, title, subtitle, dates, rows, 
   )
 }
 
-// ── Flag image — uses flagcdn.com so flags render on all platforms including Windows
+// ── Flag image ────────────────────────────────────────────────────────────────
 function FlagImg({ code, name }) {
   return (
     <img
       src={`https://flagcdn.com/w40/${code}.png`}
-      width="22"
-      height="16"
-      alt={name}
-      loading="lazy"
+      width="22" height="16" alt={name} loading="lazy"
       style={{ borderRadius: 2, display: 'block', objectFit: 'cover' }}
     />
   )
 }
 
-// ── World Cup: match column ───────────────────────────────────────────────────
-function MatchColumn({ homeCode, homeName, awayCode, awayName, homeWin, draw, awayWin, accent, deadline }) {
+// ── Single match card — inside the world cup detail panel ─────────────────────
+function MatchCard({ homeCode, homeName, awayCode, awayName, homeWin, draw, awayWin, accent, deadline }) {
   const t = useCountdown(deadline)
   const cd = t
     ? `${t.d > 0 ? t.d + 'd ' : ''}${String(t.h).padStart(2, '0')}:${String(t.m).padStart(2, '0')}:${String(t.s).padStart(2, '0')}`
@@ -277,46 +285,63 @@ function MatchColumn({ homeCode, homeName, awayCode, awayName, homeWin, draw, aw
     { pct: awayWin, color: '#F87171' },
   ]
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0.625rem 0.5rem', background: 'var(--md-surface-container)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 3 }}>
-        <FlagImg code={homeCode} name={homeName} />
-        <span style={{ fontSize: '0.45rem', fontWeight: 700, color: 'var(--md-on-surface-variant)', opacity: 0.3 }}>VS</span>
-        <FlagImg code={awayCode} name={awayName} />
+    <div style={{
+      padding: '0.625rem',
+      borderRadius: 12,
+      background: 'var(--md-surface-container-high)',
+      display: 'flex', flexDirection: 'column', gap: 6,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 4, flex: 1, minWidth: 0 }}>
+          <FlagImg code={homeCode} name={homeName} />
+          <span style={{ fontSize: '0.65rem', fontWeight: 600, color: 'var(--md-on-surface)', opacity: 0.8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {homeName}
+          </span>
+        </div>
+        <span style={{ fontSize: '0.5rem', fontWeight: 700, color: 'var(--md-on-surface-variant)', opacity: 0.25, flexShrink: 0 }}>VS</span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 4, flex: 1, minWidth: 0 }}>
+          <span style={{ fontSize: '0.65rem', fontWeight: 600, color: 'var(--md-on-surface)', opacity: 0.8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+            {awayName}
+          </span>
+          <FlagImg code={awayCode} name={awayName} />
+        </div>
       </div>
-      <div style={{ display: 'flex', alignItems: 'center', width: '100%', gap: 2, marginBottom: 8 }}>
-        <span style={{ flex: 1, textAlign: 'right', fontSize: '0.6rem', fontWeight: 500, color: 'var(--md-on-surface)', opacity: 0.8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{homeName}</span>
-        <span style={{ opacity: 0.2, fontSize: '0.45rem', flexShrink: 0 }}>·</span>
-        <span style={{ flex: 1, fontSize: '0.6rem', fontWeight: 500, color: 'var(--md-on-surface)', opacity: 0.8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{awayName}</span>
-      </div>
-      <div style={{ width: '100%', display: 'flex', borderRadius: 9999, overflow: 'hidden', height: 11, marginBottom: 4 }}>
+
+      <div style={{ display: 'flex', borderRadius: 9999, overflow: 'hidden', height: 10 }}>
         {segments.map((s, i) => (
           <div key={i} style={{
             width: `${s.pct}%`, backgroundColor: s.color,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            transition: `width 0.5s ${SPRING}`,
           }}>
-            {s.pct >= 27 && <span style={{ fontSize: '0.45rem', fontWeight: 700, color: 'rgba(255,255,255,0.85)' }}>{s.pct}%</span>}
+            {s.pct >= 27 && (
+              <span style={{ fontSize: '0.42rem', fontWeight: 700, color: 'rgba(255,255,255,0.85)' }}>
+                {s.pct}%
+              </span>
+            )}
           </div>
         ))}
       </div>
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         {segments.map((s, i) => (
           <span key={i} style={{ fontSize: '0.55rem', fontWeight: 600, color: s.color }}>{s.pct}%</span>
         ))}
       </div>
+
       <span style={{
         fontSize: '0.55rem', fontFamily: 'ui-monospace, monospace', fontWeight: 600,
-        color: t ? accent : 'var(--md-on-surface-variant)', opacity: t ? 0.8 : 0.35,
-      }}>⏱ {cd}</span>
+        color: t ? accent : 'var(--md-on-surface-variant)',
+        opacity: t ? 0.75 : 0.3,
+        textAlign: 'center',
+      }}>
+        ⏱ {cd}
+      </span>
     </div>
   )
 }
 
-// ── Predictions strip — Progressive Disclosure ────────────────────────────────
-// Collapsed: single pill row (badge + title + match count + link)
-// Expanded:  container morphs to card, match grid slides in
-// Uses fold-at-top-right asymmetric radius for visual variety
-function PredictionsStrip({ accent: rawAccent, badge, title, url, predictions }) {
+// ── World Cup Capsule — same pill pattern as ActivityCapsule ──────────────────
+function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions }) {
   const [open, setOpen] = useState(false)
   const bodyRef = useRef(null)
   const [bodyH, setBodyH] = useState(0)
@@ -327,115 +352,152 @@ function PredictionsStrip({ accent: rawAccent, badge, title, url, predictions })
     if (bodyRef.current) setBodyH(bodyRef.current.scrollHeight)
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Asymmetric: fold at top-right — complements the ActivityCard folds
-  const CARD_R = '28px 8px 28px 28px'
+  const soonestDeadline = predictions.reduce((best, p) =>
+    (!best || p.deadline < best) ? p.deadline : best, null)
 
   return (
-    <div
-      style={{
-        border: `1.5px solid ${open ? accent + 'BB' : accent + '44'}`,
-        borderRadius: open ? CARD_R : '9999px',
-        overflow: 'hidden',
-        boxShadow: open ? `0 8px 32px ${accent}2E, 0 2px 8px ${accent}14` : 'none',
-        transition: [
-          `border-radius 0.46s ${SPRING}`,
-          `border-color 0.22s ${EASE}`,
-          `box-shadow 0.3s ${EASE}`,
-        ].join(', '),
-      }}
-    >
-      {/* Header — always visible as pill */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+
+      {/* Pill */}
       <div
+        role="button"
+        tabIndex={0}
+        aria-expanded={open}
         onClick={() => setOpen(v => !v)}
+        onKeyDown={e => e.key === 'Enter' && setOpen(v => !v)}
         style={{
-          display: 'flex', alignItems: 'center', gap: '0.5rem',
-          padding: open ? '0.875rem 1rem 0.5rem' : '0.625rem 0.875rem',
-          background: `linear-gradient(90deg, ${accent}1E 0%, var(--md-surface-container) 55%)`,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          padding: '0.5rem 0.625rem 0.5rem 0.75rem',
+          borderRadius: '9999px',
+          background: `linear-gradient(135deg, ${accent}1A 0%, var(--md-surface-container) 60%)`,
+          border: `1.5px solid ${open ? accent + 'AA' : accent + '40'}`,
+          boxShadow: open ? `0 2px 12px ${accent}20` : 'none',
           cursor: 'pointer',
-          transition: `padding 0.32s ${EASE}`,
-          minHeight: 48,
+          outline: 'none',
+          minHeight: 44,
+          userSelect: 'none',
+          transition: [`border-color 0.2s ${EASE}`, `box-shadow 0.2s ${EASE}`].join(', '),
+        }}
+        onMouseEnter={e => {
+          if (!open) {
+            e.currentTarget.style.borderColor = `${accent}77`
+            e.currentTarget.style.boxShadow = `0 2px 8px ${accent}18`
+          }
+        }}
+        onMouseLeave={e => {
+          if (!open) {
+            e.currentTarget.style.borderColor = `${accent}40`
+            e.currentTarget.style.boxShadow = 'none'
+          }
         }}
       >
         <span style={{
-          width: 8, height: 8, borderRadius: '50%', background: accent,
-          flexShrink: 0, opacity: 0.9,
-          transform: open ? 'scale(1.4)' : 'scale(1)',
-          transition: `transform 0.36s ${SPRING}`,
+          width: 7, height: 7, borderRadius: '50%',
+          background: accent, flexShrink: 0, opacity: 0.85,
         }} />
 
-        <span style={{ fontSize: '0.65rem', fontWeight: 700, color: accent, opacity: 0.7, letterSpacing: '0.06em', flexShrink: 0, textTransform: 'uppercase' }}>
+        <span style={{
+          fontSize: '0.62rem', fontWeight: 700,
+          color: accent, opacity: 0.65,
+          letterSpacing: '0.05em', flexShrink: 0,
+          textTransform: 'uppercase',
+        }}>
           {badge}
         </span>
 
         <span style={{
-          fontFamily: '"Noto Serif SC", serif', fontWeight: 700,
-          fontSize: open ? '1rem' : '0.875rem',
-          color: 'var(--md-on-surface)', flexShrink: 0,
-          transition: `font-size 0.28s ${EASE}`,
+          flex: 1, minWidth: 0,
+          fontFamily: '"Noto Serif SC", serif',
+          fontWeight: 700,
+          fontSize: '0.875rem',
+          color: 'var(--md-on-surface)',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
         }}>
           {title}
         </span>
 
-        {!open && (
-          <span style={{ fontSize: '0.65rem', color: 'var(--md-on-surface-variant)', opacity: 0.4 }}>
-            {predictions.length} 场 · 🤖 AI
+        <span style={{
+          fontSize: '0.65rem', color: 'var(--md-on-surface-variant)',
+          opacity: 0.4, flexShrink: 0, whiteSpace: 'nowrap',
+        }}>
+          {predictions.length} 场
+        </span>
+
+        {soonestDeadline && (
+          <span style={{ color: accent, flexShrink: 0 }}>
+            <CountdownCompact target={soonestDeadline} expired="已截止" />
           </span>
         )}
 
-        <span style={{ flex: 1 }} />
-
-        <a
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={e => e.stopPropagation()}
-          style={{ fontSize: '0.72rem', color: accent, opacity: 0.65, textDecoration: 'none', flexShrink: 0, whiteSpace: 'nowrap' }}
-        >
-          前往竞猜 →
-        </a>
-
-        <button
+        <ToggleBtn
+          open={open} accent={accent}
           onClick={e => { e.stopPropagation(); setOpen(v => !v) }}
-          aria-label={open ? '收起' : '展开'}
-          style={{
-            flexShrink: 0, width: '1.5rem', height: '1.5rem',
-            borderRadius: '50%',
-            border: `1.5px solid ${accent}55`,
-            background: open ? `${accent}2A` : `${accent}14`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer', color: accent,
-            fontSize: '1rem', fontWeight: 700, lineHeight: 1,
-            transition: [
-              `transform 0.4s ${SPRING}`,
-              `background 0.2s ${EASE}`,
-            ].join(', '),
-            transform: open ? 'rotate(45deg)' : 'rotate(0deg)',
-          }}
-        >
-          +
-        </button>
+        />
       </div>
 
-      {/* Match grid — slides in on expand */}
+      {/* Detail panel */}
       <div style={{
-        maxHeight: open ? `${bodyH || 300}px` : 0,
+        maxHeight: open ? `${bodyH || 400}px` : 0,
         overflow: 'hidden',
-        transition: `max-height ${open ? `0.46s ${SPRING}` : `0.28s ${EASE}`}`,
+        transition: `max-height ${open ? `0.42s ${SPRING}` : `0.26s ${EASE}`}`,
       }}>
-        <div ref={bodyRef}>
-          <div style={{ padding: '0.25rem 1rem 0', fontSize: '0.68rem', color: 'var(--md-on-surface-variant)', opacity: 0.4 }}>
+        <div
+          ref={bodyRef}
+          style={{
+            padding: '0.875rem 0.875rem 1rem',
+            borderRadius: 16,
+            background: `linear-gradient(155deg, ${accent}0E 0%, var(--md-surface-container) 60%)`,
+            border: `1.5px solid ${accent}44`,
+          }}
+        >
+          <div style={{
+            fontSize: '0.68rem', color: 'var(--md-on-surface-variant)',
+            opacity: 0.4, marginBottom: '0.625rem',
+          }}>
             🤖 AI 概率预测
           </div>
+
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(106px, 1fr))',
-            gap: '1px',
-            background: `${accent}1E`,
-            marginTop: '0.375rem',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))',
+            gap: 8,
           }}>
             {predictions.map((p, i) => (
-              <MatchColumn key={i} {...p} accent={accent} />
+              <MatchCard key={i} {...p} accent={accent} />
             ))}
+          </div>
+
+          <div style={{ marginTop: '0.75rem', textAlign: 'right' }}>
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: '0.25rem',
+                padding: '0.35rem 0.875rem',
+                borderRadius: '9999px',
+                background: `${accent}1E`,
+                border: `1.5px solid ${accent}55`,
+                color: accent,
+                fontSize: '0.75rem', fontWeight: 600,
+                textDecoration: 'none',
+                transition: `background 0.18s ${EASE}, border-color 0.18s ${EASE}`,
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = `${accent}36`
+                e.currentTarget.style.borderColor = `${accent}99`
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = `${accent}1E`
+                e.currentTarget.style.borderColor = `${accent}55`
+              }}
+            >
+              前往竞猜 ↗
+            </a>
           </div>
         </div>
       </div>
@@ -443,7 +505,7 @@ function PredictionsStrip({ accent: rawAccent, badge, title, url, predictions })
   )
 }
 
-// ── Patch notes ───────────────────────────────────────────────────────────────
+// ── Patch notes data ──────────────────────────────────────────────────────────
 const PATCH_751_NOTES = [
   {
     category: '绝境战', color: '#F87171',
@@ -467,11 +529,20 @@ const PATCH_751_NOTES = [
   },
 ]
 
-// ── Version banner (fixed size, no PD needed) ─────────────────────────────────
-function VersionBanner() {
+// ── Version banner ────────────────────────────────────────────────────────────
+// Accepts onToggle callback so parent can raise this cell's z-index when open,
+// preventing the dropdown from being covered by subsequent bento cells.
+function VersionBanner({ onToggle }) {
   const [open, setOpen] = useState(false)
+
+  const toggle = () => {
+    const next = !open
+    setOpen(next)
+    onToggle?.(next)
+  }
+
   return (
-    <div className="relative" style={{ zIndex: open ? 50 : 'auto' }}>
+    <div className="relative">
       <div className="relative rounded-3xl" style={{
         background: 'var(--md-primary-container)',
         border: '1.5px solid var(--md-primary)',
@@ -480,39 +551,50 @@ function VersionBanner() {
         <div
           className="flex items-center gap-4 px-5 py-4 cursor-pointer rounded-3xl"
           style={{ minHeight: '4rem', transition: `filter 0.18s ${EASE}` }}
-          onClick={() => setOpen(v => !v)}
+          onClick={toggle}
           onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.08)')}
           onMouseLeave={e => (e.currentTarget.style.filter = '')}
         >
-          <div className="flex-shrink-0 rounded-2xl px-3 py-1.5"
-            style={{ background: 'var(--md-primary)', color: 'var(--md-on-primary)' }}>
+          <div
+            className="flex-shrink-0 rounded-2xl px-3 py-1.5"
+            style={{ background: 'var(--md-primary)', color: 'var(--md-on-primary)' }}
+          >
             <span style={{ fontFamily: '"Noto Serif SC", serif', fontWeight: 900, fontSize: '0.8rem', letterSpacing: '-0.02em' }}>
               7.51
             </span>
           </div>
+
           <div className="flex-1 min-w-0">
-            <div className="text-xs font-medium mb-0.5" style={{ opacity: 0.5, letterSpacing: '0.08em' }}>CURRENT PATCH</div>
+            <div className="text-xs font-medium mb-0.5" style={{ opacity: 0.5, letterSpacing: '0.08em' }}>
+              CURRENT PATCH
+            </div>
             <div className="font-bold" style={{ fontFamily: '"Noto Serif SC", serif', fontSize: 'clamp(1rem, 2vw, 1.2rem)' }}>
               天际的行路
             </div>
           </div>
+
           <div className="flex-shrink-0 flex items-center gap-3">
-            <a href="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/387965"
+            <a
+              href="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/387965"
               target="_blank" rel="noopener noreferrer"
               className="text-xs opacity-45 hover:opacity-80"
-              style={{ transition: `opacity 0.15s`, whiteSpace: 'nowrap' }}
-              onClick={e => e.stopPropagation()}>
+              style={{ transition: 'opacity 0.15s', whiteSpace: 'nowrap' }}
+              onClick={e => e.stopPropagation()}
+            >
               更新说明 ↗
             </a>
             <span style={{
               display: 'inline-block', opacity: 0.5, fontSize: '1.1rem',
               transition: `transform 0.28s ${SPRING}`,
               transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
-            }}>▾</span>
+            }}>
+              ▾
+            </span>
           </div>
         </div>
       </div>
 
+      {/* Dropdown — painted above siblings via parent bento-cell z-index */}
       <div style={{
         position: 'absolute', top: 'calc(100% + 8px)', left: 0, right: 0, zIndex: 100,
         borderRadius: '1.25rem',
@@ -525,18 +607,25 @@ function VersionBanner() {
         pointerEvents: open ? 'auto' : 'none',
         transition: `opacity 0.24s ${EASE}, transform 0.28s ${SPRING}`,
       }}>
-        <div className="px-5 pt-4 pb-4 grid gap-3"
-          style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(185px, 1fr))' }}>
+        <div
+          className="px-5 pt-4 pb-4 grid gap-3"
+          style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(185px, 1fr))' }}
+        >
           {PATCH_751_NOTES.map(section => (
             <div key={section.category}>
-              <div className="text-xs font-semibold mb-1.5 px-2 py-0.5 rounded-full inline-block"
-                style={{ background: `${section.color}28`, color: section.color, letterSpacing: '0.04em' }}>
+              <div
+                className="text-xs font-semibold mb-1.5 px-2 py-0.5 rounded-full inline-block"
+                style={{ background: `${section.color}28`, color: section.color, letterSpacing: '0.04em' }}
+              >
                 {section.category}
               </div>
               <ul className="space-y-1">
                 {section.items.map((item, i) => (
-                  <li key={i} className="text-xs leading-snug"
-                    style={{ color: 'var(--md-on-surface)', opacity: 0.8, paddingLeft: '0.75rem', position: 'relative' }}>
+                  <li
+                    key={i}
+                    className="text-xs leading-snug"
+                    style={{ color: 'var(--md-on-surface)', opacity: 0.8, paddingLeft: '0.75rem', position: 'relative' }}
+                  >
                     <span style={{ position: 'absolute', left: 0, opacity: 0.4 }}>·</span>
                     {item}
                   </li>
@@ -546,9 +635,12 @@ function VersionBanner() {
           ))}
         </div>
         <div className="px-5 pb-3 text-right" style={{ borderTop: '1px solid var(--md-outline-variant)' }}>
-          <a href="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/387965"
+          <a
+            href="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/387965"
             target="_blank" rel="noopener noreferrer"
-            className="text-xs" style={{ color: 'var(--md-primary)', opacity: 0.8 }}>
+            className="text-xs"
+            style={{ color: 'var(--md-primary)', opacity: 0.8 }}
+          >
             查看完整更新说明 →
           </a>
         </div>
@@ -559,19 +651,21 @@ function VersionBanner() {
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 export default function DashboardSection() {
+  const [bannerOpen, setBannerOpen] = useState(false)
+
   return (
     <div className="max-w-7xl mx-auto px-4 mb-6">
       <div className="bento-grid">
 
-        {/* ① Version banner — fixed size */}
-        <div className="bento-cell bento-banner">
-          <VersionBanner />
+        {/* ① Version banner — z-index raised when dropdown is open */}
+        <div className="bento-cell bento-banner" style={{ zIndex: bannerOpen ? 50 : 0 }}>
+          <VersionBanner onToggle={setBannerOpen} />
         </div>
 
-        {/* ② Activity cards — Progressive Disclosure pills, auto-fit sub-grid */}
+        {/* ② Activity capsule row — flex-wrap, each capsule expands independently */}
         <div className="bento-cell bento-acts">
           <div className="acts-grid">
-            <ActivityCard
+            <ActivityCapsule
               accent="#4DD0E1"
               badge="下个版本"
               title="7.55"
@@ -586,7 +680,7 @@ export default function DashboardSection() {
               compact
               url="https://actff1.web.sdo.com/project/20240927dawntrail/patch75/index.html"
             />
-            <ActivityCard
+            <ActivityCapsule
               accent="#F4C161"
               badge="季节活动"
               title="金碟嘉年华 2026"
@@ -594,7 +688,7 @@ export default function DashboardSection() {
               rows={[{ label: '距结束', target: T_GOLD_SAU_END, expired: '已结束' }]}
               url="https://actff1.web.sdo.com/project/20260519the_make_it_rain_campaign/86z02yp9k67o/index.html"
             />
-            <ActivityCard
+            <ActivityCapsule
               accent="#FFAB76"
               badge="运营活动"
               title="黄金的试炼 第66期"
@@ -605,28 +699,23 @@ export default function DashboardSection() {
               ]}
               url="https://actff1.web.sdo.com/20241130_GoldTrial/#/index"
             />
-            {/* Add or remove ActivityCard here freely — layout auto-reflows */}
+            <WorldCupCapsule
+              accent="#4CAF50"
+              badge="运营活动"
+              title="世界杯竞猜"
+              url="https://actff1.web.sdo.com/20240520_NewJingCai/index.html#/index"
+              predictions={[
+                { homeCode: 'ca', homeName: '加拿大',   awayCode: 'ba',     awayName: '波黑',   homeWin: 45, draw: 28, awayWin: 27, deadline: T_BET_CAN_BIH },
+                { homeCode: 'us', homeName: '美国',     awayCode: 'py',     awayName: '巴拉圭', homeWin: 55, draw: 25, awayWin: 20, deadline: T_BET_USA_PAR },
+                { homeCode: 'br', homeName: '巴西',     awayCode: 'ma',     awayName: '摩洛哥', homeWin: 50, draw: 30, awayWin: 20, deadline: T_BET_BRA_MAR },
+                { homeCode: 'ht', homeName: '海地',     awayCode: 'gb-sct', awayName: '苏格兰', homeWin: 15, draw: 25, awayWin: 60, deadline: T_BET_HAI_SCO },
+                { homeCode: 'au', homeName: '澳大利亚', awayCode: 'tr',     awayName: '土耳其', homeWin: 30, draw: 30, awayWin: 40, deadline: T_BET_AUS_TUR },
+              ]}
+            />
           </div>
         </div>
 
-        {/* ③ World Cup — Progressive Disclosure pill strip */}
-        <div className="bento-cell bento-wc">
-          <PredictionsStrip
-            accent="#4CAF50"
-            badge="运营活动"
-            title="世界杯竞猜"
-            url="https://actff1.web.sdo.com/20240520_NewJingCai/index.html#/index"
-            predictions={[
-              { homeCode: 'ca', homeName: '加拿大',   awayCode: 'ba',     awayName: '波黑',   homeWin: 45, draw: 28, awayWin: 27, deadline: T_BET_CAN_BIH },
-              { homeCode: 'us', homeName: '美国',     awayCode: 'py',     awayName: '巴拉圭', homeWin: 55, draw: 25, awayWin: 20, deadline: T_BET_USA_PAR },
-              { homeCode: 'br', homeName: '巴西',     awayCode: 'ma',     awayName: '摩洛哥', homeWin: 50, draw: 30, awayWin: 20, deadline: T_BET_BRA_MAR },
-              { homeCode: 'ht', homeName: '海地',     awayCode: 'gb-sct', awayName: '苏格兰', homeWin: 15, draw: 25, awayWin: 60, deadline: T_BET_HAI_SCO },
-              { homeCode: 'au', homeName: '澳大利亚', awayCode: 'tr',     awayName: '土耳其', homeWin: 30, draw: 30, awayWin: 40, deadline: T_BET_AUS_TUR },
-            ]}
-          />
-        </div>
-
-        {/* ④ Fortune + Frontline — fixed size 2-col sub-grid */}
+        {/* ③ Fortune + Frontline — fixed 2-col sub-grid */}
         <div className="bento-cell bento-bottom">
           <div className="bottom-grid">
             <DailyFortune noWrap />
@@ -634,7 +723,7 @@ export default function DashboardSection() {
           </div>
         </div>
 
-        {/* ⑤ News sidebar — fixed, spans all rows on desktop */}
+        {/* ④ News sidebar — spans all rows on desktop */}
         <div className="bento-cell bento-news flex flex-col">
           <NewsBoard noWrap />
         </div>

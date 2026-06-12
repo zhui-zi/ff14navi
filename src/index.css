@@ -502,25 +502,24 @@ body {
 }
 
 /* ══════════════════════════════════════════════
-   Bento Grid  —  Stable 5-area skeleton
-   Activity cards live in an auto-fit sub-grid
-   inside .bento-acts, so adding/removing cards
-   never breaks the outer layout.
+   Bento Grid  —  4-area stable skeleton
    ══════════════════════════════════════════════ */
 @keyframes bento-spring-in {
   from { opacity: 0; transform: translateY(14px) scale(0.96); }
   to   { opacity: 1; transform: translateY(0)    scale(1); }
 }
+/* position:relative + z-index:0 lets the banner cell raise its z-index
+   when its dropdown is open, so the panel paints over the acts row */
 .bento-cell {
+  position: relative;
+  z-index: 0;
   animation: bento-spring-in 0.52s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 .bento-cell:nth-child(1) { animation-delay:   0ms; }
 .bento-cell:nth-child(2) { animation-delay:  55ms; }
 .bento-cell:nth-child(3) { animation-delay: 110ms; }
 .bento-cell:nth-child(4) { animation-delay: 155ms; }
-.bento-cell:nth-child(5) { animation-delay: 195ms; }
 
-/* ── Outer skeleton: 5 stable areas ── */
 .bento-grid {
   display: grid;
   gap: 12px;
@@ -528,7 +527,6 @@ body {
   grid-template-areas:
     "banner"
     "acts"
-    "wc"
     "bottom"
     "news";
 }
@@ -538,24 +536,26 @@ body {
     grid-template-areas:
       "banner news"
       "acts   news"
-      "wc     news"
       "bottom news";
   }
 }
 .bento-banner { grid-area: banner; overflow: visible; }
 .bento-acts   { grid-area: acts; }
-.bento-wc     { grid-area: wc; }
 .bento-bottom { grid-area: bottom; }
 .bento-news   { grid-area: news; }
 
-/* ── Activity cards sub-grid: auto-reflows when cards are added/removed ── */
-/* align-items: start so each pill/card keeps its own height independently —
-   expanding one card does not stretch its siblings */
+/* ── Activity capsule row ──
+   Capsules sit side-by-side and wrap naturally.
+   Each capsule manages its own expanded height — siblings are unaffected. */
 .acts-grid {
-  display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  align-items: start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-start;
+}
+.acts-grid > * {
+  flex: 1 1 195px;
+  min-width: 0;
 }
 
 /* ── Fortune + Frontline sub-grid ── */
