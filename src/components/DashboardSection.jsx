@@ -217,9 +217,11 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
           style={{
             padding: '0.875rem 1rem 1rem',
             borderRadius: CARD_R,
-            background: `linear-gradient(155deg, ${accent}12 0%, var(--md-surface-container) 60%)`,
-            border: `1.5px solid ${accent}44`,
-            boxShadow: `0 8px 32px ${accent}22, 0 2px 8px rgba(0,0,0,0.18)`,
+            background: 'var(--md-surface-container-highest)',
+            borderTop: `3px solid ${accent}`,
+            borderRight: `1.5px solid ${accent}44`,
+            borderBottom: `1.5px solid ${accent}44`,
+            borderLeft: `1.5px solid ${accent}44`,
           }}
         >
           {subtitle && (
@@ -399,9 +401,11 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
           style={{
             padding: '1rem',
             borderRadius: CARD_R,
-            background: 'var(--md-surface-container)',
-            border: `1.5px solid ${accent}44`,
-            boxShadow: `0 8px 32px ${accent}1E, 0 2px 8px rgba(0,0,0,0.18)`,
+            background: 'var(--md-surface-container-highest)',
+            borderTop: `3px solid ${accent}`,
+            borderRight: `1.5px solid ${accent}44`,
+            borderBottom: `1.5px solid ${accent}44`,
+            borderLeft: `1.5px solid ${accent}44`,
           }}
         >
           {/* Panel header */}
