@@ -502,7 +502,10 @@ body {
 }
 
 /* ══════════════════════════════════════════════
-   Bento Grid  —  Responsive CSS Grid skeleton
+   Bento Grid  —  Stable 5-area skeleton
+   Activity cards live in an auto-fit sub-grid
+   inside .bento-acts, so adding/removing cards
+   never breaks the outer layout.
    ══════════════════════════════════════════════ */
 @keyframes bento-spring-in {
   from { opacity: 0; transform: translateY(14px) scale(0.96); }
@@ -516,54 +519,58 @@ body {
 .bento-cell:nth-child(3) { animation-delay: 110ms; }
 .bento-cell:nth-child(4) { animation-delay: 155ms; }
 .bento-cell:nth-child(5) { animation-delay: 195ms; }
-.bento-cell:nth-child(6) { animation-delay: 238ms; }
-.bento-cell:nth-child(7) { animation-delay: 275ms; }
-.bento-cell:nth-child(8) { animation-delay: 310ms; }
 
+/* ── Outer skeleton: 5 stable areas ── */
 .bento-grid {
   display: grid;
   gap: 12px;
   grid-template-columns: 1fr;
   grid-template-areas:
     "banner"
-    "c1"
-    "c2"
-    "c3"
+    "acts"
     "wc"
-    "fort"
-    "front"
+    "bottom"
     "news";
-}
-@media (min-width: 640px) {
-  .bento-grid {
-    grid-template-columns: 1fr 1fr;
-    grid-template-areas:
-      "banner banner"
-      "c1     c2"
-      "c3     wc"
-      "fort   front"
-      "news   news";
-  }
 }
 @media (min-width: 1024px) {
   .bento-grid {
-    grid-template-columns: 1fr 1fr 1fr 272px;
-    grid-template-rows: auto auto auto 1fr;
+    grid-template-columns: 1fr 272px;
     grid-template-areas:
-      "banner banner banner news"
-      "c1     c2     c3     news"
-      "wc     wc     wc     news"
-      "fort   fort   front  news";
+      "banner news"
+      "acts   news"
+      "wc     news"
+      "bottom news";
   }
 }
 .bento-banner { grid-area: banner; overflow: visible; }
-.bento-c1     { grid-area: c1; }
-.bento-c2     { grid-area: c2; }
-.bento-c3     { grid-area: c3; }
+.bento-acts   { grid-area: acts; }
 .bento-wc     { grid-area: wc; }
-.bento-fort   { grid-area: fort; }
-.bento-front  { grid-area: front; }
+.bento-bottom { grid-area: bottom; }
 .bento-news   { grid-area: news; }
+
+/* ── Activity cards sub-grid: auto-reflows when cards are added/removed ── */
+/* align-items: start so each pill/card keeps its own height independently —
+   expanding one card does not stretch its siblings */
+.acts-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  align-items: start;
+}
+
+/* ── Fortune + Frontline sub-grid ── */
+.bottom-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  height: 100%;
+}
+@media (min-width: 560px) {
+  .bottom-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
 
 /* Palette swatch buttons */
 .palette-swatch {

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useCountdown } from '../hooks/useCountdown'
 import { useTheme } from '../hooks/useTheme'
 import { adaptForLight } from '../utils/color'
@@ -19,25 +19,25 @@ const T_BET_BRA_MAR   = cst(2026, 6, 14,  6,  0)
 const T_BET_HAI_SCO   = cst(2026, 6, 14,  9,  0)
 const T_BET_AUS_TUR   = cst(2026, 6, 14, 12,  0)
 
-// ── Countdown display ────────────────────────────────────────────────────────
+// Spring easing shared across all container morphs
+const SPRING = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+const EASE   = 'cubic-bezier(0.4, 0, 0.2, 1)'
+
+// ── Countdown ────────────────────────────────────────────────────────────────
 function Countdown({ target, expired, accentColor }) {
   const t = useCountdown(target)
   if (!t) return (
-    <span className="text-xs" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.5 }}>{expired}</span>
+    <span style={{ fontSize: '0.75rem', color: 'var(--md-on-surface-variant)', opacity: 0.5 }}>{expired}</span>
   )
   const hh = String(t.h).padStart(2, '0')
   const mm = String(t.m).padStart(2, '0')
   const ss = String(t.s).padStart(2, '0')
   return (
-    <span className="tabular-nums leading-none" style={{
-      fontFamily: 'ui-monospace, "Cascadia Code", "Fira Code", monospace',
+    <span className="tabular-nums" style={{
+      fontFamily: 'ui-monospace, "Cascadia Code", monospace',
       fontWeight: 700, fontSize: '1.15rem', color: accentColor, whiteSpace: 'nowrap',
     }}>
-      {t.d > 0 && (
-        <span style={{ marginRight: 3 }}>
-          {t.d}<span style={{ fontSize: '0.75rem', fontWeight: 500, marginLeft: 1 }}>d</span>
-        </span>
-      )}
+      {t.d > 0 && <span style={{ marginRight: 3 }}>{t.d}<span style={{ fontSize: '0.7rem', fontWeight: 500, marginLeft: 1 }}>d</span></span>}
       {hh}:{mm}:{ss}
     </span>
   )
@@ -45,96 +45,209 @@ function Countdown({ target, expired, accentColor }) {
 
 function CountdownRow({ label, target, expired, accentColor }) {
   return (
-    <div className="flex items-baseline gap-2 mt-2">
-      {label && (
-        <span className="text-xs flex-shrink-0" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.65 }}>
-          {label}
-        </span>
-      )}
+    <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginTop: '0.5rem' }}>
+      {label && <span style={{ fontSize: '0.72rem', color: 'var(--md-on-surface-variant)', opacity: 0.6, flexShrink: 0 }}>{label}</span>}
       <Countdown target={target} expired={expired} accentColor={accentColor} />
     </div>
   )
 }
 
-// ── Activity card — fills bento cell height ──────────────────────────────────
+// ── Activity Card — Progressive Disclosure + Container Morph ─────────────────
+//
+// Collapsed: pill (border-radius: 9999px), shows accent dot + badge + title + "+"
+// Expanded:  M3 Expressive asymmetric card (28px 28px 28px 8px), body slides in
+//
+// The pill→card morph uses a spring transition on border-radius.
+// Body height is measured once on mount so max-height transitions precisely.
 function ActivityCard({ accent: rawAccent, badge, title, subtitle, dates, rows, url, compact }) {
+  const [open, setOpen] = useState(false)
+  const bodyRef = useRef(null)
+  const [bodyH, setBodyH] = useState(0)
   const { effective } = useTheme()
   const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
+
+  // Measure the natural height of the body content once, before it's clipped
+  useEffect(() => {
+    if (bodyRef.current) setBodyH(bodyRef.current.scrollHeight)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const PILL_R   = '9999px'
+  // Bottom-right corner is deliberately small — creates an "origami fold" feel
+  const CARD_R   = '28px 28px 28px 8px'
+
   return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex flex-col h-full rounded-3xl px-4 py-4 cursor-pointer"
+    <div
+      role="button"
+      tabIndex={0}
+      aria-expanded={open}
+      onClick={() => !open && setOpen(true)}
+      onKeyDown={e => e.key === 'Enter' && !open && setOpen(true)}
       style={{
-        background: `linear-gradient(155deg, ${accent}1A 0%, var(--md-surface-container) 50%)`,
-        border: `1.5px solid ${accent}44`,
-        transition: 'transform 0.26s cubic-bezier(0.34,1.56,0.64,1), border-color 0.18s ease, box-shadow 0.2s ease',
+        background: `linear-gradient(155deg, ${accent}1E 0%, var(--md-surface-container) 50%)`,
+        border: `1.5px solid ${open ? accent + 'BB' : accent + '44'}`,
+        borderRadius: open ? CARD_R : PILL_R,
+        boxShadow: open
+          ? `0 8px 32px ${accent}2E, 0 2px 8px ${accent}18, inset 0 1px 0 rgba(255,255,255,0.06)`
+          : 'none',
+        overflow: 'hidden',
+        cursor: open ? 'default' : 'pointer',
+        outline: 'none',
+        transition: [
+          `border-radius 0.46s ${SPRING}`,
+          `border-color 0.22s ${EASE}`,
+          `box-shadow 0.3s ${EASE}`,
+        ].join(', '),
       }}
       onMouseEnter={e => {
-        e.currentTarget.style.transform = 'translateY(-4px) scale(1.018)'
-        e.currentTarget.style.borderColor = `${accent}BB`
-        e.currentTarget.style.boxShadow = `0 8px 24px ${accent}28`
+        if (!open) {
+          e.currentTarget.style.borderColor = `${accent}88`
+          e.currentTarget.style.boxShadow = `0 4px 16px ${accent}22`
+        }
       }}
       onMouseLeave={e => {
-        e.currentTarget.style.transform = ''
-        e.currentTarget.style.borderColor = `${accent}44`
-        e.currentTarget.style.boxShadow = ''
+        if (!open) {
+          e.currentTarget.style.borderColor = `${accent}44`
+          e.currentTarget.style.boxShadow = ''
+        }
       }}
     >
-      {/* Badge */}
-      <span className="inline-block self-start text-xs font-semibold px-2 py-0.5 rounded-full mb-2.5"
-        style={{
-          background: `${accent}22`,
-          color: accent,
-          letterSpacing: '0.04em',
-        }}>
-        {badge}
-      </span>
-
-      {/* Title */}
-      <div className="font-bold leading-snug mb-1" style={{
-        fontFamily: '"Noto Serif SC", serif',
-        fontSize: '1rem',
-        color: 'var(--md-on-surface)',
+      {/* ── Pill header — always visible ── */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem',
+        padding: open ? '0.875rem 1rem 0.5rem' : '0.625rem 0.875rem',
+        transition: `padding 0.32s ${EASE}`,
+        minHeight: 48,
       }}>
-        {title}
-      </div>
 
-      {/* Subtitle */}
-      {subtitle && (
-        <div className="text-xs leading-relaxed truncate mb-0.5" style={{
-          color: 'var(--md-on-surface-variant)', opacity: 0.7,
+        {/* Accent dot — pulses slightly when expanded */}
+        <span style={{
+          width: 8, height: 8, borderRadius: '50%',
+          background: accent, flexShrink: 0, opacity: 0.9,
+          transform: open ? 'scale(1.4)' : 'scale(1)',
+          transition: `transform 0.36s ${SPRING}`,
+        }} />
+
+        {/* Badge */}
+        <span style={{
+          fontSize: '0.65rem', fontWeight: 700,
+          color: accent, opacity: 0.7,
+          letterSpacing: '0.06em', flexShrink: 0,
+          textTransform: 'uppercase',
         }}>
-          {subtitle}
-        </div>
-      )}
+          {badge}
+        </span>
 
-      {/* Dates — pushed toward bottom */}
-      <div className="mt-auto pt-2">
-        {compact ? (
-          <>
-            {dates?.slice(0, 2).map((d, i) => (
-              <div key={i} className="text-xs leading-relaxed"
-                style={{ color: 'var(--md-on-surface-variant)', opacity: 0.5 }}>{d}</div>
-            ))}
-            {dates?.length > 2 && (
-              <div className="text-xs mt-0.5" style={{ color: accent, opacity: 0.55 }}>
-                +{dates.length - 2} 项内容
-              </div>
-            )}
-          </>
-        ) : (
-          dates?.map((d, i) => (
-            <div key={i} className="text-xs leading-relaxed"
-              style={{ color: 'var(--md-on-surface-variant)', opacity: 0.5 }}>{d}</div>
-          ))
-        )}
-        {rows?.map((r, i) => (
-          <CountdownRow key={i} {...r} accentColor={accent} />
-        ))}
+        {/* Title */}
+        <span style={{
+          flex: 1, minWidth: 0,
+          fontFamily: '"Noto Serif SC", serif',
+          fontWeight: 700,
+          fontSize: open ? '1rem' : '0.875rem',
+          color: 'var(--md-on-surface)',
+          whiteSpace: open ? 'normal' : 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          transition: `font-size 0.28s ${EASE}`,
+        }}>
+          {title}
+        </span>
+
+        {/* Toggle button: + rotates to × */}
+        <button
+          onClick={e => { e.stopPropagation(); setOpen(v => !v) }}
+          aria-label={open ? '收起' : '展开'}
+          style={{
+            flexShrink: 0,
+            width: '1.5rem', height: '1.5rem',
+            borderRadius: '50%',
+            border: `1.5px solid ${accent}55`,
+            background: open ? `${accent}2A` : `${accent}14`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer',
+            color: accent,
+            fontSize: '1rem', fontWeight: 700, lineHeight: 1,
+            transition: [
+              `transform 0.4s ${SPRING}`,
+              `background 0.2s ${EASE}`,
+            ].join(', '),
+            transform: open ? 'rotate(45deg)' : 'rotate(0deg)',
+          }}
+        >
+          +
+        </button>
       </div>
-    </a>
+
+      {/* ── Expandable body — slides in/out with measured max-height ── */}
+      <div style={{
+        maxHeight: open ? `${bodyH || 400}px` : 0,
+        overflow: 'hidden',
+        // Expand slightly slower (spring), collapse faster (ease-in)
+        transition: `max-height ${open ? `0.46s ${SPRING}` : `0.28s ${EASE}`}`,
+      }}>
+        <div ref={bodyRef} style={{ padding: '0 1rem 1rem' }}>
+
+          {subtitle && (
+            <p style={{
+              fontSize: '0.8rem', lineHeight: 1.6,
+              color: 'var(--md-on-surface-variant)', opacity: 0.75,
+              marginBottom: '0.5rem', margin: '0 0 0.5rem',
+            }}>
+              {subtitle}
+            </p>
+          )}
+
+          {compact ? (
+            <div style={{ marginBottom: '0.25rem' }}>
+              {dates?.map((d, i) => (
+                <p key={i} style={{ fontSize: '0.75rem', lineHeight: 1.65, color: 'var(--md-on-surface-variant)', opacity: 0.55, margin: 0 }}>{d}</p>
+              ))}
+            </div>
+          ) : (
+            <div style={{ marginBottom: dates?.length ? '0.125rem' : 0 }}>
+              {dates?.map((d, i) => (
+                <p key={i} style={{ fontSize: '0.75rem', lineHeight: 1.65, color: 'var(--md-on-surface-variant)', opacity: 0.55, margin: 0 }}>{d}</p>
+              ))}
+            </div>
+          )}
+
+          {rows?.map((r, i) => (
+            <CountdownRow key={i} {...r} accentColor={accent} />
+          ))}
+
+          {/* Navigation chip — only meaningful after expansion */}
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={e => e.stopPropagation()}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: '0.25rem',
+              marginTop: '0.875rem',
+              padding: '0.35rem 0.875rem',
+              borderRadius: '9999px',
+              background: `${accent}1E`,
+              border: `1.5px solid ${accent}55`,
+              color: accent,
+              fontSize: '0.75rem', fontWeight: 600,
+              textDecoration: 'none',
+              transition: `background 0.18s ${EASE}, border-color 0.18s ${EASE}`,
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.background = `${accent}36`
+              e.currentTarget.style.borderColor = `${accent}99`
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.background = `${accent}1E`
+              e.currentTarget.style.borderColor = `${accent}55`
+            }}
+          >
+            前往 ↗
+          </a>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -150,110 +263,169 @@ function MatchColumn({ homeFlag, homeName, awayFlag, awayName, homeWin, draw, aw
     { pct: awayWin, color: '#F87171' },
   ]
   return (
-    <div className="flex flex-col items-center px-2 py-3"
-      style={{ background: 'var(--md-surface-container)' }}>
-      <div className="flex items-center gap-1 mb-1">
-        <span style={{ fontSize: '1.35rem', lineHeight: 1 }}>{homeFlag}</span>
-        <span style={{ fontSize: '0.5rem', fontWeight: 700, color: 'var(--md-on-surface-variant)', opacity: 0.3 }}>VS</span>
-        <span style={{ fontSize: '1.35rem', lineHeight: 1 }}>{awayFlag}</span>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0.625rem 0.5rem', background: 'var(--md-surface-container)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 3, marginBottom: 3 }}>
+        <span style={{ fontSize: '1.3rem', lineHeight: 1 }}>{homeFlag}</span>
+        <span style={{ fontSize: '0.45rem', fontWeight: 700, color: 'var(--md-on-surface-variant)', opacity: 0.3 }}>VS</span>
+        <span style={{ fontSize: '1.3rem', lineHeight: 1 }}>{awayFlag}</span>
       </div>
-      <div className="flex items-center justify-center gap-1 w-full mb-2.5">
-        <span className="flex-1 text-right truncate"
-          style={{ fontSize: '0.62rem', fontWeight: 500, color: 'var(--md-on-surface)', opacity: 0.8 }}>
-          {homeName}
-        </span>
-        <span style={{ opacity: 0.2, fontSize: '0.5rem', flexShrink: 0 }}>·</span>
-        <span className="flex-1 truncate"
-          style={{ fontSize: '0.62rem', fontWeight: 500, color: 'var(--md-on-surface)', opacity: 0.8 }}>
-          {awayName}
-        </span>
+      <div style={{ display: 'flex', alignItems: 'center', width: '100%', gap: 2, marginBottom: 8 }}>
+        <span style={{ flex: 1, textAlign: 'right', fontSize: '0.6rem', fontWeight: 500, color: 'var(--md-on-surface)', opacity: 0.8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{homeName}</span>
+        <span style={{ opacity: 0.2, fontSize: '0.45rem', flexShrink: 0 }}>·</span>
+        <span style={{ flex: 1, fontSize: '0.6rem', fontWeight: 500, color: 'var(--md-on-surface)', opacity: 0.8, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{awayName}</span>
       </div>
-      <div className="w-full flex rounded-full overflow-hidden mb-1" style={{ height: 12 }}>
+      <div style={{ width: '100%', display: 'flex', borderRadius: 9999, overflow: 'hidden', height: 11, marginBottom: 4 }}>
         {segments.map((s, i) => (
           <div key={i} style={{
             width: `${s.pct}%`, backgroundColor: s.color,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            transition: 'width 0.5s cubic-bezier(0.34,1.56,0.64,1)',
+            transition: `width 0.5s ${SPRING}`,
           }}>
-            {s.pct >= 26 && (
-              <span style={{ fontSize: '0.48rem', fontWeight: 700, color: 'rgba(255,255,255,0.85)' }}>
-                {s.pct}%
-              </span>
-            )}
+            {s.pct >= 27 && <span style={{ fontSize: '0.45rem', fontWeight: 700, color: 'rgba(255,255,255,0.85)' }}>{s.pct}%</span>}
           </div>
         ))}
       </div>
-      <div className="w-full flex justify-between mb-2" style={{ padding: '0 1px' }}>
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
         {segments.map((s, i) => (
-          <span key={i} style={{ fontSize: '0.56rem', fontWeight: 600, color: s.color }}>{s.pct}%</span>
+          <span key={i} style={{ fontSize: '0.55rem', fontWeight: 600, color: s.color }}>{s.pct}%</span>
         ))}
       </div>
-      <span className="tabular-nums" style={{
-        fontSize: '0.56rem', fontFamily: 'ui-monospace, monospace', fontWeight: 600,
-        color: t ? accent : 'var(--md-on-surface-variant)',
-        opacity: t ? 0.8 : 0.35,
-      }}>
-        ⏱ {cd}
-      </span>
+      <span style={{
+        fontSize: '0.55rem', fontFamily: 'ui-monospace, monospace', fontWeight: 600,
+        color: t ? accent : 'var(--md-on-surface-variant)', opacity: t ? 0.8 : 0.35,
+      }}>⏱ {cd}</span>
     </div>
   )
 }
 
+// ── Predictions strip — Progressive Disclosure ────────────────────────────────
+// Collapsed: single pill row (badge + title + match count + link)
+// Expanded:  container morphs to card, match grid slides in
+// Uses fold-at-top-right asymmetric radius for visual variety
 function PredictionsStrip({ accent: rawAccent, badge, title, url, predictions }) {
+  const [open, setOpen] = useState(false)
+  const bodyRef = useRef(null)
+  const [bodyH, setBodyH] = useState(0)
   const { effective } = useTheme()
   const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
+
+  useEffect(() => {
+    if (bodyRef.current) setBodyH(bodyRef.current.scrollHeight)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Asymmetric: fold at top-right — complements the ActivityCard folds
+  const CARD_R = '28px 8px 28px 28px'
+
   return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block rounded-3xl overflow-hidden cursor-pointer h-full"
+    <div
       style={{
-        border: `1.5px solid ${accent}44`,
-        transition: 'border-color 0.18s ease, box-shadow 0.2s ease',
-      }}
-      onMouseEnter={e => {
-        e.currentTarget.style.borderColor = `${accent}AA`
-        e.currentTarget.style.boxShadow = `0 6px 20px ${accent}22`
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.borderColor = `${accent}44`
-        e.currentTarget.style.boxShadow = ''
+        border: `1.5px solid ${open ? accent + 'BB' : accent + '44'}`,
+        borderRadius: open ? CARD_R : '9999px',
+        overflow: 'hidden',
+        boxShadow: open ? `0 8px 32px ${accent}2E, 0 2px 8px ${accent}14` : 'none',
+        transition: [
+          `border-radius 0.46s ${SPRING}`,
+          `border-color 0.22s ${EASE}`,
+          `box-shadow 0.3s ${EASE}`,
+        ].join(', '),
       }}
     >
-      <div className="flex items-center gap-2.5 px-4 py-2.5 flex-wrap"
+      {/* Header — always visible as pill */}
+      <div
+        onClick={() => setOpen(v => !v)}
         style={{
+          display: 'flex', alignItems: 'center', gap: '0.5rem',
+          padding: open ? '0.875rem 1rem 0.5rem' : '0.625rem 0.875rem',
           background: `linear-gradient(90deg, ${accent}1E 0%, var(--md-surface-container) 55%)`,
-          borderBottom: `1px solid ${accent}22`,
-        }}>
-        <span className="inline-block text-xs font-semibold px-2 py-0.5 rounded-full flex-shrink-0"
-          style={{ background: `${accent}28`, color: accent, letterSpacing: '0.04em' }}>
+          cursor: 'pointer',
+          transition: `padding 0.32s ${EASE}`,
+          minHeight: 48,
+        }}
+      >
+        <span style={{
+          width: 8, height: 8, borderRadius: '50%', background: accent,
+          flexShrink: 0, opacity: 0.9,
+          transform: open ? 'scale(1.4)' : 'scale(1)',
+          transition: `transform 0.36s ${SPRING}`,
+        }} />
+
+        <span style={{ fontSize: '0.65rem', fontWeight: 700, color: accent, opacity: 0.7, letterSpacing: '0.06em', flexShrink: 0, textTransform: 'uppercase' }}>
           {badge}
         </span>
-        <span className="font-bold flex-shrink-0" style={{
-          fontFamily: '"Noto Serif SC", serif',
-          fontSize: '0.95rem', color: 'var(--md-on-surface)',
+
+        <span style={{
+          fontFamily: '"Noto Serif SC", serif', fontWeight: 700,
+          fontSize: open ? '1rem' : '0.875rem',
+          color: 'var(--md-on-surface)', flexShrink: 0,
+          transition: `font-size 0.28s ${EASE}`,
         }}>
           {title}
         </span>
-        <span style={{ fontSize: '0.68rem', color: 'var(--md-on-surface-variant)', opacity: 0.4 }}>
-          🤖 AI 概率预测
-        </span>
-        <span className="ml-auto flex-shrink-0 text-xs" style={{ color: accent, opacity: 0.6 }}>
+
+        {!open && (
+          <span style={{ fontSize: '0.65rem', color: 'var(--md-on-surface-variant)', opacity: 0.4 }}>
+            {predictions.length} 场 · 🤖 AI
+          </span>
+        )}
+
+        <span style={{ flex: 1 }} />
+
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={e => e.stopPropagation()}
+          style={{ fontSize: '0.72rem', color: accent, opacity: 0.65, textDecoration: 'none', flexShrink: 0, whiteSpace: 'nowrap' }}
+        >
           前往竞猜 →
-        </span>
+        </a>
+
+        <button
+          onClick={e => { e.stopPropagation(); setOpen(v => !v) }}
+          aria-label={open ? '收起' : '展开'}
+          style={{
+            flexShrink: 0, width: '1.5rem', height: '1.5rem',
+            borderRadius: '50%',
+            border: `1.5px solid ${accent}55`,
+            background: open ? `${accent}2A` : `${accent}14`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', color: accent,
+            fontSize: '1rem', fontWeight: 700, lineHeight: 1,
+            transition: [
+              `transform 0.4s ${SPRING}`,
+              `background 0.2s ${EASE}`,
+            ].join(', '),
+            transform: open ? 'rotate(45deg)' : 'rotate(0deg)',
+          }}
+        >
+          +
+        </button>
       </div>
+
+      {/* Match grid — slides in on expand */}
       <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(108px, 1fr))',
-        gap: '1px',
-        background: `${accent}20`,
+        maxHeight: open ? `${bodyH || 300}px` : 0,
+        overflow: 'hidden',
+        transition: `max-height ${open ? `0.46s ${SPRING}` : `0.28s ${EASE}`}`,
       }}>
-        {predictions.map((p, i) => (
-          <MatchColumn key={i} {...p} accent={accent} />
-        ))}
+        <div ref={bodyRef}>
+          <div style={{ padding: '0.25rem 1rem 0', fontSize: '0.68rem', color: 'var(--md-on-surface-variant)', opacity: 0.4 }}>
+            🤖 AI 概率预测
+          </div>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(106px, 1fr))',
+            gap: '1px',
+            background: `${accent}1E`,
+            marginTop: '0.375rem',
+          }}>
+            {predictions.map((p, i) => (
+              <MatchColumn key={i} {...p} accent={accent} />
+            ))}
+          </div>
+        </div>
       </div>
-    </a>
+    </div>
   )
 }
 
@@ -281,62 +453,52 @@ const PATCH_751_NOTES = [
   },
 ]
 
-// ── Version banner ────────────────────────────────────────────────────────────
+// ── Version banner (fixed size, no PD needed) ─────────────────────────────────
 function VersionBanner() {
   const [open, setOpen] = useState(false)
   return (
-    <div className="relative h-full" style={{ zIndex: open ? 50 : 'auto' }}>
-      <div className="relative rounded-3xl h-full" style={{
+    <div className="relative" style={{ zIndex: open ? 50 : 'auto' }}>
+      <div className="relative rounded-3xl" style={{
         background: 'var(--md-primary-container)',
         border: '1.5px solid var(--md-primary)',
         color: 'var(--md-on-primary-container)',
       }}>
         <div
-          className="flex items-center gap-4 px-5 py-4 cursor-pointer rounded-3xl h-full"
-          style={{ transition: 'filter 0.18s ease' }}
+          className="flex items-center gap-4 px-5 py-4 cursor-pointer rounded-3xl"
+          style={{ minHeight: '4rem', transition: `filter 0.18s ${EASE}` }}
           onClick={() => setOpen(v => !v)}
           onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.08)')}
           onMouseLeave={e => (e.currentTarget.style.filter = '')}
         >
-          {/* Version glyph */}
-          <div className="flex-shrink-0 w-10 h-10 rounded-2xl flex items-center justify-center"
+          <div className="flex-shrink-0 rounded-2xl px-3 py-1.5"
             style={{ background: 'var(--md-primary)', color: 'var(--md-on-primary)' }}>
             <span style={{ fontFamily: '"Noto Serif SC", serif', fontWeight: 900, fontSize: '0.8rem', letterSpacing: '-0.02em' }}>
               7.51
             </span>
           </div>
-
           <div className="flex-1 min-w-0">
-            <div className="text-xs font-medium mb-0.5" style={{ opacity: 0.55, letterSpacing: '0.06em' }}>
-              CURRENT PATCH
-            </div>
-            <div className="font-bold leading-tight" style={{
-              fontFamily: '"Noto Serif SC", serif',
-              fontSize: 'clamp(1rem, 2.2vw, 1.25rem)',
-            }}>
+            <div className="text-xs font-medium mb-0.5" style={{ opacity: 0.5, letterSpacing: '0.08em' }}>CURRENT PATCH</div>
+            <div className="font-bold" style={{ fontFamily: '"Noto Serif SC", serif', fontSize: 'clamp(1rem, 2vw, 1.2rem)' }}>
               天际的行路
             </div>
           </div>
-
           <div className="flex-shrink-0 flex items-center gap-3">
             <a href="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/387965"
               target="_blank" rel="noopener noreferrer"
               className="text-xs opacity-45 hover:opacity-80"
-              style={{ transition: 'opacity 0.15s', whiteSpace: 'nowrap' }}
+              style={{ transition: `opacity 0.15s`, whiteSpace: 'nowrap' }}
               onClick={e => e.stopPropagation()}>
               更新说明 ↗
             </a>
             <span style={{
-              display: 'inline-block',
-              transition: 'transform 0.28s cubic-bezier(0.34,1.56,0.64,1)',
+              display: 'inline-block', opacity: 0.5, fontSize: '1.1rem',
+              transition: `transform 0.28s ${SPRING}`,
               transform: open ? 'rotate(180deg)' : 'rotate(0deg)',
-              opacity: 0.55, fontSize: '1.1rem',
             }}>▾</span>
           </div>
         </div>
       </div>
 
-      {/* Patch notes dropdown */}
       <div style={{
         position: 'absolute', top: 'calc(100% + 8px)', left: 0, right: 0, zIndex: 100,
         borderRadius: '1.25rem',
@@ -347,7 +509,7 @@ function VersionBanner() {
         opacity: open ? 1 : 0,
         transform: open ? 'translateY(0) scale(1)' : 'translateY(-10px) scale(0.97)',
         pointerEvents: open ? 'auto' : 'none',
-        transition: 'opacity 0.24s ease, transform 0.28s cubic-bezier(0.34,1.56,0.64,1)',
+        transition: `opacity 0.24s ${EASE}, transform 0.28s ${SPRING}`,
       }}>
         <div className="px-5 pt-4 pb-4 grid gap-3"
           style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(185px, 1fr))' }}>
@@ -381,62 +543,59 @@ function VersionBanner() {
   )
 }
 
-// ── Bento grid dashboard ──────────────────────────────────────────────────────
+// ── Dashboard ─────────────────────────────────────────────────────────────────
 export default function DashboardSection() {
   return (
     <div className="max-w-7xl mx-auto px-4 mb-6">
       <div className="bento-grid">
 
-        {/* Row 1: Version banner */}
+        {/* ① Version banner — fixed size */}
         <div className="bento-cell bento-banner">
           <VersionBanner />
         </div>
 
-        {/* Row 2: Activity cards */}
-        <div className="bento-cell bento-c1 flex flex-col">
-          <ActivityCard
-            accent="#4DD0E1"
-            badge="下个版本"
-            title="7.55"
-            subtitle="预计上线时间未定"
-            dates={[
-              '大型战斗任务「蜃景幻境新月岛北征之章」',
-              '武器强化任务「幻境武器」',
-              '非著名调查员 金曦之章',
-              '友好部族盟友任务 金曦之章',
-            ]}
-            rows={[]}
-            compact
-            url="https://actff1.web.sdo.com/project/20240927dawntrail/patch75/index.html"
-          />
+        {/* ② Activity cards — Progressive Disclosure pills, auto-fit sub-grid */}
+        <div className="bento-cell bento-acts">
+          <div className="acts-grid">
+            <ActivityCard
+              accent="#4DD0E1"
+              badge="下个版本"
+              title="7.55"
+              subtitle="预计上线时间未定"
+              dates={[
+                '大型战斗任务「蜃景幻境新月岛北征之章」',
+                '武器强化任务「幻境武器」',
+                '非著名调查员 金曦之章',
+                '友好部族盟友任务 金曦之章',
+              ]}
+              rows={[]}
+              compact
+              url="https://actff1.web.sdo.com/project/20240927dawntrail/patch75/index.html"
+            />
+            <ActivityCard
+              accent="#F4C161"
+              badge="季节活动"
+              title="金碟嘉年华 2026"
+              dates={['5月29日 16:00 – 6月24日 22:59']}
+              rows={[{ label: '距结束', target: T_GOLD_SAU_END, expired: '已结束' }]}
+              url="https://actff1.web.sdo.com/project/20260519the_make_it_rain_campaign/86z02yp9k67o/index.html"
+            />
+            <ActivityCard
+              accent="#FFAB76"
+              badge="运营活动"
+              title="黄金的试炼 第66期"
+              subtitle="修行古刹星导寺"
+              rows={[
+                { label: '挑战期', target: T_TRIAL_CH_END,  expired: '已截止' },
+                { label: '登记期', target: T_TRIAL_REG_END, expired: '已截止' },
+              ]}
+              url="https://actff1.web.sdo.com/20241130_GoldTrial/#/index"
+            />
+            {/* Add or remove ActivityCard here freely — layout auto-reflows */}
+          </div>
         </div>
 
-        <div className="bento-cell bento-c2 flex flex-col">
-          <ActivityCard
-            accent="#F4C161"
-            badge="季节活动"
-            title="金碟嘉年华 2026"
-            dates={['5月29日 16:00 – 6月24日 22:59']}
-            rows={[{ label: '距结束', target: T_GOLD_SAU_END, expired: '已结束' }]}
-            url="https://actff1.web.sdo.com/project/20260519the_make_it_rain_campaign/86z02yp9k67o/index.html"
-          />
-        </div>
-
-        <div className="bento-cell bento-c3 flex flex-col">
-          <ActivityCard
-            accent="#FFAB76"
-            badge="运营活动"
-            title="黄金的试炼 第66期"
-            subtitle="修行古刹星导寺"
-            rows={[
-              { label: '挑战期', target: T_TRIAL_CH_END,  expired: '已截止' },
-              { label: '登记期', target: T_TRIAL_REG_END, expired: '已截止' },
-            ]}
-            url="https://actff1.web.sdo.com/20241130_GoldTrial/#/index"
-          />
-        </div>
-
-        {/* Row 3: World Cup */}
+        {/* ③ World Cup — Progressive Disclosure pill strip */}
         <div className="bento-cell bento-wc">
           <PredictionsStrip
             accent="#4CAF50"
@@ -453,16 +612,15 @@ export default function DashboardSection() {
           />
         </div>
 
-        {/* Row 4: Fortune + Frontline (stretch to fill remaining height) */}
-        <div className="bento-cell bento-fort flex flex-col">
-          <DailyFortune noWrap />
+        {/* ④ Fortune + Frontline — fixed size 2-col sub-grid */}
+        <div className="bento-cell bento-bottom">
+          <div className="bottom-grid">
+            <DailyFortune noWrap />
+            <FrontlineSchedule noWrap />
+          </div>
         </div>
 
-        <div className="bento-cell bento-front flex flex-col">
-          <FrontlineSchedule noWrap />
-        </div>
-
-        {/* News sidebar: spans all rows on desktop */}
+        {/* ⑤ News sidebar — fixed, spans all rows on desktop */}
         <div className="bento-cell bento-news flex flex-col">
           <NewsBoard noWrap />
         </div>
