@@ -82,7 +82,7 @@ function ToggleBtn({ open, accent }) {
         flexShrink: 0,
         display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
         height: '1.375rem',
-        padding: open ? '0 0.55rem' : '0 0.35rem',
+        padding: '0 0.45rem',
         borderRadius: '9999px',
         background: open ? `${accent}2A` : `${accent}14`,
         border: `1.5px solid ${open ? accent + '55' : accent + '28'}`,
@@ -91,7 +91,6 @@ function ToggleBtn({ open, accent }) {
         transition: [
           `background 0.22s ${EASE}`,
           `border-color 0.22s ${EASE}`,
-          `padding 0.40s ${SPRING}`,
         ].join(', '),
       }}
     >
@@ -593,8 +592,8 @@ function VersionBanner({ onToggle }) {
         color: 'var(--md-on-primary-container)',
       }}>
         <div
-          className="flex items-center gap-4 px-5 py-4 cursor-pointer rounded-3xl"
-          style={{ minHeight: '4rem', transition: `filter 0.18s ${EASE}` }}
+          className="flex items-center gap-4 px-5 cursor-pointer rounded-3xl"
+          style={{ minHeight: '5rem', padding: '1.125rem 1.25rem', transition: `filter 0.18s ${EASE}` }}
           onClick={toggle}
           onMouseEnter={e => (e.currentTarget.style.filter = 'brightness(1.08)')}
           onMouseLeave={e => (e.currentTarget.style.filter = '')}
