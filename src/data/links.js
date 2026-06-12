@@ -247,6 +247,7 @@ export const categories = [
       { name: '塔塔露国际服翻译插件',        style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=30399830&rand=953' },
       { name: 'Mod网',             icon: 'tools',   style: 'basic',  url: 'https://www.xivmodarchive.com/' },
       { name: 'Heliosphere',                        style: 'basic',  url: 'https://heliosphere.app/' },
+      { name: '宝宝椅',                             style: 'basic',  url: 'https://www.123865.com/s/1xRXjv-n9qBH' },
     ],
   },
 ]

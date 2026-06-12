@@ -228,9 +228,9 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
           style={{
             padding: '0.875rem 1rem 1rem',
             borderRadius: CARD_R,
-            background: `linear-gradient(145deg, ${accent}10, var(--md-surface-container) 70%)`,
-            border: `1.5px solid ${accent}30`,
-            boxShadow: `0 8px 24px rgba(0,0,0,0.28), 0 0 0 1px ${accent}18`,
+            background: 'var(--md-surface-container-high)',
+            border: `1.5px solid ${accent}44`,
+            boxShadow: '0 8px 28px rgba(0,0,0,0.38)',
           }}
         >
           {subtitle && (
@@ -420,9 +420,9 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
           style={{
             padding: '1rem',
             borderRadius: CARD_R,
-            background: `linear-gradient(145deg, ${accent}10, var(--md-surface-container) 70%)`,
-            border: `1.5px solid ${accent}30`,
-            boxShadow: `0 8px 24px rgba(0,0,0,0.28), 0 0 0 1px ${accent}18`,
+            background: 'var(--md-surface-container-high)',
+            border: `1.5px solid ${accent}44`,
+            boxShadow: '0 8px 28px rgba(0,0,0,0.38)',
           }}
         >
           {/* Panel header */}
