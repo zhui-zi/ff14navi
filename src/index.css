@@ -539,7 +539,7 @@ body {
 }
 @media (min-width: 1024px) {
   .bento-grid {
-    grid-template-columns: 1fr 272px;
+    grid-template-columns: 3fr 1fr;
     grid-template-areas:
       "acts   acts"
       "banner news"
