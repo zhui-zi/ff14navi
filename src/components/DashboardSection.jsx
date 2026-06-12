@@ -193,7 +193,7 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
   const [elevated, setElevated] = useState(false)
   const { effective } = useTheme()
   const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
-  const panelShadow = effective === 'light' ? '0 4px 14px rgba(0,0,0,0.12)' : '0 8px 28px rgba(0,0,0,0.38)'
+  const panelShadow = effective === 'light' ? 'none' : '0 8px 28px rgba(0,0,0,0.38)'
 
   useEffect(() => {
     if (bodyRef.current) setBodyH(bodyRef.current.scrollHeight)
@@ -436,7 +436,7 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
   const [elevated, setElevated] = useState(false)
   const { effective } = useTheme()
   const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
-  const panelShadow = effective === 'light' ? '0 4px 14px rgba(0,0,0,0.12)' : '0 8px 28px rgba(0,0,0,0.38)'
+  const panelShadow = effective === 'light' ? 'none' : '0 8px 28px rgba(0,0,0,0.38)'
 
   useEffect(() => {
     if (bodyRef.current) setBodyH(bodyRef.current.scrollHeight)
@@ -572,7 +572,7 @@ const PATCH_751_NOTES = [
 // ── Version banner ────────────────────────────────────────────────────────────
 function VersionBanner({ open, onToggle }) {
   const { effective } = useTheme()
-  const panelShadow = effective === 'light' ? '0 4px 16px rgba(0,0,0,0.12)' : '0 12px 40px rgba(0,0,0,0.50)'
+  const panelShadow = effective === 'light' ? 'none' : '0 12px 40px rgba(0,0,0,0.50)'
 
   const toggle = () => onToggle?.(!open)
 
