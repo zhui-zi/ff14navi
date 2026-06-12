@@ -318,6 +318,20 @@ body {
 :root.light .chip-blog   { background: rgba(63,81,181,0.12);   color: #1A237E; }
 :root.light .link-chip:hover { box-shadow: 0 6px 18px rgba(0,0,0,0.12); }
 
+/* ── Text dim levels — light mode needs higher opacity to stay legible ── */
+:root {
+  --t-label:     0.65;   /* section header labels */
+  --t-secondary: 0.50;   /* meta / secondary text */
+  --t-faint:     0.38;   /* de-emphasised text */
+  --t-ghost:     0.28;   /* almost-invisible decoration */
+}
+:root.light {
+  --t-label:     0.85;
+  --t-secondary: 0.70;
+  --t-faint:     0.55;
+  --t-ghost:     0.45;
+}
+
 /* ── Reduced motion ── */
 @media (prefers-reduced-motion: reduce) {
   .crystal-glyph  { animation: none !important; }

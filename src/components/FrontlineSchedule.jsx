@@ -57,7 +57,7 @@ function ResetCountdown({ nextReset }) {
     <span className="tabular-nums" style={{
       fontFamily: 'ui-monospace, "Cascadia Code", monospace',
       fontSize: '0.72rem', fontWeight: 700,
-      color: 'var(--md-on-surface-variant)', opacity: 0.7,
+      color: 'var(--md-on-surface-variant)', opacity: 'var(--t-label)',
     }}>
       {str}
     </span>
@@ -104,7 +104,7 @@ export default function FrontlineSchedule({ noWrap = false }) {
           }}>纷争前线</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
-          <span style={{ fontSize: '0.6rem', color: 'var(--md-outline)', opacity: 0.45 }}>换图</span>
+          <span style={{ fontSize: '0.6rem', color: 'var(--md-outline)', opacity: 'var(--t-secondary)' }}>换图</span>
           <ResetCountdown nextReset={nextReset} />
         </div>
       </div>
@@ -115,37 +115,41 @@ export default function FrontlineSchedule({ noWrap = false }) {
         {/* Left — today */}
         <div style={{
           flex: 3,
-          display: 'flex', flexDirection: 'column',
+          display: 'flex', flexDirection: 'row',
           alignItems: 'center', justifyContent: 'center',
-          padding: '0.25rem 1rem 0.5rem 1.25rem', gap: '0.3rem',
+          padding: '0.25rem 1rem 0.5rem 1.25rem', gap: '0.75rem',
           minWidth: 0,
         }}>
+          {/* Big icon */}
           <div style={{
-            width: '2.375rem', height: '2.375rem',
-            borderRadius: '0.875rem',
+            width: '2.75rem', height: '2.75rem', flexShrink: 0,
+            borderRadius: '1rem',
             background: `${accent}22`,
             border: `1.5px solid ${accent}44`,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '1.25rem',
+            fontSize: '1.5rem',
           }}>
             {todayMap.icon}
           </div>
-          <div style={{
-            fontFamily: '"Noto Serif SC", serif',
-            fontSize: '1.05rem', fontWeight: 900,
-            color: 'var(--md-on-surface)', lineHeight: 1.15,
-            textAlign: 'center',
-          }}>
-            {todayMap.name}
+          {/* Name + mode badge */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.3rem', minWidth: 0 }}>
+            <div style={{
+              fontFamily: '"Noto Serif SC", serif',
+              fontSize: '1.05rem', fontWeight: 900,
+              color: 'var(--md-on-surface)', lineHeight: 1.15,
+              whiteSpace: 'nowrap',
+            }}>
+              {todayMap.name}
+            </div>
+            <span style={{
+              display: 'inline-flex', alignItems: 'center', alignSelf: 'flex-start',
+              padding: '0.1rem 0.5rem', borderRadius: '9999px',
+              background: `${accent}1E`, border: `1px solid ${accent}44`,
+              color: accent, fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.04em',
+            }}>
+              {todayMap.mode}
+            </span>
           </div>
-          <span style={{
-            display: 'inline-flex', alignItems: 'center',
-            padding: '0.1rem 0.5rem', borderRadius: '9999px',
-            background: `${accent}1E`, border: `1px solid ${accent}44`,
-            color: accent, fontSize: '0.6rem', fontWeight: 700, letterSpacing: '0.04em',
-          }}>
-            {todayMap.mode}
-          </span>
         </div>
 
         {/* Divider */}
@@ -167,11 +171,11 @@ export default function FrontlineSchedule({ noWrap = false }) {
               <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                 <span style={{
                   fontSize: '0.6rem', color: 'var(--md-on-surface-variant)',
-                  opacity: 0.38, flexShrink: 0, minWidth: '1.75rem',
+                  opacity: 'var(--t-faint)', flexShrink: 0, minWidth: '1.75rem',
                 }}>
                   {i === 0 ? '明天' : '后天'}
                 </span>
-                <span style={{ fontSize: '0.85rem', flexShrink: 0, opacity: 0.55 }}>{m.icon}</span>
+                <span style={{ fontSize: '0.85rem', flexShrink: 0, opacity: 'var(--t-secondary)' }}>{m.icon}</span>
                 <span style={{
                   fontSize: '0.72rem', fontWeight: 700, color: mc, opacity: 0.8,
                   flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
@@ -180,7 +184,7 @@ export default function FrontlineSchedule({ noWrap = false }) {
                 </span>
                 <span style={{
                   fontSize: '0.58rem', color: 'var(--md-on-surface-variant)',
-                  opacity: 0.35, flexShrink: 0,
+                  opacity: 'var(--t-faint)', flexShrink: 0,
                 }}>
                   {m.mode}
                 </span>

@@ -316,10 +316,10 @@ export default function DailyFortune({ noWrap = false }) {
           <span style={{ color: accent, fontSize: '0.72rem' }}>✦</span>
           <span style={{
             fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.12em',
-            textTransform: 'uppercase', color: 'var(--md-on-surface-variant)', opacity: 0.65,
+            textTransform: 'uppercase', color: 'var(--md-on-surface-variant)', opacity: 'var(--t-label)',
           }}>每日运势</span>
         </div>
-        <span style={{ fontSize: '0.6rem', color: 'var(--md-outline)', opacity: 0.45 }}>
+        <span style={{ fontSize: '0.6rem', color: 'var(--md-outline)', opacity: 'var(--t-secondary)' }}>
           {fortune.dateStr}
         </span>
       </div>
@@ -338,7 +338,7 @@ export default function DailyFortune({ noWrap = false }) {
           onClick={handleReveal}
         >
           <div style={{ fontSize: '2.2rem', lineHeight: 1 }}>🔮</div>
-          <div style={{ fontSize: '0.8rem', fontWeight: 500, color: 'var(--md-on-surface-variant)', opacity: 0.7 }}>
+          <div style={{ fontSize: '0.8rem', fontWeight: 500, color: 'var(--md-on-surface-variant)', opacity: 'var(--t-label)' }}>
             点击占卜今日运势
           </div>
         </button>
@@ -365,7 +365,7 @@ export default function DailyFortune({ noWrap = false }) {
               </div>
               <div style={{
                 fontSize: '0.57rem', color: 'var(--md-on-surface-variant)',
-                opacity: 0.4, marginTop: '0.15rem', letterSpacing: '0.06em',
+                opacity: 'var(--t-faint)', marginTop: '0.15rem', letterSpacing: '0.06em',
               }}>
                 今日运势
               </div>
@@ -375,7 +375,7 @@ export default function DailyFortune({ noWrap = false }) {
             <div style={{ flex: 1, minWidth: 0 }}>
               <p style={{
                 fontSize: '0.72rem', lineHeight: 1.6,
-                color: 'var(--md-on-surface)', opacity: 0.75,
+                color: 'var(--md-on-surface)', opacity: 'var(--t-label)',
                 letterSpacing: '0.02em',
                 overflow: 'hidden',
                 display: '-webkit-box',
@@ -407,7 +407,7 @@ export default function DailyFortune({ noWrap = false }) {
                 padding: '0.25rem 0.25rem',
                 minWidth: 0,
               }}>
-                <div style={{ fontSize: '0.6rem', color: 'var(--md-outline)', opacity: 0.45, letterSpacing: '0.04em' }}>
+                <div style={{ fontSize: '0.6rem', color: 'var(--md-outline)', opacity: 'var(--t-secondary)', letterSpacing: '0.04em' }}>
                   {item.label}
                 </div>
                 <div style={{
@@ -418,7 +418,7 @@ export default function DailyFortune({ noWrap = false }) {
                 }}>
                   {item.value}
                   {item.sub && (
-                    <span style={{ opacity: 0.5, fontSize: '0.57rem', marginLeft: '0.15rem' }}>
+                    <span style={{ opacity: 'var(--t-secondary)', fontSize: '0.57rem', marginLeft: '0.15rem' }}>
                       {item.sub}
                     </span>
                   )}

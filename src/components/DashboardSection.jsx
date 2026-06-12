@@ -29,7 +29,7 @@ const CARD_R = '1.5rem'
 function CountdownCompact({ target, expired }) {
   const t = useCountdown(target)
   if (!t) return (
-    <span style={{ opacity: 0.35, fontSize: '0.7rem', fontWeight: 500 }}>{expired}</span>
+    <span style={{ opacity: 'var(--t-faint)', fontSize: '0.7rem', fontWeight: 500 }}>{expired}</span>
   )
   const hh = String(t.h).padStart(2, '0')
   const mm = String(t.m).padStart(2, '0')
@@ -50,7 +50,7 @@ function CountdownRow({ label, target, expired, accentColor }) {
   return (
     <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginTop: '0.5rem' }}>
       {label && (
-        <span style={{ fontSize: '0.72rem', color: 'var(--md-on-surface-variant)', opacity: 0.6, flexShrink: 0 }}>
+        <span style={{ fontSize: '0.72rem', color: 'var(--md-on-surface-variant)', opacity: 'var(--t-label)', flexShrink: 0 }}>
           {label}
         </span>
       )}
@@ -73,28 +73,37 @@ function CountdownRow({ label, target, expired, accentColor }) {
   )
 }
 
-// ── Shared toggle button ──────────────────────────────────────────────────────
-function ToggleBtn({ open, accent, onClick }) {
+// ── Shared toggle indicator — M3 Expressive pill chip, purely visual ──────────
+function ToggleBtn({ open, accent }) {
   return (
-    <button
-      onClick={onClick}
-      aria-label={open ? '收起' : '展开'}
+    <div
+      aria-hidden="true"
       style={{
         flexShrink: 0,
-        width: '1.5rem', height: '1.5rem',
-        borderRadius: '50%',
-        border: `1.5px solid ${accent}55`,
+        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+        height: '1.375rem',
+        padding: open ? '0 0.55rem' : '0 0.35rem',
+        borderRadius: '9999px',
         background: open ? `${accent}2A` : `${accent}14`,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        cursor: 'pointer',
+        border: `1.5px solid ${open ? accent + '55' : accent + '28'}`,
         color: accent,
-        fontSize: '1rem', fontWeight: 700, lineHeight: 1,
-        transition: [`transform 0.4s ${SPRING}`, `background 0.2s ${EASE}`].join(', '),
-        transform: open ? 'rotate(45deg)' : 'rotate(0deg)',
+        pointerEvents: 'none',
+        transition: [
+          `background 0.22s ${EASE}`,
+          `border-color 0.22s ${EASE}`,
+          `padding 0.40s ${SPRING}`,
+        ].join(', '),
       }}
     >
-      +
-    </button>
+      <span style={{
+        display: 'inline-block',
+        fontSize: '0.82rem', fontWeight: 500, lineHeight: 1,
+        transition: `transform 0.42s ${SPRING}`,
+        transform: open ? 'rotate(90deg)' : 'rotate(0deg)',
+      }}>
+        ›
+      </span>
+    </div>
   )
 }
 
@@ -113,25 +122,31 @@ function CapsulePill({ accent, badge, title, open, onToggle, children }) {
         flex: 1,
         padding: '0.55rem 0.625rem 0.55rem 0.875rem',
         borderRadius: CARD_R,
-        background: `linear-gradient(135deg, ${accent}1A 0%, var(--md-surface-container) 60%)`,
-        border: `1.5px solid ${open ? accent + 'AA' : accent + '40'}`,
-        boxShadow: open ? `0 2px 12px ${accent}20` : 'none',
+        background: open
+          ? `linear-gradient(135deg, ${accent}2E 0%, var(--md-surface-container) 55%)`
+          : `linear-gradient(135deg, ${accent}1E 0%, var(--md-surface-container) 60%)`,
+        border: `1.5px solid ${open ? accent + 'BB' : accent + '50'}`,
+        boxShadow: open ? `0 2px 16px ${accent}28` : 'none',
         cursor: 'pointer',
         outline: 'none',
         userSelect: 'none',
         maxWidth: '100%',
         overflow: 'hidden',
-        transition: [`border-color 0.2s ${EASE}`, `box-shadow 0.2s ${EASE}`].join(', '),
+        transition: [
+          `background 0.25s ${EASE}`,
+          `border-color 0.2s ${EASE}`,
+          `box-shadow 0.2s ${EASE}`,
+        ].join(', '),
       }}
       onMouseEnter={e => {
         if (!open) {
-          e.currentTarget.style.borderColor = `${accent}77`
-          e.currentTarget.style.boxShadow = `0 2px 8px ${accent}18`
+          e.currentTarget.style.borderColor = `${accent}88`
+          e.currentTarget.style.boxShadow = `0 2px 10px ${accent}22`
         }
       }}
       onMouseLeave={e => {
         if (!open) {
-          e.currentTarget.style.borderColor = `${accent}40`
+          e.currentTarget.style.borderColor = `${accent}50`
           e.currentTarget.style.boxShadow = 'none'
         }
       }}
@@ -152,10 +167,7 @@ function CapsulePill({ accent, badge, title, open, onToggle, children }) {
         }}>
           {title}
         </span>
-        <ToggleBtn
-          open={open} accent={accent}
-          onClick={e => { e.stopPropagation(); onToggle() }}
-        />
+        <ToggleBtn open={open} accent={accent} />
       </div>
 
       {/* Row 2: badge + secondary info (injected via children) */}
@@ -165,7 +177,7 @@ function CapsulePill({ accent, badge, title, open, onToggle, children }) {
       }}>
         <span style={{
           fontSize: '0.6rem', fontWeight: 700,
-          color: accent, opacity: 0.6,
+          color: accent, opacity: 'var(--t-label)',
           letterSpacing: '0.05em', textTransform: 'uppercase', flexShrink: 0,
         }}>
           {badge}
@@ -179,7 +191,7 @@ function CapsulePill({ accent, badge, title, open, onToggle, children }) {
 // ── Activity Capsule ──────────────────────────────────────────────────────────
 // open/onToggle controlled by parent — only one capsule open at a time.
 // Detail panel is position:absolute so it floats without affecting sibling layout.
-function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, rows, url, compact, open, onToggle }) {
+function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, rows, url, compact, open, onToggle, onHoverOpen, onHoverClose }) {
   const bodyRef = useRef(null)
   const [bodyH, setBodyH] = useState(0)
   const [elevated, setElevated] = useState(false)
@@ -204,7 +216,11 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
   const primaryRow = rows?.[0]
 
   return (
-    <div style={{ position: 'relative', zIndex: elevated ? 1 : 0, display: 'flex', flexDirection: 'column' }}>
+    <div
+      style={{ position: 'relative', zIndex: elevated ? 1 : 0, display: 'flex', flexDirection: 'column' }}
+      onMouseEnter={onHoverOpen}
+      onMouseLeave={onHoverClose}
+    >
       <CapsulePill accent={accent} badge={badge} title={title} open={open} onToggle={onToggle}>
         {primaryRow && (
           <span style={{ color: accent }}>
@@ -212,6 +228,12 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
           </span>
         )}
       </CapsulePill>
+
+      {/* Bridge div — transparent, covers the gap so mouseleave doesn't fire mid-transition */}
+      <div style={{
+        position: 'absolute', top: '100%', left: 0, right: 0,
+        height: '8px', pointerEvents: open ? 'auto' : 'none',
+      }} />
 
       {/* Floating detail panel — absolute so it doesn't push sibling capsules */}
       <div style={{
@@ -412,7 +434,7 @@ function MatchRow({ homeCode, homeName, awayCode, awayName, homeWin, draw, awayW
 }
 
 // ── World Cup Capsule ─────────────────────────────────────────────────────────
-function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, open, onToggle }) {
+function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, open, onToggle, onHoverOpen, onHoverClose }) {
   const bodyRef = useRef(null)
   const [bodyH, setBodyH] = useState(0)
   const [elevated, setElevated] = useState(false)
@@ -437,9 +459,13 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
     (!best || p.deadline < best) ? p.deadline : best, null)
 
   return (
-    <div style={{ position: 'relative', zIndex: elevated ? 1 : 0, display: 'flex', flexDirection: 'column' }}>
+    <div
+      style={{ position: 'relative', zIndex: elevated ? 1 : 0, display: 'flex', flexDirection: 'column' }}
+      onMouseEnter={onHoverOpen}
+      onMouseLeave={onHoverClose}
+    >
       <CapsulePill accent={accent} badge={badge} title={title} open={open} onToggle={onToggle}>
-        <span style={{ fontSize: '0.6rem', color: 'var(--md-on-surface-variant)', opacity: 0.4, flexShrink: 0 }}>
+        <span style={{ fontSize: '0.6rem', color: 'var(--md-on-surface-variant)', opacity: 'var(--t-faint)', flexShrink: 0 }}>
           {predictions.length} 场
         </span>
         {soonestDeadline && (
@@ -448,6 +474,12 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
           </span>
         )}
       </CapsulePill>
+
+      {/* Bridge div — covers the gap so mouseleave doesn't fire mid-transition */}
+      <div style={{
+        position: 'absolute', top: '100%', left: 0, right: 0,
+        height: '8px', pointerEvents: open ? 'auto' : 'none',
+      }} />
 
       {/* Floating detail panel */}
       <div style={{
@@ -662,21 +694,37 @@ function VersionBanner({ onToggle }) {
 export default function DashboardSection() {
   const [openId,     setOpenId]     = useState(null)
   const [bannerOpen, setBannerOpen] = useState(false)
-  // Delayed z-index: stays elevated during closing animation so panels don't clip behind sibling cells
   const [actsZ, setActsZ] = useState(false)
-  const actsTimerRef = useRef(null)
+  const actsTimerRef  = useRef(null)
+  const closeTimerRef = useRef(null)
 
+  // Click toggle — keeps touch/keyboard working
   const toggle = useCallback((id) => {
+    clearTimeout(closeTimerRef.current)
     setOpenId(v => {
       const next = v === id ? null : id
       clearTimeout(actsTimerRef.current)
-      if (next) {
-        setActsZ(true)
-      } else {
-        actsTimerRef.current = setTimeout(() => setActsZ(false), 500)
-      }
+      if (next) { setActsZ(true) }
+      else { actsTimerRef.current = setTimeout(() => setActsZ(false), 500) }
       return next
     })
+  }, [])
+
+  // Hover open — immediate
+  const openPanel = useCallback((id) => {
+    clearTimeout(closeTimerRef.current)
+    setOpenId(id)
+    clearTimeout(actsTimerRef.current)
+    setActsZ(true)
+  }, [])
+
+  // Hover close — 200 ms delay to bridge the pill→panel gap
+  const closePanel = useCallback((id) => {
+    clearTimeout(closeTimerRef.current)
+    closeTimerRef.current = setTimeout(() => {
+      setOpenId(v => v === id ? null : v)
+      actsTimerRef.current = setTimeout(() => setActsZ(false), 500)
+    }, 200)
   }, [])
 
   return (
@@ -702,6 +750,8 @@ export default function DashboardSection() {
               url="https://actff1.web.sdo.com/project/20240927dawntrail/patch75/index.html"
               open={openId === 'next-patch'}
               onToggle={() => toggle('next-patch')}
+              onHoverOpen={() => openPanel('next-patch')}
+              onHoverClose={() => closePanel('next-patch')}
             />
             <ActivityCapsule
               accent="#F4C161"
@@ -717,6 +767,8 @@ export default function DashboardSection() {
               url="https://actff1.web.sdo.com/project/20260519the_make_it_rain_campaign/86z02yp9k67o/index.html"
               open={openId === 'gold-sau'}
               onToggle={() => toggle('gold-sau')}
+              onHoverOpen={() => openPanel('gold-sau')}
+              onHoverClose={() => closePanel('gold-sau')}
             />
             <ActivityCapsule
               accent="#FFAB76"
@@ -735,6 +787,8 @@ export default function DashboardSection() {
               url="https://actff1.web.sdo.com/20241130_GoldTrial/#/index"
               open={openId === 'gold-trial'}
               onToggle={() => toggle('gold-trial')}
+              onHoverOpen={() => openPanel('gold-trial')}
+              onHoverClose={() => closePanel('gold-trial')}
             />
             <WorldCupCapsule
               accent="#4CAF50"
@@ -750,6 +804,8 @@ export default function DashboardSection() {
               ]}
               open={openId === 'world-cup'}
               onToggle={() => toggle('world-cup')}
+              onHoverOpen={() => openPanel('world-cup')}
+              onHoverClose={() => closePanel('world-cup')}
             />
           </div>
         </div>
