@@ -394,6 +394,10 @@ export default function GameInfo({ noWrap = false }) {
           title="世界杯竞猜"
           rows={[]}
           url="https://actff1.web.sdo.com/20240520_NewJingCai/index.html#/index"
+          predictions={[
+            { homeFlag: '🇨🇦', homeName: '加拿大', awayFlag: '🇧🇦', awayName: '波黑', homeWin: 45, draw: 28, awayWin: 27 },
+            { homeFlag: '🇺🇸', homeName: '美国',   awayFlag: '🇵🇾', awayName: '巴拉圭', homeWin: 55, draw: 25, awayWin: 20 },
+          ]}
         />
       </div>
     </div>
