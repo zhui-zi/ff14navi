@@ -1,8 +1,5 @@
 import { useState, useRef, useEffect } from 'react'
 
-const SPRING = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
-const EASE   = 'cubic-bezier(0.4, 0, 0.2, 1)'
-
 const GITHUB_URL = 'https://github.com/zhui-zi/ff14navi/issues'
 const EMAIL = 'zhuizi@hotmail.com'
 
@@ -12,48 +9,56 @@ const SWATCHES = [
   { key: 'crystal', color: '#7BE7FF', label: '水晶蓝' },
 ]
 
-// M3 icon button — no fill, primary-tinted state layer on hover
+// Shared frosted-glass circle style for all three buttons
 const BTN = {
   width: '2.25rem',
   height: '2.25rem',
   borderRadius: '50%',
-  display: 'flex', alignItems: 'center', justifyContent: 'center',
-  background: 'transparent',
-  border: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: 'rgba(255,255,255,0.12)',
+  border: '1px solid rgba(255,255,255,0.20)',
+  backdropFilter: 'blur(6px)',
+  WebkitBackdropFilter: 'blur(6px)',
   color: 'var(--header-crystal)',
   cursor: 'pointer',
+  fontSize: '1rem',
   flexShrink: 0,
   outline: 'none',
-  transition: `background 0.18s ${EASE}`,
+  transition: 'background 0.15s ease',
 }
 
-// Drop-down tonal panel — springs in with M3 Expressive motion
+// Flyout panel that slides out to the left of the button column
 function Flyout({ open, children }) {
   return (
     <div style={{
       position: 'absolute',
-      top: 'calc(100% + 8px)',
-      right: 0,
-      transformOrigin: 'top right',
-      transform: open ? 'translateY(0) scale(1)' : 'translateY(-10px) scale(0.92)',
+      right: 'calc(100% + 8px)',
+      top: '50%',
+      transform: open
+        ? 'translateY(-50%) translateX(0)'
+        : 'translateY(-50%) translateX(6px)',
       opacity: open ? 1 : 0,
       pointerEvents: open ? 'auto' : 'none',
-      transition: `opacity 0.18s ${EASE}, transform 0.26s ${SPRING}`,
-      display: 'flex', alignItems: 'center',
+      transition: 'opacity 0.18s ease, transform 0.18s ease',
+      display: 'flex',
+      alignItems: 'center',
       gap: '0.5rem',
       padding: '0.4rem 0.875rem',
       borderRadius: '9999px',
-      background: 'var(--md-surface-container-highest)',
-      border: '1.5px solid var(--md-outline-variant)',
-      boxShadow: '0 6px 24px rgba(0,0,0,0.28)',
+      background: 'rgba(255,255,255,0.12)',
+      backdropFilter: 'blur(6px)',
+      WebkitBackdropFilter: 'blur(6px)',
+      border: '1px solid rgba(255,255,255,0.20)',
       whiteSpace: 'nowrap',
-      zIndex: 50,
     }}>
       {children}
     </div>
   )
 }
 
+// Click-outside hook for flyouts
 function useClickOutside(ref, onClose) {
   useEffect(() => {
     const handler = (e) => {
@@ -65,6 +70,8 @@ function useClickOutside(ref, onClose) {
 }
 
 // ── Palette Switcher ──────────────────────────────────────────────────────────
+// Collapsed: circle showing current palette color dot
+// Expanded:  swatches flyout to the left
 function PaletteSwitcher({ palette, setPalette }) {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
@@ -79,13 +86,13 @@ function PaletteSwitcher({ palette, setPalette }) {
         onClick={() => setOpen(v => !v)}
         title="切换主题色"
         aria-label="切换主题色"
-        onMouseEnter={e => (e.currentTarget.style.background = 'color-mix(in srgb, var(--header-crystal) 16%, transparent)')}
-        onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+        onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.22)')}
+        onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.12)')}
       >
         <span style={{
-          width: 10, height: 10, borderRadius: '50%',
+          width: 11, height: 11, borderRadius: '50%',
           background: currentColor,
-          boxShadow: `0 0 7px ${currentColor}BB`,
+          boxShadow: `0 0 7px ${currentColor}CC`,
           flexShrink: 0,
         }} />
       </button>
@@ -116,8 +123,8 @@ function ThemeToggle({ pref, cycle }) {
       style={BTN}
       title={`${LABEL[pref]}（点击切换）`}
       aria-label={LABEL[pref]}
-      onMouseEnter={e => (e.currentTarget.style.background = 'color-mix(in srgb, var(--header-crystal) 16%, transparent)')}
-      onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+      onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.22)')}
+      onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.12)')}
     >
       <span key={pref} className="theme-icon">{ICON[pref]}</span>
     </button>
@@ -125,6 +132,8 @@ function ThemeToggle({ pref, cycle }) {
 }
 
 // ── Feedback Button ───────────────────────────────────────────────────────────
+// Collapsed: circle with message icon
+// Expanded:  GitHub + email flyout to the left
 function FeedbackButton() {
   const [open, setOpen] = useState(false)
   const ref = useRef(null)
@@ -138,7 +147,7 @@ function FeedbackButton() {
     fontSize: '0.75rem', fontWeight: 600,
     color: 'var(--md-on-surface-variant)',
     textDecoration: 'none',
-    transition: `background 0.15s ${EASE}`,
+    transition: 'background 0.15s ease',
   }
 
   return (
@@ -148,8 +157,8 @@ function FeedbackButton() {
         style={BTN}
         title="意见反馈"
         aria-label="意见反馈"
-        onMouseEnter={e => (e.currentTarget.style.background = 'color-mix(in srgb, var(--header-crystal) 16%, transparent)')}
-        onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+        onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.22)')}
+        onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.12)')}
       >
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -160,9 +169,10 @@ function FeedbackButton() {
       <Flyout open={open}>
         <a
           href={GITHUB_URL}
-          target="_blank" rel="noopener noreferrer"
+          target="_blank"
+          rel="noopener noreferrer"
           style={linkStyle}
-          onMouseEnter={e => (e.currentTarget.style.background = 'color-mix(in srgb, var(--md-primary) 12%, transparent)')}
+          onMouseEnter={e => (e.currentTarget.style.background = 'var(--md-surface-container-high)')}
           onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
         >
           <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
@@ -170,11 +180,11 @@ function FeedbackButton() {
           </svg>
           GitHub
         </a>
-        <div style={{ width: 1, height: '0.875rem', background: 'var(--md-outline-variant)', opacity: 0.5, flexShrink: 0 }} />
+        <span style={{ opacity: 0.25, fontSize: '0.75rem', color: 'var(--md-on-surface-variant)' }}>|</span>
         <a
           href={`mailto:${EMAIL}`}
           style={linkStyle}
-          onMouseEnter={e => (e.currentTarget.style.background = 'color-mix(in srgb, var(--md-primary) 12%, transparent)')}
+          onMouseEnter={e => (e.currentTarget.style.background = 'var(--md-surface-container-high)')}
           onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
         >
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
@@ -208,19 +218,15 @@ export default function Header({ themePref = 'auto', themeEffective = 'dark', on
           style={{ background: 'var(--header-strip)' }} />
       </div>
 
-      {/* M3 Expressive action bar — horizontal pill, tonal+glass, top-right */}
+      {/* Unified button column — three circles stacked vertically, top-right */}
       <div style={{
         position: 'absolute',
         top: '1rem',
         right: '1rem',
-        display: 'flex', flexDirection: 'row', alignItems: 'center',
-        gap: '0.125rem',
-        padding: '0.25rem',
-        borderRadius: '9999px',
-        background: 'color-mix(in srgb, var(--md-surface-container-high) 80%, transparent)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        border: '1.5px solid color-mix(in srgb, var(--header-crystal) 22%, var(--md-outline-variant))',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '0.5rem',
         zIndex: 10,
       }}>
         {onSetPalette && <PaletteSwitcher palette={palette} setPalette={onSetPalette} />}
@@ -231,7 +237,7 @@ export default function Header({ themePref = 'auto', themeEffective = 'dark', on
       {/* Title content */}
       <div className="relative flex flex-col justify-center" style={{ minHeight: 'clamp(140px, 22vw, 200px)' }}>
         <div className="w-full max-w-7xl mx-auto px-4 py-6 text-center">
-          <div className="crystal-glyph text-3xl mb-2 sm:mb-3" style={{ color: 'var(--header-crystal)' }}>✦</div>
+          <div className="crystal-glyph text-3xl mb-2 sm:mb-3 opacity-90" style={{ color: 'var(--header-crystal)' }}>✦</div>
 
           <h1 className="tracking-tight mb-1" style={{
             fontFamily: '"Noto Serif SC", serif',
@@ -245,7 +251,7 @@ export default function Header({ themePref = 'auto', themeEffective = 'dark', on
             背水咖啡厅
           </h1>
 
-          <p className="mb-2" style={{
+          <p className="mb-1" style={{
             fontFamily: '"Cinzel", serif',
             fontWeight: 700,
             fontSize: 'clamp(0.75rem, 1.8vw, 1rem)',
@@ -256,24 +262,10 @@ export default function Header({ themePref = 'auto', themeEffective = 'dark', on
             The Last Stand
           </p>
 
-          {/* Subtitle as M3 chip */}
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            <span style={{
-              display: 'inline-flex', alignItems: 'center', gap: '0.375rem',
-              padding: '0.25rem 0.875rem',
-              borderRadius: '9999px',
-              background: 'color-mix(in srgb, var(--md-surface-container-high) 70%, transparent)',
-              border: '1px solid color-mix(in srgb, var(--header-crystal) 25%, var(--md-outline-variant))',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              fontSize: '0.7rem', fontWeight: 600,
-              letterSpacing: '0.12em', textTransform: 'uppercase',
-              color: 'var(--header-subtitle)',
-            }}>
-              <span style={{ color: 'var(--header-crystal)', fontSize: '0.6rem', opacity: 0.7 }}>✦</span>
-              Final Fantasy XIV · 工具导航站
-            </span>
-          </div>
+          <p className="text-xs font-medium tracking-[0.2em] uppercase mt-2"
+            style={{ color: 'var(--header-subtitle)' }}>
+            Final Fantasy XIV · 工具导航站
+          </p>
         </div>
       </div>
     </div>
