@@ -10,8 +10,6 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
 const T_TRIAL_CH_END  = cst(2026, 6,  7, 23, 59)
 const T_TRIAL_REG_END = cst(2026, 6, 11, 13,  0)
-const T_BET_CAN_BIH   = cst(2026, 6, 13,  3,  0)
-const T_BET_USA_PAR   = cst(2026, 6, 13,  9,  0)
 const T_BET_BRA_MAR   = cst(2026, 6, 14,  6,  0)
 const T_BET_HAI_SCO   = cst(2026, 6, 14,  9,  0)
 const T_BET_AUS_TUR   = cst(2026, 6, 14, 12,  0)
@@ -423,8 +421,6 @@ export default function GameInfo({ noWrap = false }) {
         title="世界杯竞猜"
         url="https://actff1.web.sdo.com/20240520_NewJingCai/index.html#/index"
         predictions={[
-          { homeFlag: '🇨🇦', homeName: '加拿大',   awayFlag: '🇧🇦', awayName: '波黑',   homeWin: 45, draw: 28, awayWin: 27, deadline: T_BET_CAN_BIH },
-          { homeFlag: '🇺🇸', homeName: '美国',     awayFlag: '🇵🇾', awayName: '巴拉圭', homeWin: 55, draw: 25, awayWin: 20, deadline: T_BET_USA_PAR },
           { homeFlag: '🇧🇷', homeName: '巴西',     awayFlag: '🇲🇦', awayName: '摩洛哥', homeWin: 50, draw: 30, awayWin: 20, deadline: T_BET_BRA_MAR },
           { homeFlag: '🇭🇹', homeName: '海地',     awayFlag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', awayName: '苏格兰', homeWin: 15, draw: 25, awayWin: 60, deadline: T_BET_HAI_SCO },
           { homeFlag: '🇦🇺', homeName: '澳大利亚', awayFlag: '🇹🇷', awayName: '土耳其', homeWin: 30, draw: 30, awayWin: 40, deadline: T_BET_AUS_TUR },

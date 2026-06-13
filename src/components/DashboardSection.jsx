@@ -13,8 +13,6 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
 const T_TRIAL_CH_END  = cst(2026, 6, 14, 23, 59)
 const T_TRIAL_REG_END = cst(2026, 6, 18, 13,  0)
-const T_BET_CAN_BIH   = cst(2026, 6, 13,  3,  0)
-const T_BET_USA_PAR   = cst(2026, 6, 13,  9,  0)
 const T_BET_BRA_MAR   = cst(2026, 6, 14,  6,  0)
 const T_BET_HAI_SCO   = cst(2026, 6, 14,  9,  0)
 const T_BET_AUS_TUR   = cst(2026, 6, 14, 12,  0)
@@ -438,6 +436,7 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
   const bodyRef = useRef(null)
   const [bodyH, setBodyH] = useState(0)
   const [elevated, setElevated] = useState(false)
+  const [, setTick] = useState(0)
   const { effective } = useTheme()
   const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
   const panelShadow = effective === 'light' ? 'none' : '0 8px 28px rgba(0,0,0,0.38)'
@@ -457,8 +456,16 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
     }
   }, [open])
 
-  const soonestDeadline = predictions.reduce((best, p) =>
-    (!best || p.deadline < best) ? p.deadline : best, null)
+  useEffect(() => {
+    const id = setInterval(() => setTick(t => t + 1), 30000)
+    return () => clearInterval(id)
+  }, [])
+
+  const now = Date.now()
+  const nextDeadline = predictions.reduce((best, p) => {
+    if (p.deadline <= now) return best
+    return (!best || p.deadline < best) ? p.deadline : best
+  }, null)
 
   return (
     <div
@@ -472,10 +479,12 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
         <span style={{ fontSize: '0.6rem', color: 'var(--md-on-surface-variant)', opacity: 'var(--t-faint)', flexShrink: 0 }}>
           {predictions.length} 场
         </span>
-        {soonestDeadline && (
+        {nextDeadline ? (
           <span style={{ color: accent }}>
-            <CountdownCompact target={soonestDeadline} expired="已截止" />
+            <CountdownCompact target={nextDeadline} expired="已截止" />
           </span>
+        ) : (
+          <span style={{ opacity: 'var(--t-faint)', fontSize: '0.7rem', fontWeight: 500 }}>已截止</span>
         )}
       </CapsulePill>
 
@@ -819,8 +828,6 @@ export default function DashboardSection() {
               title="世界杯竞猜"
               url="https://actff1.web.sdo.com/20240520_NewJingCai/index.html#/index"
               predictions={[
-                { homeCode: 'ca', homeName: '加拿大',   awayCode: 'ba',     awayName: '波黑',   homeWin: 45, draw: 28, awayWin: 27, deadline: T_BET_CAN_BIH },
-                { homeCode: 'us', homeName: '美国',     awayCode: 'py',     awayName: '巴拉圭', homeWin: 55, draw: 25, awayWin: 20, deadline: T_BET_USA_PAR },
                 { homeCode: 'br', homeName: '巴西',     awayCode: 'ma',     awayName: '摩洛哥', homeWin: 50, draw: 30, awayWin: 20, deadline: T_BET_BRA_MAR },
                 { homeCode: 'ht', homeName: '海地',     awayCode: 'gb-sct', awayName: '苏格兰', homeWin: 15, draw: 25, awayWin: 60, deadline: T_BET_HAI_SCO },
                 { homeCode: 'au', homeName: '澳大利亚', awayCode: 'tr',     awayName: '土耳其', homeWin: 30, draw: 30, awayWin: 40, deadline: T_BET_AUS_TUR },
