@@ -13,6 +13,9 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
 const T_TRIAL_CH_END  = cst(2026, 6, 14, 23, 59)
 const T_TRIAL_REG_END = cst(2026, 6, 18, 13,  0)
+const T_BET_NED_JPN   = cst(2026, 6, 15,  4,  0)
+const T_BET_CIV_ECU   = cst(2026, 6, 15,  7,  0)
+const T_BET_SWE_TUN   = cst(2026, 6, 15, 10,  0)
 const T_BET_AUS_TUR   = cst(2026, 6, 14, 12,  0)
 
 const SPRING = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
@@ -826,9 +829,9 @@ export default function DashboardSection() {
               title="世界杯竞猜"
               url="https://actff1.web.sdo.com/20240520_NewJingCai/index.html#/index"
               predictions={[
-                { homeCode: 'nl',  homeName: '荷兰',     awayCode: 'jp', awayName: '日本',     homeWin: 55, draw: 25, awayWin: 20, deadline: null },
-                { homeCode: 'ci',  homeName: '科特迪瓦', awayCode: 'ec', awayName: '厄瓜多尔', homeWin: 35, draw: 30, awayWin: 35, deadline: null },
-                { homeCode: 'se',  homeName: '瑞典',     awayCode: 'tn', awayName: '突尼斯',   homeWin: 50, draw: 30, awayWin: 20, deadline: null },
+                { homeCode: 'nl',  homeName: '荷兰',     awayCode: 'jp', awayName: '日本',     homeWin: 55, draw: 25, awayWin: 20, deadline: T_BET_NED_JPN },
+                { homeCode: 'ci',  homeName: '科特迪瓦', awayCode: 'ec', awayName: '厄瓜多尔', homeWin: 35, draw: 30, awayWin: 35, deadline: T_BET_CIV_ECU },
+                { homeCode: 'se',  homeName: '瑞典',     awayCode: 'tn', awayName: '突尼斯',   homeWin: 50, draw: 30, awayWin: 20, deadline: T_BET_SWE_TUN },
                 { homeCode: 'au',  homeName: '澳大利亚', awayCode: 'tr', awayName: '土耳其',   homeWin: 30, draw: 30, awayWin: 40, deadline: T_BET_AUS_TUR },
               ]}
               open={openId === 'world-cup'}
