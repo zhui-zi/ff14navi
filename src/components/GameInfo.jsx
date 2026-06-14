@@ -10,10 +10,8 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
 const T_TRIAL_CH_END  = cst(2026, 6,  7, 23, 59)
 const T_TRIAL_REG_END = cst(2026, 6, 11, 13,  0)
-const T_BET_BRA_MAR   = cst(2026, 6, 14,  6,  0)
 const T_BET_HAI_SCO   = cst(2026, 6, 14,  9,  0)
 const T_BET_AUS_TUR   = cst(2026, 6, 14, 12,  0)
-
 // ── Shared countdown display ─────────────────────────────────────────────────
 function Countdown({ target, expired, accentColor }) {
   const t = useCountdown(target)
@@ -113,7 +111,6 @@ function ActivityCard({ accent: rawAccent, badge, title, subtitle, dates, rows, 
   )
 }
 
-// ── World Cup predictions strip ──────────────────────────────────────────────
 function MatchColumn({ homeFlag, homeName, awayFlag, awayName, homeWin, draw, awayWin, accent, deadline }) {
   const t = useCountdown(deadline)
   const cd = t
@@ -421,8 +418,7 @@ export default function GameInfo({ noWrap = false }) {
         title="世界杯竞猜"
         url="https://actff1.web.sdo.com/20240520_NewJingCai/index.html#/index"
         predictions={[
-          { homeFlag: '🇧🇷', homeName: '巴西',     awayFlag: '🇲🇦', awayName: '摩洛哥', homeWin: 50, draw: 30, awayWin: 20, deadline: T_BET_BRA_MAR },
-          { homeFlag: '🇭🇹', homeName: '海地',     awayFlag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', awayName: '苏格兰', homeWin: 15, draw: 25, awayWin: 60, deadline: T_BET_HAI_SCO },
+{ homeFlag: '🇭🇹', homeName: '海地',     awayFlag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', awayName: '苏格兰', homeWin: 15, draw: 25, awayWin: 60, deadline: T_BET_HAI_SCO },
           { homeFlag: '🇦🇺', homeName: '澳大利亚', awayFlag: '🇹🇷', awayName: '土耳其', homeWin: 30, draw: 30, awayWin: 40, deadline: T_BET_AUS_TUR },
         ]}
       />

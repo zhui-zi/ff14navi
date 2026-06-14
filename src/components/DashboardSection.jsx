@@ -13,7 +13,6 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
 const T_TRIAL_CH_END  = cst(2026, 6, 14, 23, 59)
 const T_TRIAL_REG_END = cst(2026, 6, 18, 13,  0)
-const T_BET_BRA_MAR   = cst(2026, 6, 14,  6,  0)
 const T_BET_HAI_SCO   = cst(2026, 6, 14,  9,  0)
 const T_BET_AUS_TUR   = cst(2026, 6, 14, 12,  0)
 
@@ -828,8 +827,7 @@ export default function DashboardSection() {
               title="世界杯竞猜"
               url="https://actff1.web.sdo.com/20240520_NewJingCai/index.html#/index"
               predictions={[
-                { homeCode: 'br', homeName: '巴西',     awayCode: 'ma',     awayName: '摩洛哥', homeWin: 50, draw: 30, awayWin: 20, deadline: T_BET_BRA_MAR },
-                { homeCode: 'ht', homeName: '海地',     awayCode: 'gb-sct', awayName: '苏格兰', homeWin: 15, draw: 25, awayWin: 60, deadline: T_BET_HAI_SCO },
+{ homeCode: 'ht', homeName: '海地',     awayCode: 'gb-sct', awayName: '苏格兰', homeWin: 15, draw: 25, awayWin: 60, deadline: T_BET_HAI_SCO },
                 { homeCode: 'au', homeName: '澳大利亚', awayCode: 'tr',     awayName: '土耳其', homeWin: 30, draw: 30, awayWin: 40, deadline: T_BET_AUS_TUR },
               ]}
               open={openId === 'world-cup'}
