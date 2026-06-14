@@ -92,7 +92,7 @@ function ActivityCard({ accent: rawAccent, badge, title, subtitle, dates, rows, 
               style={{ color: 'var(--md-on-surface-variant)', opacity: 0.55 }}>{d}</div>
           ))}
           {dates?.length > 2 && (
-            <div className="text-xs mt-0.5" style={{ color: accent, opacity: 0.6 }}>
+            <div className="text-xs mt-0.5" style={{ color: accent, opacity: 0.85 }}>
               +{dates.length - 2} 项内容
             </div>
           )}
@@ -117,7 +117,7 @@ function MatchColumn({ homeFlag, homeName, awayFlag, awayName, homeWin, draw, aw
     : '已截止'
   const segments = [
     { pct: homeWin, color: accent },
-    { pct: draw,    color: '#64748B' },
+    { pct: draw,    color: 'var(--md-on-surface-variant)' },
     { pct: awayWin, color: '#F87171' },
   ]
   return (
@@ -207,7 +207,7 @@ function PredictionsStrip({ accent: rawAccent, badge, title, url, predictions })
         <span style={{ fontSize: '0.7rem', color: 'var(--md-on-surface-variant)', opacity: 0.45 }}>
           🤖 AI 概率预测
         </span>
-        <span className="ml-auto flex-shrink-0" style={{ fontSize: '0.7rem', color: accent, opacity: 0.65 }}>
+        <span className="ml-auto flex-shrink-0" style={{ fontSize: '0.7rem', color: accent, opacity: 0.85 }}>
           前往竞猜 →
         </span>
       </div>

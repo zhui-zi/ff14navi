@@ -298,7 +298,7 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
                       </span>
                     ) : (
                       <span style={{
-                        color: accent, opacity: 0.4, fontSize: '0.55rem',
+                        color: accent, opacity: 0.65, fontSize: '0.55rem',
                         flexShrink: 0, lineHeight: 1, paddingTop: '0.25rem',
                       }}>
                         ▸
@@ -400,7 +400,7 @@ function MatchRow({ homeCode, homeName, awayCode, awayName, homeWin, draw, awayW
       {/* Probability bar — no text inside */}
       <div style={{ display: 'flex', borderRadius: 6, overflow: 'hidden', height: 10, marginBottom: '0.3rem' }}>
         <div style={{ width: `${homeWin}%`, background: accent, opacity: expired ? 0.4 : 1 }} />
-        <div style={{ width: `${draw}%`, background: '#64748B', opacity: expired ? 0.4 : 1 }} />
+        <div style={{ width: `${draw}%`, background: 'var(--md-on-surface-variant)', opacity: expired ? 0.4 : 1 }} />
         <div style={{ width: `${awayWin}%`, background: '#F87171', opacity: expired ? 0.4 : 1 }} />
       </div>
 
@@ -410,7 +410,7 @@ function MatchRow({ homeCode, homeName, awayCode, awayName, homeWin, draw, awayW
           <span style={{ fontSize: '0.65rem', fontWeight: 600, color: expired ? 'var(--md-on-surface-variant)' : accent, opacity: expired ? 0.4 : 1 }}>
             主胜 {homeWin}%
           </span>
-          <span style={{ fontSize: '0.62rem', color: '#64748B', opacity: expired ? 0.4 : 0.8 }}>
+          <span style={{ fontSize: '0.62rem', color: 'var(--md-on-surface-variant)', opacity: expired ? 0.4 : 1 }}>
             平 {draw}%
           </span>
           <span style={{ fontSize: '0.65rem', fontWeight: 600, color: '#F87171', opacity: expired ? 0.4 : 1 }}>
