@@ -10,10 +10,7 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
 const T_TRIAL_CH_END  = cst(2026, 6,  7, 23, 59)
 const T_TRIAL_REG_END = cst(2026, 6, 11, 13,  0)
-const T_BET_NED_JPN   = cst(2026, 6, 15,  4,  0)
-const T_BET_CIV_ECU   = cst(2026, 6, 15,  7,  0)
-const T_BET_SWE_TUN   = cst(2026, 6, 15, 10,  0)
-const T_BET_AUS_TUR   = cst(2026, 6, 14, 12,  0)
+const T_WORLDCUP_END  = cst(2026, 7, 20, 23, 59)
 // ── Shared countdown display ─────────────────────────────────────────────────
 function Countdown({ target, expired, accentColor }) {
   const t = useCountdown(target)
@@ -113,72 +110,13 @@ function ActivityCard({ accent: rawAccent, badge, title, subtitle, dates, rows, 
   )
 }
 
-function MatchColumn({ homeFlag, homeName, awayFlag, awayName, homeWin, draw, awayWin, accent, deadline }) {
-  const t = useCountdown(deadline)
-  const cd = t
-    ? `${t.d > 0 ? t.d + 'd ' : ''}${String(t.h).padStart(2, '0')}:${String(t.m).padStart(2, '0')}:${String(t.s).padStart(2, '0')}`
-    : '已截止'
-  const segments = [
-    { pct: homeWin, color: accent },
-    { pct: draw,    color: 'var(--md-on-surface-variant)' },
-    { pct: awayWin, color: '#F87171' },
-  ]
-  return (
-    <div className="flex flex-col items-center px-2 py-3"
-      style={{ background: 'var(--md-surface-container)' }}>
-      {/* Flags */}
-      <div className="flex items-center gap-1 mb-1">
-        <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>{homeFlag}</span>
-        <span style={{ fontSize: '0.55rem', fontWeight: 700, color: 'var(--md-on-surface-variant)', opacity: 0.3 }}>VS</span>
-        <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>{awayFlag}</span>
-      </div>
-      {/* Names */}
-      <div className="flex items-center justify-center gap-1 w-full mb-2.5">
-        <span className="flex-1 text-right truncate"
-          style={{ fontSize: '0.63rem', fontWeight: 500, color: 'var(--md-on-surface)', opacity: 0.8 }}>
-          {homeName}
-        </span>
-        <span style={{ opacity: 0.25, fontSize: '0.5rem', flexShrink: 0 }}>·</span>
-        <span className="flex-1 truncate"
-          style={{ fontSize: '0.63rem', fontWeight: 500, color: 'var(--md-on-surface)', opacity: 0.8 }}>
-          {awayName}
-        </span>
-      </div>
-      {/* Bar */}
-      <div className="w-full flex rounded-full overflow-hidden mb-1" style={{ height: 13 }}>
-        {segments.map((s, i) => (
-          <div key={i} style={{
-            width: `${s.pct}%`, backgroundColor: s.color,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            transition: 'width 0.4s ease',
-          }}>
-            {s.pct >= 26 && (
-              <span style={{ fontSize: '0.5rem', fontWeight: 700, color: 'rgba(255,255,255,0.85)' }}>
-                {s.pct}%
-              </span>
-            )}
-          </div>
-        ))}
-      </div>
-      {/* Pct labels */}
-      <div className="w-full flex justify-between mb-2" style={{ padding: '0 1px' }}>
-        {segments.map((s, i) => (
-          <span key={i} style={{ fontSize: '0.58rem', fontWeight: 600, color: s.color }}>{s.pct}%</span>
-        ))}
-      </div>
-      {/* Countdown */}
-      <span className="tabular-nums" style={{
-        fontSize: '0.58rem', fontFamily: 'ui-monospace, monospace', fontWeight: 600,
-        color: t ? accent : 'var(--md-on-surface-variant)',
-        opacity: t ? 0.85 : 0.35,
-      }}>
-        ⏱ {cd}
-      </span>
-    </div>
-  )
-}
+const WORLDCUP_RULES = [
+  { icon: '⚔️', label: '副本通关', reward: '+200 竞猜币 / 天', note: '每账号每天1次，当日领取' },
+  { icon: '📱', label: '企微签到', reward: '+100 竞猜币 / 天', note: '需关注企微并绑定游戏，当日未签不保留' },
+  { icon: '🎯', label: '单题投注上限', reward: '≤ 1000 竞猜币', note: '' },
+]
 
-function PredictionsStrip({ accent: rawAccent, badge, title, url, predictions }) {
+function WorldCupCard({ accent: rawAccent, badge, title, url }) {
   const { effective } = useTheme()
   const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
   return (
@@ -189,6 +127,7 @@ function PredictionsStrip({ accent: rawAccent, badge, title, url, predictions })
       className="block rounded-2xl overflow-hidden cursor-pointer"
       style={{
         border: `2px solid ${accent}55`,
+        background: `linear-gradient(160deg, ${accent}18 0%, var(--md-surface-container) 55%)`,
         transition: 'border-color 0.18s ease',
       }}
       onMouseEnter={e => e.currentTarget.style.borderColor = `${accent}BB`}
@@ -197,7 +136,7 @@ function PredictionsStrip({ accent: rawAccent, badge, title, url, predictions })
       {/* Header */}
       <div className="flex items-center gap-2.5 px-4 py-2.5 flex-wrap"
         style={{
-          background: `linear-gradient(90deg, ${accent}20 0%, var(--md-surface-container) 60%)`,
+          background: `linear-gradient(90deg, ${accent}20 0%, transparent 60%)`,
           borderBottom: `1px solid ${accent}22`,
         }}>
         <span className="inline-block text-xs font-medium px-2 py-0.5 rounded flex-shrink-0"
@@ -207,23 +146,39 @@ function PredictionsStrip({ accent: rawAccent, badge, title, url, predictions })
         <span className="font-semibold flex-shrink-0" style={{ fontSize: '0.9rem', color: 'var(--md-on-surface)' }}>
           {title}
         </span>
-        <span style={{ fontSize: '0.7rem', color: 'var(--md-on-surface-variant)', opacity: 0.45 }}>
-          🤖 AI 概率预测
+        <span style={{ fontSize: '0.7rem', color: 'var(--md-on-surface-variant)', opacity: 0.55 }}>
+          6月11日 – 7月20日
         </span>
         <span className="ml-auto flex-shrink-0" style={{ fontSize: '0.7rem', color: accent, opacity: 0.85 }}>
           前往竞猜 →
         </span>
       </div>
-      {/* Match columns — gap via 1px background */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))',
-        gap: '1px',
-        background: `${accent}22`,
-      }}>
-        {predictions.map((p, i) => (
-          <MatchColumn key={i} {...p} accent={accent} />
+      {/* Rules */}
+      <div className="px-4 py-3 grid gap-2.5"
+        style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))' }}>
+        {WORLDCUP_RULES.map((r, i) => (
+          <div key={i} className="flex items-start gap-2">
+            <span style={{ fontSize: '0.95rem', lineHeight: 1.5, flexShrink: 0 }}>{r.icon}</span>
+            <div>
+              <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--md-on-surface)', opacity: 0.85 }}>
+                {r.label}
+                <span className="ml-1.5" style={{ color: accent, fontWeight: 700 }}>{r.reward}</span>
+              </div>
+              {r.note && (
+                <div style={{ fontSize: '0.65rem', color: 'var(--md-on-surface-variant)', opacity: 0.55, marginTop: 2 }}>
+                  {r.note}
+                </div>
+              )}
+            </div>
+          </div>
         ))}
+      </div>
+      {/* Countdown */}
+      <div className="px-4 pb-2.5 flex items-baseline gap-2">
+        <span className="text-xs flex-shrink-0" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.7 }}>
+          距结束
+        </span>
+        <Countdown target={T_WORLDCUP_END} expired="已结束" accentColor={accent} />
       </div>
     </a>
   )
@@ -413,18 +368,12 @@ export default function GameInfo({ noWrap = false }) {
         />
       </div>
 
-      {/* World Cup predictions — full-width horizontal strip, one column per match */}
-      <PredictionsStrip
+      {/* World Cup — coin acquisition rules */}
+      <WorldCupCard
         accent="#4CAF50"
         badge="运营活动"
         title="世界杯竞猜"
         url="https://actff1.web.sdo.com/20240520_NewJingCai/index.html#/index"
-        predictions={[
-          { homeFlag: '🇳🇱', homeName: '荷兰',     awayFlag: '🇯🇵', awayName: '日本',     homeWin: 55, draw: 25, awayWin: 20, deadline: T_BET_NED_JPN },
-          { homeFlag: '🇨🇮', homeName: '科特迪瓦', awayFlag: '🇪🇨', awayName: '厄瓜多尔', homeWin: 35, draw: 30, awayWin: 35, deadline: T_BET_CIV_ECU },
-          { homeFlag: '🇸🇪', homeName: '瑞典',     awayFlag: '🇹🇳', awayName: '突尼斯',   homeWin: 50, draw: 30, awayWin: 20, deadline: T_BET_SWE_TUN },
-          { homeFlag: '🇦🇺', homeName: '澳大利亚', awayFlag: '🇹🇷', awayName: '土耳其', homeWin: 30, draw: 30, awayWin: 40, deadline: T_BET_AUS_TUR },
-        ]}
       />
     </div>
   )
