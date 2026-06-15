@@ -13,10 +13,7 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
 const T_TRIAL_CH_END  = cst(2026, 6, 14, 23, 59)
 const T_TRIAL_REG_END = cst(2026, 6, 18, 13,  0)
-const T_BET_NED_JPN   = cst(2026, 6, 15,  4,  0)
-const T_BET_CIV_ECU   = cst(2026, 6, 15,  7,  0)
-const T_BET_SWE_TUN   = cst(2026, 6, 15, 10,  0)
-const T_BET_AUS_TUR   = cst(2026, 6, 14, 12,  0)
+const T_WORLDCUP_END  = cst(2026, 7, 20, 23, 59)
 
 const SPRING = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
 const EASE   = 'cubic-bezier(0.4, 0, 0.2, 1)'
@@ -353,91 +350,17 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
   )
 }
 
-// ── Flag image ────────────────────────────────────────────────────────────────
-function FlagImg({ code, name }) {
-  return (
-    <img
-      src={`https://flagcdn.com/w40/${code}.png`}
-      width="22" height="16" alt={name} loading="lazy"
-      style={{ borderRadius: 2, display: 'block', objectFit: 'cover', flexShrink: 0 }}
-    />
-  )
-}
-
-// ── Single match row in world cup panel ───────────────────────────────────────
-// Clean vertical layout: team names → bar → stats+countdown
-// No text inside the bar to avoid duplication.
-function MatchRow({ homeCode, homeName, awayCode, awayName, homeWin, draw, awayWin, accent, deadline }) {
-  const t = useCountdown(deadline)
-  const expired = !t
-  const cd = expired
-    ? '已截止'
-    : `${t.d > 0 ? t.d + 'd ' : ''}${String(t.h).padStart(2, '0')}:${String(t.m).padStart(2, '0')}:${String(t.s).padStart(2, '0')}`
-
-  return (
-    <div>
-      {/* Team names row */}
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: 6,
-        marginBottom: '0.375rem',
-      }}>
-        <FlagImg code={homeCode} name={homeName} />
-        <span style={{
-          flex: 1, fontSize: '0.8rem', fontWeight: 600,
-          color: 'var(--md-on-surface)',
-        }}>
-          {homeName}
-        </span>
-        <span style={{ fontSize: '0.55rem', fontWeight: 700, color: 'var(--md-on-surface-variant)', opacity: 0.25 }}>
-          VS
-        </span>
-        <span style={{
-          flex: 1, textAlign: 'right', fontSize: '0.8rem', fontWeight: 600,
-          color: 'var(--md-on-surface)',
-        }}>
-          {awayName}
-        </span>
-        <FlagImg code={awayCode} name={awayName} />
-      </div>
-
-      {/* Probability bar — no text inside */}
-      <div style={{ display: 'flex', borderRadius: 6, overflow: 'hidden', height: 10, marginBottom: '0.3rem' }}>
-        <div style={{ width: `${homeWin}%`, background: accent, opacity: expired ? 0.4 : 1 }} />
-        <div style={{ width: `${draw}%`, background: 'var(--md-on-surface-variant)', opacity: expired ? 0.4 : 1 }} />
-        <div style={{ width: `${awayWin}%`, background: '#F87171', opacity: expired ? 0.4 : 1 }} />
-      </div>
-
-      {/* Stats + countdown */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ display: 'flex', gap: '0.75rem' }}>
-          <span style={{ fontSize: '0.65rem', fontWeight: 600, color: expired ? 'var(--md-on-surface-variant)' : accent, opacity: expired ? 0.4 : 1 }}>
-            主胜 {homeWin}%
-          </span>
-          <span style={{ fontSize: '0.62rem', color: 'var(--md-on-surface-variant)', opacity: expired ? 0.4 : 1 }}>
-            平 {draw}%
-          </span>
-          <span style={{ fontSize: '0.65rem', fontWeight: 600, color: '#F87171', opacity: expired ? 0.4 : 1 }}>
-            客胜 {awayWin}%
-          </span>
-        </div>
-        <span style={{
-          fontFamily: 'ui-monospace, monospace', fontSize: '0.62rem', fontWeight: 600,
-          color: expired ? 'var(--md-on-surface-variant)' : accent,
-          opacity: expired ? 0.3 : 0.85,
-        }}>
-          ⏱ {cd}
-        </span>
-      </div>
-    </div>
-  )
-}
+const WORLDCUP_RULES = [
+  { icon: '⚔️', label: '副本通关', reward: '+200 竞猜币 / 天', note: '每账号每天1次，当日领取' },
+  { icon: '📱', label: '企微签到', reward: '+100 竞猜币 / 天', note: '需关注企微并绑定游戏，当日未签不保留' },
+  { icon: '🎯', label: '单题投注上限', reward: '≤ 1000 竞猜币', note: '' },
+]
 
 // ── World Cup Capsule ─────────────────────────────────────────────────────────
-function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, open, onToggle, onHoverOpen, onHoverClose }) {
+function WorldCupCapsule({ accent: rawAccent, badge, title, url, open, onToggle, onHoverOpen, onHoverClose }) {
   const bodyRef = useRef(null)
   const [bodyH, setBodyH] = useState(0)
   const [elevated, setElevated] = useState(false)
-  const [, setTick] = useState(0)
   const { effective } = useTheme()
   const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
   const panelShadow = effective === 'light' ? 'none' : '0 8px 28px rgba(0,0,0,0.38)'
@@ -457,17 +380,6 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
     }
   }, [open])
 
-  useEffect(() => {
-    const id = setInterval(() => setTick(t => t + 1), 30000)
-    return () => clearInterval(id)
-  }, [])
-
-  const now = Date.now()
-  const nextDeadline = predictions.reduce((best, p) => {
-    if (p.deadline <= now) return best
-    return (!best || p.deadline < best) ? p.deadline : best
-  }, null)
-
   return (
     <div
       style={{ position: 'relative', zIndex: elevated ? 1 : 0, display: 'flex', flexDirection: 'column' }}
@@ -478,15 +390,11 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
     >
       <CapsulePill accent={accent} badge={badge} title={title} open={open} onToggle={onToggle}>
         <span style={{ fontSize: '0.6rem', color: 'var(--md-on-surface-variant)', opacity: 'var(--t-faint)', flexShrink: 0 }}>
-          {predictions.length} 场
+          6/11–7/20
         </span>
-        {nextDeadline ? (
-          <span style={{ color: accent }}>
-            <CountdownCompact target={nextDeadline} expired="已截止" />
-          </span>
-        ) : (
-          <span style={{ opacity: 'var(--t-faint)', fontSize: '0.7rem', fontWeight: 500 }}>已截止</span>
-        )}
+        <span style={{ color: accent }}>
+          <CountdownCompact target={T_WORLDCUP_END} expired="已结束" />
+        </span>
       </CapsulePill>
 
       {/* Bridge div — covers the gap so mouseleave doesn't fire mid-transition */}
@@ -501,7 +409,7 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
         top: 'calc(100% + 6px)',
         left: 0, right: 0,
         zIndex: 10,
-        maxHeight: open ? `${(bodyH || 500) + 4}px` : 0,
+        maxHeight: open ? `${(bodyH || 300) + 4}px` : 0,
         overflow: 'hidden',
         pointerEvents: open ? 'auto' : 'none',
         transition: `max-height ${open ? `0.46s ${SPRING}` : `0.28s ${EASE}`}`,
@@ -524,7 +432,7 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
             borderBottom: `1px solid var(--md-outline-variant)`,
           }}>
             <span style={{ fontSize: '0.7rem', color: 'var(--md-on-surface-variant)', opacity: 0.5 }}>
-              🤖 AI 概率预测
+              6月11日 – 7月20日
             </span>
             <a
               href={url}
@@ -546,14 +454,22 @@ function WorldCupCapsule({ accent: rawAccent, badge, title, url, predictions, op
             </a>
           </div>
 
-          {/* Match list — add/remove MatchRow entries freely */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            {predictions.map((p, i) => (
-              <div key={i}>
-                {i > 0 && (
-                  <div style={{ height: 1, background: 'var(--md-outline-variant)', opacity: 0.4, marginBottom: '0.75rem' }} />
-                )}
-                <MatchRow {...p} accent={accent} />
+          {/* Coin rules */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
+            {WORLDCUP_RULES.map((r, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
+                <span style={{ fontSize: '0.9rem', lineHeight: 1.5, flexShrink: 0 }}>{r.icon}</span>
+                <div>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--md-on-surface)', opacity: 0.85 }}>
+                    {r.label}
+                    <span style={{ marginLeft: '0.375rem', color: accent, fontWeight: 700 }}>{r.reward}</span>
+                  </div>
+                  {r.note && (
+                    <div style={{ fontSize: '0.65rem', color: 'var(--md-on-surface-variant)', opacity: 0.55, marginTop: 2 }}>
+                      {r.note}
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -828,12 +744,6 @@ export default function DashboardSection() {
               badge="运营活动"
               title="世界杯竞猜"
               url="https://actff1.web.sdo.com/20240520_NewJingCai/index.html#/index"
-              predictions={[
-                { homeCode: 'nl',  homeName: '荷兰',     awayCode: 'jp', awayName: '日本',     homeWin: 55, draw: 25, awayWin: 20, deadline: T_BET_NED_JPN },
-                { homeCode: 'ci',  homeName: '科特迪瓦', awayCode: 'ec', awayName: '厄瓜多尔', homeWin: 35, draw: 30, awayWin: 35, deadline: T_BET_CIV_ECU },
-                { homeCode: 'se',  homeName: '瑞典',     awayCode: 'tn', awayName: '突尼斯',   homeWin: 50, draw: 30, awayWin: 20, deadline: T_BET_SWE_TUN },
-                { homeCode: 'au',  homeName: '澳大利亚', awayCode: 'tr', awayName: '土耳其',   homeWin: 30, draw: 30, awayWin: 40, deadline: T_BET_AUS_TUR },
-              ]}
               open={openId === 'world-cup'}
               onToggle={() => toggle('world-cup')}
               onHoverOpen={() => openPanel('world-cup')}
