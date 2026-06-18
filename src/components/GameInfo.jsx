@@ -11,6 +11,7 @@ const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
 const T_TRIAL_CH_END  = cst(2026, 6,  7, 23, 59)
 const T_TRIAL_REG_END = cst(2026, 6, 11, 13,  0)
 const T_WORLDCUP_END  = cst(2026, 7, 20, 23, 59)
+const T_DQX_END       = cst(2026, 7, 13, 22, 59)
 // ── Shared countdown display ─────────────────────────────────────────────────
 function Countdown({ target, expired, accentColor }) {
   const t = useCountdown(target)
@@ -354,6 +355,19 @@ export default function GameInfo({ noWrap = false }) {
           dates={['5月29日 16:00 – 6月24日 22:59']}
           rows={[{ label: '距结束', target: T_GOLD_SAU_END, expired: '已结束' }]}
           url="https://actff1.web.sdo.com/project/20260519the_make_it_rain_campaign/86z02yp9k67o/index.html"
+        />
+        <ActivityCard
+          accent="#6BA4E8"
+          badge="季节活动（复刻）"
+          title="勇者斗恶龙X联动"
+          dates={[
+            '6月25日 16:00 – 7月13日 22:59',
+            '装备：莽汉面具、史莱姆王帽子',
+            '宠物：巨像丙',
+            '肖像教材：勇者斗恶龙X',
+          ]}
+          rows={[{ label: '距结束', target: T_DQX_END, expired: '已结束' }]}
+          url="https://actff1.web.sdo.com/project/20260616Theres_Golems_in_Those_Hills/0gqh4ij2nlt0/index.html"
         />
         <ActivityCard
           accent="#FFAB76"
