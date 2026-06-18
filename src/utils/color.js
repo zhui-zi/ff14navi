@@ -48,5 +48,7 @@ function hslToHex(h, s, l) {
 export function adaptForLight(hex) {
   if (!hex?.startsWith('#') || hex.length < 7) return hex
   const [h, s, l] = hexToHsl(hex)
-  return hslToHex(h, Math.min(s * 1.1, 95), Math.min(l * 0.5, 40))
+  const newS = Math.min(Math.max(s * 1.2, 65), 92)
+  const newL = Math.min(l * 0.45, 36)
+  return hslToHex(h, newS, newL)
 }

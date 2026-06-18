@@ -14,6 +14,7 @@ const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
 const T_TRIAL_CH_END  = cst(2026, 6, 14, 23, 59)
 const T_TRIAL_REG_END = cst(2026, 6, 18, 13,  0)
 const T_WORLDCUP_END  = cst(2026, 7, 20, 23, 59)
+const T_DQX_START     = cst(2026, 6, 25, 16,  0)
 const T_DQX_END       = cst(2026, 7, 13, 22, 59)
 
 const SPRING = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
@@ -730,7 +731,10 @@ export default function DashboardSection() {
                 '宠物：巨像丙',
                 '肖像教材：勇者斗恶龙X',
               ]}
-              rows={[{ label: '距结束', target: T_DQX_END, expired: '已结束' }]}
+              rows={[
+                { label: '距开始', target: T_DQX_START, expired: '进行中' },
+                { label: '距结束', target: T_DQX_END,   expired: '已结束' },
+              ]}
               url="https://actff1.web.sdo.com/project/20260616Theres_Golems_in_Those_Hills/0gqh4ij2nlt0/index.html"
               open={openId === 'dqx'}
               onToggle={() => toggle('dqx')}
