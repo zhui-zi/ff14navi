@@ -8,8 +8,8 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
   new Date(Date.UTC(y, mo - 1, d, h - 8, mi))
 
 const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
-const T_TRIAL_CH_END  = cst(2026, 6,  7, 23, 59)
-const T_TRIAL_REG_END = cst(2026, 6, 11, 13,  0)
+const T_TRIAL_CH_END  = cst(2026, 6, 21, 23, 59)
+const T_TRIAL_REG_END = cst(2026, 6, 25, 13,  0)
 const T_WORLDCUP_END  = cst(2026, 7, 20, 23, 59)
 const T_DQX_END       = cst(2026, 7, 13, 22, 59)
 // ── Shared countdown display ─────────────────────────────────────────────────
@@ -372,8 +372,8 @@ export default function GameInfo({ noWrap = false }) {
         <ActivityCard
           accent="#FFAB76"
           badge="运营活动"
-          title="黄金的试炼 第66期"
-          subtitle="修行古刹星导寺"
+          title="黄金的试炼 第68期"
+          subtitle="剑斗领域日影地修炼所"
           rows={[
             { label: '挑战期', target: T_TRIAL_CH_END,  expired: '已截止' },
             { label: '登记期', target: T_TRIAL_REG_END, expired: '已截止' },

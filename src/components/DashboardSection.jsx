@@ -11,8 +11,8 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
   new Date(Date.UTC(y, mo - 1, d, h - 8, mi))
 
 const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
-const T_TRIAL_CH_END  = cst(2026, 6, 14, 23, 59)
-const T_TRIAL_REG_END = cst(2026, 6, 18, 13,  0)
+const T_TRIAL_CH_END  = cst(2026, 6, 21, 23, 59)
+const T_TRIAL_REG_END = cst(2026, 6, 25, 13,  0)
 const T_WORLDCUP_END  = cst(2026, 7, 20, 23, 59)
 const T_DQX_START     = cst(2026, 6, 25, 16,  0)
 const T_DQX_END       = cst(2026, 7, 13, 22, 59)
@@ -744,12 +744,12 @@ export default function DashboardSection() {
             <ActivityCapsule
               accent="#FFAB76"
               badge="运营活动"
-              title="黄金的试炼 第67期"
-              subtitle="幻龙残骸密约之塔"
+              title="黄金的试炼 第68期"
+              subtitle="剑斗领域日影地修炼所"
               dates={[
-                '副本挑战期：6月12日 13:00 – 6月14日 23:59',
-                '试炼登记期：6月12日 13:00 – 6月18日 13:00',
-                '幸运奖励抽取：6月18日 13:00',
+                '副本挑战期：6月19日 13:00 – 6月21日 23:59',
+                '试炼登记期：6月19日 13:00 – 6月25日 13:00',
+                '幸运奖励抽取：6月25日 13:00',
               ]}
               rows={[
                 { label: '挑战期', target: T_TRIAL_CH_END,  expired: '已截止' },
