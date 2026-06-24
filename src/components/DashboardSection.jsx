@@ -10,7 +10,6 @@ import FrontlineSchedule from './FrontlineSchedule'
 const cst = (y, mo, d, h = 0, mi = 0) =>
   new Date(Date.UTC(y, mo - 1, d, h - 8, mi))
 
-const T_GOLD_SAU_END  = cst(2026, 6, 24, 22, 59)
 const T_TRIAL_CH_END  = cst(2026, 6, 21, 23, 59)
 const T_TRIAL_REG_END = cst(2026, 6, 25, 13,  0)
 const T_WORLDCUP_END  = cst(2026, 7, 20, 23, 59)
@@ -703,23 +702,6 @@ export default function DashboardSection() {
               onToggle={() => toggle('next-patch')}
               onHoverOpen={() => openPanel('next-patch')}
               onHoverClose={() => closePanel('next-patch')}
-            />
-            <ActivityCapsule
-              accent="#F4C161"
-              badge="季节活动"
-              title="金碟嘉年华 2026"
-              subtitle="任务接取地点：乌尔达哈"
-              dates={[
-                '5月29日 16:00 – 6月24日 22:59',
-                '活动奖励：宠物 獭獭先生、时尚配饰 獭獭先生背包',
-                '家具：金蝶嘉年华海报2025、金蝶嘉年华海报2025-2、金蝶嘉年华桌面海报2025-2',
-              ]}
-              rows={[{ label: '距结束', target: T_GOLD_SAU_END, expired: '已结束' }]}
-              url="https://actff1.web.sdo.com/project/20260519the_make_it_rain_campaign/86z02yp9k67o/index.html"
-              open={openId === 'gold-sau'}
-              onToggle={() => toggle('gold-sau')}
-              onHoverOpen={() => openPanel('gold-sau')}
-              onHoverClose={() => closePanel('gold-sau')}
             />
             <ActivityCapsule
               accent="#6BA4E8"
