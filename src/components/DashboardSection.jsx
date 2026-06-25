@@ -224,20 +224,14 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
     >
       <CapsulePill accent={accent} badge={badge} title={title} open={open} onToggle={onToggle}>
         {primaryRow && (
-          <>
+          <span style={{ color: accent }}>
             {primaryRow.label && (
-              <span style={{
-                fontSize: '0.6rem', fontWeight: 600,
-                color: accent, opacity: 0.6,
-                flexShrink: 0, letterSpacing: '0.02em',
-              }}>
+              <span style={{ fontSize: '0.55rem', fontWeight: 600, opacity: 0.55, marginRight: '0.25rem' }}>
                 {primaryRow.label}
               </span>
             )}
-            <span style={{ color: accent }}>
-              <CountdownCompact target={primaryRow.target} expired={primaryRow.expired} />
-            </span>
-          </>
+            <CountdownCompact target={primaryRow.target} expired={primaryRow.expired} />
+          </span>
         )}
       </CapsulePill>
 
