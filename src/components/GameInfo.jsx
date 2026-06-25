@@ -7,8 +7,8 @@ import { adaptForLight } from '../utils/color'
 const cst = (y, mo, d, h = 0, mi = 0) =>
   new Date(Date.UTC(y, mo - 1, d, h - 8, mi))
 
-const T_TRIAL_CH_END  = cst(2026, 6, 21, 23, 59)
-const T_TRIAL_REG_END = cst(2026, 6, 25, 13,  0)
+const T_TRIAL_CH_END  = cst(2026, 6, 28, 23, 59)
+const T_TRIAL_REG_END = cst(2026, 7,  2, 13,  0)
 const T_WORLDCUP_END  = cst(2026, 7, 20, 23, 59)
 const T_DQX_END       = cst(2026, 7, 13, 22, 59)
 // ── Shared countdown display ─────────────────────────────────────────────────
