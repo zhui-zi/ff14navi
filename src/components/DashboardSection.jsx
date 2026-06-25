@@ -222,14 +222,15 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
       onMouseEnter={() => { if (!wasTouchRef.current) onHoverOpen?.() }}
       onMouseLeave={() => { if (!wasTouchRef.current) onHoverClose?.() }}
     >
-      <CapsulePill accent={accent} badge={badge} title={title} open={open} onToggle={onToggle}>
+      <CapsulePill
+        accent={accent}
+        badge={primaryRow?.label ?? badge}
+        title={title}
+        open={open}
+        onToggle={onToggle}
+      >
         {primaryRow && (
           <span style={{ color: accent }}>
-            {primaryRow.label && (
-              <span style={{ fontSize: '0.55rem', fontWeight: 600, opacity: 0.55, marginRight: '0.25rem' }}>
-                {primaryRow.label}
-              </span>
-            )}
             <CountdownCompact target={primaryRow.target} expired={primaryRow.expired} />
           </span>
         )}
