@@ -113,7 +113,6 @@ export const categories = [
       { name: '警察网',              style: 'basic',  url: 'https://xivanalysis.com/' },
       { name: '导随记录',            style: 'basic',  url: 'https://dlog.luyulight.cn/' },
       { name: '招募查询',            style: 'basic',  url: 'https://xivpf.ff14.xin/' },
-      { name: '高难进度查询 酥卷',   style: 'basic',  url: 'https://sumemo.dev/' },
       { name: 'NGA幻想书库',         style: 'wheat',  url: 'https://bbs.nga.cn/thread.php?fid=698' },
     ],
   },
@@ -197,7 +196,7 @@ export const categories = [
       { name: '栽培手册',                       style: 'basic',  url: 'https://www.ffxivgardening.com/index.php?lang=zh_CN.UTF-8' },
       { name: '暖暖房产位置攻略',               style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=14342924' },
       { name: 'Housing Snap',                   style: 'brown',  url: 'https://housingsnap.com/' },
-      { name: '艾欧泽亚售楼中心',               style: 'basic',  url: 'https://house.ffxiv.cyou/#/' },
+      { name: '艾欧泽亚售楼中心',               style: 'brown',  url: 'https://house.ffxiv.cyou/#/' },
     ],
   },
   {
