@@ -241,7 +241,6 @@ export const categories = [
       { name: 'ACT日志解析',         style: 'orange', url: 'https://parser.ffxiv.cyou/' },
       { name: '探索笔记时钟',               style: 'basic',  url: 'https://annangela.github.io/FFXIVSightseeingGuide/#/' },
       { name: 'PostNamazu',                 style: 'basic',  url: 'https://github.com/Natsukage/PostNamazu' },
-      { name: '国际服服务器实时状况',        style: 'basic',  url: 'https://arrstatus.com/' },
       { name: '獭爹の工具箱',       icon: 'otter',  style: 'basic',  url: 'https://file.bluefissure.com/FFXIV/' },
       { name: '塔塔露国际服翻译插件',        style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=30399830&rand=953' },
       { name: 'Mod网',             icon: 'tools',   style: 'basic',  url: 'https://www.xivmodarchive.com/' },
