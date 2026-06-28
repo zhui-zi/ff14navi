@@ -336,7 +336,7 @@ export default function GameInfo({ noWrap = false }) {
           accent="#4DD0E1"
           badge="下个版本"
           title="7.55"
-          subtitle="预计上线时间未定"
+          subtitle="7月28日（预测）"
           dates={[
             '大型战斗任务「蜃景幻境新月岛北征之章」',
             '武器强化任务「幻境武器」',
