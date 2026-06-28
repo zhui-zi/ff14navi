@@ -145,6 +145,7 @@ export const categories = [
       { name: '扎杜诺尔高原攻略',  style: 'basic', url: 'https://bbs.nga.cn/read.php?tid=26953760' },
       { name: '贡希尔德神庙攻略',  style: 'basic', url: 'https://bbs.nga.cn/read.php?tid=26397957' },
       { name: '幻境武器·新月岛攻略', style: 'basic', url: 'https://bbs.nga.cn/read.php?tid=44642200' },
+      { name: '新月岛追踪器',      style: 'basic', url: 'https://tracker.xivstats.com/' },
       { name: '新月岛萌新指南',      style: 'basic', url: 'https://docs.qq.com/doc/DVk5jZnNoTGFBREpC' },
     ],
   },
