@@ -16,6 +16,7 @@ const T_WORLDCUP_END      = cst(2026, 7, 20, 23, 59)
 const T_DQX_START         = cst(2026, 6, 25, 16,  0)
 const T_DQX_END           = cst(2026, 7, 13, 22, 59)
 const T_PATCH_755         = cst(2026, 7, 28, 10,  0)
+const T_SUMMER_START      = cst(2026, 7, 25,  0,  0)
 const T_SUMMER_END        = cst(2026, 8,  9, 23, 59)
 
 const SPRING = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
@@ -25,11 +26,22 @@ const EASE   = 'cubic-bezier(0.4, 0, 0.2, 1)'
 const CARD_R = '1.5rem'
 
 // ── Compact inline countdown for pill row 2 ───────────────────────────────────
-function CountdownCompact({ target, expired }) {
+function CountdownCompact({ target, expired, daysOnly }) {
   const t = useCountdown(target)
   if (!t) return (
     <span style={{ opacity: 'var(--t-faint)', fontSize: '0.7rem', fontWeight: 500 }}>{expired}</span>
   )
+  if (daysOnly) {
+    const days = (t.h || t.m || t.s) ? t.d + 1 : t.d
+    return (
+      <span className="tabular-nums" style={{
+        fontFamily: 'ui-monospace, "Cascadia Code", monospace',
+        fontSize: '0.72rem', fontWeight: 700,
+      }}>
+        {days}天
+      </span>
+    )
+  }
   const hh = String(t.h).padStart(2, '0')
   const mm = String(t.m).padStart(2, '0')
   const ss = String(t.s).padStart(2, '0')
@@ -44,8 +56,9 @@ function CountdownCompact({ target, expired }) {
 }
 
 // ── Full countdown row for detail panel ───────────────────────────────────────
-function CountdownRow({ label, target, expired, accentColor }) {
+function CountdownRow({ label, target, expired, accentColor, daysOnly }) {
   const t = useCountdown(target)
+  const days = t && (t.h || t.m || t.s) ? t.d + 1 : t?.d
   return (
     <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginTop: '0.5rem' }}>
       {label && (
@@ -58,12 +71,18 @@ function CountdownRow({ label, target, expired, accentColor }) {
           fontFamily: 'ui-monospace, "Cascadia Code", monospace',
           fontWeight: 700, fontSize: '1.15rem', color: accentColor, whiteSpace: 'nowrap',
         }}>
-          {t.d > 0 && (
-            <span style={{ marginRight: 3 }}>
-              {t.d}<span style={{ fontSize: '0.7rem', fontWeight: 500, marginLeft: 1 }}>d</span>
-            </span>
+          {daysOnly ? (
+            `${days}天`
+          ) : (
+            <>
+              {t.d > 0 && (
+                <span style={{ marginRight: 3 }}>
+                  {t.d}<span style={{ fontSize: '0.7rem', fontWeight: 500, marginLeft: 1 }}>d</span>
+                </span>
+              )}
+              {String(t.h).padStart(2, '0')}:{String(t.m).padStart(2, '0')}:{String(t.s).padStart(2, '0')}
+            </>
           )}
-          {String(t.h).padStart(2, '0')}:{String(t.m).padStart(2, '0')}:{String(t.s).padStart(2, '0')}
         </span>
       ) : (
         <span style={{ fontSize: '0.75rem', color: 'var(--md-on-surface-variant)', opacity: 0.5 }}>{expired}</span>
@@ -231,7 +250,7 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
       >
         {primaryRow && (
           <span style={{ color: accent }}>
-            <CountdownCompact target={primaryRow.target} expired={primaryRow.expired} />
+            <CountdownCompact target={primaryRow.target} expired={primaryRow.expired} daysOnly={primaryRow.daysOnly} />
           </span>
         )}
       </CapsulePill>
@@ -763,7 +782,10 @@ export default function DashboardSection() {
                 '转播会抽选登记：6月26日 14:00 – 6月29日 14:00',
                 '转播会抽选确认：6月29日 16:00 – 7月2日 16:00',
               ]}
-              rows={[{ label: '活动结束', target: T_SUMMER_END, expired: '已结束' }]}
+              rows={[
+                { label: '距开始', target: T_SUMMER_START, expired: '进行中', daysOnly: true },
+                { label: '距结束', target: T_SUMMER_END,   expired: '已结束', daysOnly: true },
+              ]}
               url="https://actff1.web.sdo.com/project/20260615summerfes/index.html#/index"
               open={openId === 'summer-fest'}
               onToggle={() => toggle('summer-fest')}
