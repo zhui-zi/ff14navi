@@ -15,8 +15,7 @@ const T_TRIAL_REG_END     = cst(2026, 7,  2, 13,  0)
 const T_WORLDCUP_END      = cst(2026, 7, 20, 23, 59)
 const T_DQX_START         = cst(2026, 6, 25, 16,  0)
 const T_DQX_END           = cst(2026, 7, 13, 22, 59)
-const T_SUMMER_REG_END    = cst(2026, 6, 29, 14,  0)
-const T_SUMMER_CONF_END   = cst(2026, 7,  2, 16,  0)
+const T_PATCH_755         = cst(2026, 7, 28, 10,  0)
 
 const SPRING = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
 const EASE   = 'cubic-bezier(0.4, 0, 0.2, 1)'
@@ -705,7 +704,7 @@ export default function DashboardSection() {
                 '非著名调查员 金曦之章',
                 '友好部族盟友任务 金曦之章',
               ]}
-              rows={[]}
+              rows={[{ label: '距上线', target: T_PATCH_755, expired: '已上线' }]}
               compact
               url="https://actff1.web.sdo.com/project/20240927dawntrail/patch75/index.html"
               open={openId === 'next-patch'}
@@ -763,10 +762,7 @@ export default function DashboardSection() {
                 '转播会抽选登记：6月26日 14:00 – 6月29日 14:00',
                 '转播会抽选确认：6月29日 16:00 – 7月2日 16:00',
               ]}
-              rows={[
-                { label: '登记截止', target: T_SUMMER_REG_END,  expired: '已截止' },
-                { label: '确认截止', target: T_SUMMER_CONF_END, expired: '已截止' },
-              ]}
+              rows={[]}
               url="https://actff1.web.sdo.com/project/20260615summerfes/index.html#/index"
               open={openId === 'summer-fest'}
               onToggle={() => toggle('summer-fest')}

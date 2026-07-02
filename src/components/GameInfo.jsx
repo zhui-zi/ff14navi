@@ -11,6 +11,7 @@ const T_TRIAL_CH_END  = cst(2026, 6, 28, 23, 59)
 const T_TRIAL_REG_END = cst(2026, 7,  2, 13,  0)
 const T_WORLDCUP_END  = cst(2026, 7, 20, 23, 59)
 const T_DQX_END       = cst(2026, 7, 13, 22, 59)
+const T_PATCH_755     = cst(2026, 7, 28, 10,  0)
 // ── Shared countdown display ─────────────────────────────────────────────────
 function Countdown({ target, expired, accentColor }) {
   const t = useCountdown(target)
@@ -343,7 +344,7 @@ export default function GameInfo({ noWrap = false }) {
             '非著名调查员 金曦之章',
             '友好部族盟友任务 金曦之章',
           ]}
-          rows={[]}
+          rows={[{ label: '距上线', target: T_PATCH_755, expired: '已上线' }]}
           compact
           url="https://actff1.web.sdo.com/project/20240927dawntrail/patch75/index.html"
         />
