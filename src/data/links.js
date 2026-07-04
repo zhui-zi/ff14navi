@@ -197,7 +197,7 @@ export const categories = [
       { name: '栽培手册',                       style: 'basic',  url: 'https://www.ffxivgardening.com/index.php?lang=zh_CN.UTF-8' },
       { name: '暖暖房产位置攻略',               style: 'basic',  url: 'https://bbs.nga.cn/read.php?tid=14342924' },
       { name: 'Housing Snap',                   style: 'brown',  url: 'https://housingsnap.com/' },
-      { name: '艾欧泽亚售楼中心',               style: 'brown',  url: 'https://house.ffxiv.cyou/#/' },
+      { name: '艾欧泽亚售楼中心',               style: 'pink',   url: 'https://house.ffxiv.cyou/#/' },
     ],
   },
   {
