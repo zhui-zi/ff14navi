@@ -13,8 +13,6 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 const T_TRIAL_CH_END      = cst(2026, 7, 12, 23, 59)
 const T_TRIAL_REG_END     = cst(2026, 7, 16, 13,  0)
 const T_WORLDCUP_END      = cst(2026, 7, 20, 23, 59)
-const T_DQX_START         = cst(2026, 6, 25, 16,  0)
-const T_DQX_END           = cst(2026, 7, 13, 22, 59)
 const T_PATCH_755         = cst(2026, 7, 28, 10,  0)
 const T_SUMMER_START      = cst(2026, 7, 25,  0,  0)
 const T_SUMMER_END        = cst(2026, 8,  9, 23, 59)
@@ -731,26 +729,6 @@ export default function DashboardSection() {
               onToggle={() => toggle('next-patch')}
               onHoverOpen={() => openPanel('next-patch')}
               onHoverClose={() => closePanel('next-patch')}
-            />
-            <ActivityCapsule
-              accent="#6BA4E8"
-              badge="季节活动（复刻）"
-              title="勇者斗恶龙X联动"
-              dates={[
-                '6月25日 16:00 – 7月13日 22:59',
-                '装备：莽汉面具、史莱姆王帽子',
-                '宠物：巨像丙',
-                '肖像教材：勇者斗恶龙X',
-              ]}
-              rows={[
-                { label: '距开始', target: T_DQX_START, expired: '进行中' },
-                { label: '距结束', target: T_DQX_END,   expired: '已结束' },
-              ]}
-              url="https://actff1.web.sdo.com/project/20260616Theres_Golems_in_Those_Hills/0gqh4ij2nlt0/index.html"
-              open={openId === 'dqx'}
-              onToggle={() => toggle('dqx')}
-              onHoverOpen={() => openPanel('dqx')}
-              onHoverClose={() => closePanel('dqx')}
             />
             <ActivityCapsule
               accent="#FFAB76"
