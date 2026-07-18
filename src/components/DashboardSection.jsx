@@ -10,8 +10,8 @@ import FrontlineSchedule from './FrontlineSchedule'
 const cst = (y, mo, d, h = 0, mi = 0) =>
   new Date(Date.UTC(y, mo - 1, d, h - 8, mi))
 
-const T_TRIAL_CH_END      = cst(2026, 7, 12, 23, 59)
-const T_TRIAL_REG_END     = cst(2026, 7, 16, 13,  0)
+const T_TRIAL_CH_END      = cst(2026, 7, 19, 23, 59)
+const T_TRIAL_REG_END     = cst(2026, 7, 23, 13,  0)
 const T_WORLDCUP_END      = cst(2026, 7, 20, 23, 59)
 const T_PATCH_755         = cst(2026, 7, 28, 10,  0)
 const T_SUMMER_START      = cst(2026, 7, 25,  0,  0)
@@ -733,12 +733,12 @@ export default function DashboardSection() {
             <ActivityCapsule
               accent="#FFAB76"
               badge="运营活动"
-              title="黄金的试炼 第71期"
-              subtitle="邪教驻地无限城古堡"
+              title="黄金的试炼 第72期"
+              subtitle="末日暗影亚马乌罗提"
               dates={[
-                '副本挑战期：7月10日 13:00 – 7月12日 23:59',
-                '试炼登记期：7月10日 13:00 – 7月16日 13:00',
-                '幸运奖励抽取：7月16日 13:00',
+                '副本挑战期：7月17日 13:00 – 7月19日 23:59',
+                '试炼登记期：7月17日 13:00 – 7月23日 13:00',
+                '幸运奖励抽取：7月23日 13:00',
               ]}
               rows={[
                 { label: '挑战期', target: T_TRIAL_CH_END,  expired: '已截止' },
