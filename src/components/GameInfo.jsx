@@ -9,7 +9,7 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
   new Date(Date.UTC(y, mo - 1, d, h - 8, mi))
 
 const T_DQX_END       = cst(2026, 7, 13, 22, 59)
-const T_PATCH_755     = cst(2026, 7, 28, 10,  0)
+const T_PATCH_755     = cst(2026, 7, 28, 18,  0)
 // ── Shared countdown display ─────────────────────────────────────────────────
 function Countdown({ target, expired, accentColor }) {
   const t = useCountdown(target)
@@ -262,7 +262,7 @@ export default function GameInfo({ noWrap = false }) {
           accent="#4DD0E1"
           badge="下个版本"
           title="7.55"
-          subtitle="7月28日（预测）"
+          subtitle="7月28日 18:00"
           dates={[
             '大型战斗任务「蜃景幻境新月岛北征之章」',
             '武器强化任务「幻境武器」',
