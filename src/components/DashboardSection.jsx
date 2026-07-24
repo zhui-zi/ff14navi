@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useCountdown } from '../hooks/useCountdown'
+import { useGoldTrial } from '../hooks/useGoldTrial'
 import { useTheme } from '../hooks/useTheme'
 import { adaptForLight } from '../utils/color'
 import NewsBoard from './NewsBoard'
@@ -10,8 +11,6 @@ import FrontlineSchedule from './FrontlineSchedule'
 const cst = (y, mo, d, h = 0, mi = 0) =>
   new Date(Date.UTC(y, mo - 1, d, h - 8, mi))
 
-const T_TRIAL_CH_END      = cst(2026, 7, 19, 23, 59)
-const T_TRIAL_REG_END     = cst(2026, 7, 23, 13,  0)
 const T_PATCH_755         = cst(2026, 7, 28, 10,  0)
 const T_SUMMER_START      = cst(2026, 7, 25,  0,  0)
 const T_SUMMER_END        = cst(2026, 8,  9, 23, 59)
@@ -226,9 +225,10 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
     }
   }, [open])
 
-  // When rows[0] expires, automatically promote rows[1] to the pill countdown
-  const t0 = useCountdown(rows?.[0]?.target)
-  const primaryRow = (rows?.length > 1 && t0 === null) ? rows[1] : rows?.[0]
+  // useCountdown keeps this component ticking so the next live stage is promoted immediately
+  useCountdown(rows?.[0]?.target)
+  const primaryRow = rows?.find(row => new Date(row.target).getTime() > Date.now())
+    ?? rows?.[rows.length - 1]
 
   return (
     <div
@@ -515,6 +515,7 @@ function VersionBanner({ open, onToggle }) {
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 export default function DashboardSection() {
+  const goldTrial = useGoldTrial()
   const [openId,     setOpenId]     = useState(null)
   const [bannerOpen, setBannerOpen] = useState(false)
   const [actsZ,   setActsZ]   = useState(false)
@@ -603,17 +604,10 @@ export default function DashboardSection() {
             <ActivityCapsule
               accent="#FFAB76"
               badge="运营活动"
-              title="黄金的试炼 第72期"
-              subtitle="末日暗影亚马乌罗提"
-              dates={[
-                '副本挑战期：7月17日 13:00 – 7月19日 23:59',
-                '试炼登记期：7月17日 13:00 – 7月23日 13:00',
-                '幸运奖励抽取：7月23日 13:00',
-              ]}
-              rows={[
-                { label: '挑战期', target: T_TRIAL_CH_END,  expired: '已截止' },
-                { label: '登记期', target: T_TRIAL_REG_END, expired: '已截止' },
-              ]}
+              title={goldTrial.title}
+              subtitle={goldTrial.subtitle}
+              dates={goldTrial.dates}
+              rows={goldTrial.rows}
               url="https://actff1.web.sdo.com/20241130_GoldTrial/#/index"
               open={openId === 'gold-trial'}
               onToggle={() => toggle('gold-trial')}
