@@ -9,7 +9,6 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 
 const T_TRIAL_CH_END  = cst(2026, 7, 19, 23, 59)
 const T_TRIAL_REG_END = cst(2026, 7, 23, 13,  0)
-const T_WORLDCUP_END  = cst(2026, 7, 20, 23, 59)
 const T_DQX_END       = cst(2026, 7, 13, 22, 59)
 const T_PATCH_755     = cst(2026, 7, 28, 10,  0)
 // ── Shared countdown display ─────────────────────────────────────────────────
@@ -107,80 +106,6 @@ function ActivityCard({ accent: rawAccent, badge, title, subtitle, dates, rows, 
       {rows.map((r, i) => (
         <CountdownRow key={i} {...r} accentColor={accent} />
       ))}
-    </a>
-  )
-}
-
-const WORLDCUP_RULES = [
-  { icon: '⚔️', label: '副本通关', reward: '+200 竞猜币 / 天', note: '每账号每天1次，当日领取' },
-  { icon: '📱', label: '企微签到', reward: '+100 竞猜币 / 天', note: '需关注企微并绑定游戏，当日未签不保留' },
-  { icon: '🎯', label: '单题投注上限', reward: '≤ 1000 竞猜币', note: '' },
-]
-
-function WorldCupCard({ accent: rawAccent, badge, title, url }) {
-  const { effective } = useTheme()
-  const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
-  return (
-    <a
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block rounded-2xl overflow-hidden cursor-pointer"
-      style={{
-        border: `2px solid ${accent}55`,
-        background: `linear-gradient(160deg, ${accent}18 0%, var(--md-surface-container) 55%)`,
-        transition: 'border-color 0.18s ease',
-      }}
-      onMouseEnter={e => e.currentTarget.style.borderColor = `${accent}BB`}
-      onMouseLeave={e => e.currentTarget.style.borderColor = `${accent}55`}
-    >
-      {/* Header */}
-      <div className="flex items-center gap-2.5 px-4 py-2.5 flex-wrap"
-        style={{
-          background: `linear-gradient(90deg, ${accent}20 0%, transparent 60%)`,
-          borderBottom: `1px solid ${accent}22`,
-        }}>
-        <span className="inline-block text-xs font-medium px-2 py-0.5 rounded flex-shrink-0"
-          style={{ backgroundColor: `${accent}28`, color: accent }}>
-          {badge}
-        </span>
-        <span className="font-semibold flex-shrink-0" style={{ fontSize: '0.9rem', color: 'var(--md-on-surface)' }}>
-          {title}
-        </span>
-        <span style={{ fontSize: '0.7rem', color: 'var(--md-on-surface-variant)', opacity: 0.55 }}>
-          6月11日 – 7月20日
-        </span>
-        <span className="ml-auto flex-shrink-0" style={{ fontSize: '0.7rem', color: accent, opacity: 0.85 }}>
-          前往竞猜 →
-        </span>
-      </div>
-      {/* Rules */}
-      <div className="px-4 py-3 grid gap-2.5"
-        style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(190px, 1fr))' }}>
-        {WORLDCUP_RULES.map((r, i) => (
-          <div key={i} className="flex items-start gap-2">
-            <span style={{ fontSize: '0.95rem', lineHeight: 1.5, flexShrink: 0 }}>{r.icon}</span>
-            <div>
-              <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--md-on-surface)', opacity: 0.85 }}>
-                {r.label}
-                <span className="ml-1.5" style={{ color: accent, fontWeight: 700 }}>{r.reward}</span>
-              </div>
-              {r.note && (
-                <div style={{ fontSize: '0.65rem', color: 'var(--md-on-surface-variant)', opacity: 0.55, marginTop: 2 }}>
-                  {r.note}
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-      {/* Countdown */}
-      <div className="px-4 pb-2.5 flex items-baseline gap-2">
-        <span className="text-xs flex-shrink-0" style={{ color: 'var(--md-on-surface-variant)', opacity: 0.7 }}>
-          距结束
-        </span>
-        <Countdown target={T_WORLDCUP_END} expired="已结束" accentColor={accent} />
-      </div>
     </a>
   )
 }
@@ -374,13 +299,6 @@ export default function GameInfo({ noWrap = false }) {
         />
       </div>
 
-      {/* World Cup — coin acquisition rules */}
-      <WorldCupCard
-        accent="#4CAF50"
-        badge="运营活动"
-        title="世界杯竞猜"
-        url="https://actff1.web.sdo.com/20240520_NewJingCai/index.html#/index"
-      />
     </div>
   )
   if (noWrap) return content

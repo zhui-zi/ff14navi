@@ -12,7 +12,6 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 
 const T_TRIAL_CH_END      = cst(2026, 7, 19, 23, 59)
 const T_TRIAL_REG_END     = cst(2026, 7, 23, 13,  0)
-const T_WORLDCUP_END      = cst(2026, 7, 20, 23, 59)
 const T_PATCH_755         = cst(2026, 7, 28, 10,  0)
 const T_SUMMER_START      = cst(2026, 7, 25,  0,  0)
 const T_SUMMER_END        = cst(2026, 8,  9, 23, 59)
@@ -378,135 +377,6 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
   )
 }
 
-const WORLDCUP_RULES = [
-  { icon: '⚔️', label: '副本通关', reward: '+200 竞猜币 / 天', note: '每账号每天1次，当日领取' },
-  { icon: '📱', label: '企微签到', reward: '+100 竞猜币 / 天', note: '需关注企微并绑定游戏，当日未签不保留' },
-  { icon: '🎯', label: '单题投注上限', reward: '≤ 1000 竞猜币', note: '' },
-]
-
-// ── World Cup Capsule ─────────────────────────────────────────────────────────
-function WorldCupCapsule({ accent: rawAccent, badge, title, url, open, onToggle, onHoverOpen, onHoverClose }) {
-  const bodyRef = useRef(null)
-  const [bodyH, setBodyH] = useState(0)
-  const [elevated, setElevated] = useState(false)
-  const { effective } = useTheme()
-  const accent = effective === 'light' ? adaptForLight(rawAccent) : rawAccent
-  const panelShadow = effective === 'light' ? 'none' : '0 8px 28px rgba(0,0,0,0.38)'
-  const wasTouchRef = useRef(false)
-  const touchResetRef = useRef(null)
-
-  useEffect(() => {
-    if (bodyRef.current) setBodyH(bodyRef.current.scrollHeight)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (open) {
-      setElevated(true)
-    } else {
-      const t = setTimeout(() => setElevated(false), 450)
-      return () => clearTimeout(t)
-    }
-  }, [open])
-
-  return (
-    <div
-      style={{ position: 'relative', zIndex: elevated ? 1 : 0, display: 'flex', flexDirection: 'column' }}
-      onTouchStart={() => { clearTimeout(touchResetRef.current); wasTouchRef.current = true }}
-      onTouchEnd={() => { touchResetRef.current = setTimeout(() => { wasTouchRef.current = false }, 600) }}
-      onMouseEnter={() => { if (!wasTouchRef.current) onHoverOpen?.() }}
-      onMouseLeave={() => { if (!wasTouchRef.current) onHoverClose?.() }}
-    >
-      <CapsulePill accent={accent} badge={badge} title={title} open={open} onToggle={onToggle}>
-        <span style={{ fontSize: '0.6rem', color: 'var(--md-on-surface-variant)', opacity: 'var(--t-faint)', flexShrink: 0 }}>
-          6/11–7/20
-        </span>
-        <span style={{ color: accent }}>
-          <CountdownCompact target={T_WORLDCUP_END} expired="已结束" />
-        </span>
-      </CapsulePill>
-
-      {/* Bridge div — covers the gap so mouseleave doesn't fire mid-transition */}
-      <div style={{
-        position: 'absolute', top: '100%', left: 0, right: 0,
-        height: '8px', pointerEvents: open ? 'auto' : 'none',
-      }} />
-
-      {/* Floating detail panel */}
-      <div style={{
-        position: 'absolute',
-        top: 'calc(100% + 6px)',
-        left: 0, right: 0,
-        zIndex: 10,
-        maxHeight: open ? `${(bodyH || 300) + 4}px` : 0,
-        overflow: 'hidden',
-        pointerEvents: open ? 'auto' : 'none',
-        transition: `max-height ${open ? `0.46s ${SPRING}` : `0.28s ${EASE}`}`,
-      }}>
-        <div
-          ref={bodyRef}
-          style={{
-            padding: '1rem',
-            borderRadius: CARD_R,
-            background: 'var(--md-surface-container-high)',
-            border: `1.5px solid ${accent}44`,
-            boxShadow: panelShadow,
-          }}
-        >
-          {/* Panel header */}
-          <div style={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            marginBottom: '0.75rem',
-            paddingBottom: '0.625rem',
-            borderBottom: `1px solid var(--md-outline-variant)`,
-          }}>
-            <span style={{ fontSize: '0.7rem', color: 'var(--md-on-surface-variant)', opacity: 0.5 }}>
-              6月11日 – 7月20日
-            </span>
-            <a
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 4,
-                padding: '0.25rem 0.75rem',
-                borderRadius: '9999px',
-                background: `${accent}18`, border: `1.5px solid ${accent}44`,
-                color: accent, fontSize: '0.7rem', fontWeight: 600,
-                textDecoration: 'none',
-                transition: `background 0.15s ${EASE}`,
-              }}
-              onMouseEnter={e => (e.currentTarget.style.background = `${accent}30`)}
-              onMouseLeave={e => (e.currentTarget.style.background = `${accent}18`)}
-            >
-              前往竞猜 ↗
-            </a>
-          </div>
-
-          {/* Coin rules */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
-            {WORLDCUP_RULES.map((r, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-                <span style={{ fontSize: '0.9rem', lineHeight: 1.5, flexShrink: 0 }}>{r.icon}</span>
-                <div>
-                  <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--md-on-surface)', opacity: 0.85 }}>
-                    {r.label}
-                    <span style={{ marginLeft: '0.375rem', color: accent, fontWeight: 700 }}>{r.reward}</span>
-                  </div>
-                  {r.note && (
-                    <div style={{ fontSize: '0.65rem', color: 'var(--md-on-surface-variant)', opacity: 0.55, marginTop: 2 }}>
-                      {r.note}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 // ── Patch notes ───────────────────────────────────────────────────────────────
 const PATCH_751_NOTES = [
   {
@@ -769,16 +639,6 @@ export default function DashboardSection() {
               onToggle={() => toggle('summer-fest')}
               onHoverOpen={() => openPanel('summer-fest')}
               onHoverClose={() => closePanel('summer-fest')}
-            />
-            <WorldCupCapsule
-              accent="#4CAF50"
-              badge="运营活动"
-              title="世界杯竞猜"
-              url="https://actff1.web.sdo.com/20240520_NewJingCai/index.html#/index"
-              open={openId === 'world-cup'}
-              onToggle={() => toggle('world-cup')}
-              onHoverOpen={() => openPanel('world-cup')}
-              onHoverClose={() => closePanel('world-cup')}
             />
           </div>
         </div>
