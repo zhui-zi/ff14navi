@@ -14,6 +14,8 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 const T_PATCH_755         = cst(2026, 7, 28, 18,  0)
 const T_SUMMER_START      = cst(2026, 7, 25,  0,  0)
 const T_SUMMER_END        = cst(2026, 8,  9, 23, 59)
+const T_CARD_PLAN_END     = cst(2027, 2,  1, 14,  0)
+const T_CARD_GIFT_END     = cst(2026, 11, 20, 23, 59)
 
 const SPRING = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
 const EASE   = 'cubic-bezier(0.4, 0, 0.2, 1)'
@@ -613,6 +615,40 @@ export default function DashboardSection() {
               onToggle={() => toggle('gold-trial')}
               onHoverOpen={() => openPanel('gold-trial')}
               onHoverClose={() => closePanel('gold-trial')}
+            />
+            <ActivityCapsule
+              accent="#F06292"
+              badge="国服运营活动"
+              title="月卡启航计划"
+              subtitle="首次购买月卡限时特惠"
+              dates={[
+                '活动时间：2026年7月25日 18:00 – 2027年2月1日 14:00',
+                '首次购买：30天月卡时长仅需4500点券',
+                '持有月卡：活动期间可折扣购买月卡',
+              ]}
+              rows={[{ label: '距结束', target: T_CARD_PLAN_END, expired: '已结束' }]}
+              url="https://actff1.web.sdo.com/20260704_CardBill/index.html#/index"
+              open={openId === 'card-plan'}
+              onToggle={() => toggle('card-plan')}
+              onHoverOpen={() => openPanel('card-plan')}
+              onHoverClose={() => closePanel('card-plan')}
+            />
+            <ActivityCapsule
+              accent="#AB80D7"
+              badge="国服运营活动"
+              title="月卡礼赠"
+              subtitle="累计月卡天数领取奖励"
+              dates={[
+                '活动时间：2026年7月25日 18:00 – 2026年11月20日 23:59',
+                '参与条件：已消耗与剩余月卡天数之和达到要求',
+                '奖励：肖像教材：随身神典石1&2',
+              ]}
+              rows={[{ label: '距结束', target: T_CARD_GIFT_END, expired: '已结束' }]}
+              url="https://actff1.web.sdo.com/20260704_CardBill/gift/index.html#/index"
+              open={openId === 'card-gift'}
+              onToggle={() => toggle('card-gift')}
+              onHoverOpen={() => openPanel('card-gift')}
+              onHoverClose={() => closePanel('card-gift')}
             />
             <ActivityCapsule
               accent="#FF8A65"
