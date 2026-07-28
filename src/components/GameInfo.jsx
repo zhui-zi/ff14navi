@@ -268,8 +268,9 @@ export default function GameInfo({ noWrap = false }) {
           title="7.56"
           subtitle="9月8日 18:00"
           dates={[
-            '主线任务「天际的行路」后篇',
             '全新设限特职「驯兽师」',
+            '金碟游乐场新玩法「魔光键影」',
+            '《FINAL FANTASY VII》联动关卡（10月28日发布）',
           ]}
           rows={[{ label: '距上线', target: T_PATCH_756, expired: '已上线' }]}
           compact
