@@ -10,6 +10,8 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 
 const T_DQX_END       = cst(2026, 7, 13, 22, 59)
 const T_PATCH_756     = cst(2026, 9,  8, 18,  0)
+const T_YOKAI_START   = cst(2026, 8,  4, 16,  0)
+const T_YOKAI_END     = cst(2026, 10, 5, 22, 59)
 const T_CARD_PLAN_END = cst(2027, 2,  1, 14,  0)
 const T_CARD_GIFT_END = cst(2026, 11, 20, 23, 59)
 // ── Shared countdown display ─────────────────────────────────────────────────
@@ -272,6 +274,22 @@ export default function GameInfo({ noWrap = false }) {
           rows={[{ label: '距上线', target: T_PATCH_756, expired: '已上线' }]}
           compact
           url="https://actff1.web.sdo.com/project/20240927dawntrail/patch75/index.html"
+        />
+        <ActivityCard
+          accent="#FFD54F"
+          badge="联动活动"
+          title="妖怪手表"
+          subtitle="艾欧泽亚大集合啦喵！"
+          dates={[
+            '活动时间：2026年8月4日 16:00 – 2026年10月5日 22:59',
+            '收集妖怪徽章与传奇妖怪徽章',
+            '奖励：妖怪宠物、联动武器与坐骑',
+          ]}
+          rows={[
+            { label: '距开始', target: T_YOKAI_START, expired: '进行中' },
+            { label: '距结束', target: T_YOKAI_END, expired: '已结束' },
+          ]}
+          url="https://actff1.web.sdo.com/project/20260715youkai-watch/vaz1gqm16a3h/mob.html"
         />
         <ActivityCard
           accent="#6BA4E8"
