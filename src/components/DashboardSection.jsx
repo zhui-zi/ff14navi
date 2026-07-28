@@ -11,7 +11,7 @@ import FrontlineSchedule from './FrontlineSchedule'
 const cst = (y, mo, d, h = 0, mi = 0) =>
   new Date(Date.UTC(y, mo - 1, d, h - 8, mi))
 
-const T_PATCH_755         = cst(2026, 7, 28, 18,  0)
+const T_PATCH_756         = cst(2026, 9,  8, 18,  0)
 const T_SUMMER_START      = cst(2026, 7, 25,  0,  0)
 const T_SUMMER_END        = cst(2026, 8,  9, 23, 59)
 const T_CARD_PLAN_END     = cst(2027, 2,  1, 14,  0)
@@ -380,26 +380,26 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
 }
 
 // ── Patch notes ───────────────────────────────────────────────────────────────
-const PATCH_751_NOTES = [
+const PATCH_755_NOTES = [
   {
-    category: '绝境战', color: '#F87171',
-    items: ['追加「妖星乱舞绝境战」', '完成零式登天斗技场重量级4后开放', '8人组队，限时120分钟', '通关可换取绝境战专属武器'],
+    category: '新月岛', color: '#4DD0E1',
+    items: ['追加「蜃景幻境新月岛 北征之章」', '知识等级上限提升至40', '追加黑魔法师、青魔法师等新幻影职业', '追加属性弱点、连锁奖励与知识等级同步'],
   },
   {
-    category: '宇宙探索', color: '#4DD0E1',
-    items: ['追加全新星球「奥克塞西亚行星」', '追加熟练度探索任务（需宇宙工具满级）', '宇宙工具可进一步强化', '追加奥克塞西亚信用点与探索计划票据'],
+    category: '大型战斗', color: '#F87171',
+    items: ['追加两项大型战斗任务', '知识等级40后开放，最多48人参加', '高难度任务需12至48人组成三支团队', '常规与高难度任务采用不同复活规则'],
   },
   {
-    category: '老主顾交易', color: '#F4C161',
-    items: ['追加老主顾「缇索加」', '可获得金币、经验值、巧手/大地票据', '每周共可进行12次交易', '完成主线「明日的路标」后开放'],
+    category: '幻境武器', color: '#F4C161',
+    items: ['武器强化任务迎来最终阶段', '通过多种任务完成两阶段强化', '第二阶段可自选武器属性', '后续武器可简化强化流程'],
   },
   {
-    category: '道具 / 系统', color: '#A78BFA',
-    items: ['染色系统：7种色素整合为统一「色素」', '追加新坐骑、宠物、时尚配饰', '追加新情感动作与九宫幻卡', '肖像追加新装饰与可设置动作'],
+    category: '支线剧情', color: '#A78BFA',
+    items: ['追加「非著名调查员 金曦之章」', '追加「友好部族盟友任务 金曦之章」', '相关章节追加至任务回顾', '完成对应前置任务后开放'],
   },
   {
-    category: '房屋 / 其他', color: '#81C784',
-    items: ['家具超400件时临时停用隐藏机制', '新增支线任务（宇宙探索相关）', '追加全新制作配方与采集道具', '修复多项职业技能与副本问题'],
+    category: 'PvP / 其他', color: '#81C784',
+    items: ['调整多项PvP技能与纷争前线参数', '水晶冲突开启第21赛季', '追加家具、发型、情感动作与新道具', '修复多项任务、装备与系统问题'],
   },
 ]
 
@@ -429,7 +429,7 @@ function VersionBanner({ open, onToggle }) {
             style={{ background: 'var(--md-primary)', color: 'var(--md-on-primary)' }}
           >
             <span style={{ fontFamily: '"Noto Serif SC", serif', fontWeight: 900, fontSize: '0.8rem', letterSpacing: '-0.02em' }}>
-              7.51
+              7.55
             </span>
           </div>
           <div className="flex-1 min-w-0">
@@ -442,7 +442,7 @@ function VersionBanner({ open, onToggle }) {
           </div>
           <div className="flex-shrink-0 flex items-center gap-3">
             <a
-              href="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/387965"
+              href="https://ff.web.sdo.com/web8/indexm.html#/newstab/newscont/391284"
               target="_blank" rel="noopener noreferrer"
               className="text-xs opacity-45 hover:opacity-80"
               style={{ transition: 'opacity 0.15s', whiteSpace: 'nowrap' }}
@@ -477,7 +477,7 @@ function VersionBanner({ open, onToggle }) {
           className="px-5 pt-4 pb-4 grid gap-3"
           style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(185px, 1fr))' }}
         >
-          {PATCH_751_NOTES.map(section => (
+          {PATCH_755_NOTES.map(section => (
             <div key={section.category}>
               <div
                 className="text-xs font-semibold mb-1.5 px-2 py-0.5 rounded-full inline-block"
@@ -502,7 +502,7 @@ function VersionBanner({ open, onToggle }) {
         </div>
         <div className="px-5 pb-3 text-right" style={{ borderTop: '1px solid var(--md-outline-variant)' }}>
           <a
-            href="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/387965"
+            href="https://ff.web.sdo.com/web8/indexm.html#/newstab/newscont/391284"
             target="_blank" rel="noopener noreferrer"
             className="text-xs"
             style={{ color: 'var(--md-primary)', opacity: 0.8 }}
@@ -587,15 +587,13 @@ export default function DashboardSection() {
             <ActivityCapsule
               accent="#4DD0E1"
               badge="下个版本"
-              title="7.55"
-              subtitle="7月28日 18:00"
+              title="7.56"
+              subtitle="9月8日 18:00"
               dates={[
-                '大型战斗任务「蜃景幻境新月岛北征之章」',
-                '武器强化任务「幻境武器」',
-                '非著名调查员 金曦之章',
-                '友好部族盟友任务 金曦之章',
+                '主线任务「天际的行路」后篇',
+                '全新设限特职「驯兽师」',
               ]}
-              rows={[{ label: '距上线', target: T_PATCH_755, expired: '已上线' }]}
+              rows={[{ label: '距上线', target: T_PATCH_756, expired: '已上线' }]}
               compact
               url="https://actff1.web.sdo.com/project/20240927dawntrail/patch75/index.html"
               open={openId === 'next-patch'}
