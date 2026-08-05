@@ -16,6 +16,8 @@ const T_YOKAI_START       = cst(2026, 8,  4, 16,  0)
 const T_YOKAI_END         = cst(2026, 10, 5, 22, 59)
 const T_SUMMER_START      = cst(2026, 7, 25,  0,  0)
 const T_SUMMER_END        = cst(2026, 8,  9, 23, 59)
+const T_MOONFIRE_START    = cst(2026, 8, 12, 16,  0)
+const T_MOONFIRE_END      = cst(2026, 8, 26, 22, 59)
 const T_CARD_PLAN_END     = cst(2027, 2,  1, 14,  0)
 const T_CARD_GIFT_END     = cst(2026, 11, 20, 23, 59)
 
@@ -623,6 +625,25 @@ export default function DashboardSection() {
               onToggle={() => toggle('yokai-watch')}
               onHoverOpen={() => openPanel('yokai-watch')}
               onHoverClose={() => closePanel('yokai-watch')}
+            />
+            <ActivityCapsule
+              accent="#EF5350"
+              badge="季节活动"
+              title="红莲节"
+              subtitle="海滨的火热夏日祭"
+              dates={[
+                '活动时间：2026年8月12日 16:00 – 2026年8月26日 22:59',
+                '奖励：坐骑“莫古力充气浮床”',
+              ]}
+              rows={[
+                { label: '距开始', target: T_MOONFIRE_START, expired: '进行中' },
+                { label: '距结束', target: T_MOONFIRE_END, expired: '已结束' },
+              ]}
+              url="https://actff1.web.sdo.com/project/20260801Moonfire_Faire/4eojmxe6rl2s/index.html"
+              open={openId === 'moonfire'}
+              onToggle={() => toggle('moonfire')}
+              onHoverOpen={() => openPanel('moonfire')}
+              onHoverClose={() => closePanel('moonfire')}
             />
             <ActivityCapsule
               accent="#FFAB76"
