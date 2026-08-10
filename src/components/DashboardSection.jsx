@@ -14,8 +14,6 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 const T_PATCH_756         = cst(2026, 9,  8, 18,  0)
 const T_YOKAI_START       = cst(2026, 8,  4, 16,  0)
 const T_YOKAI_END         = cst(2026, 10, 5, 22, 59)
-const T_SUMMER_START      = cst(2026, 7, 25,  0,  0)
-const T_SUMMER_END        = cst(2026, 8,  9, 23, 59)
 const T_MOONFIRE_START    = cst(2026, 8, 12, 16,  0)
 const T_MOONFIRE_END      = cst(2026, 8, 26, 22, 59)
 const T_CARD_PLAN_END     = cst(2027, 2,  1, 14,  0)
@@ -691,26 +689,6 @@ export default function DashboardSection() {
               onToggle={() => toggle('card-gift')}
               onHoverOpen={() => openPanel('card-gift')}
               onHoverClose={() => closePanel('card-gift')}
-            />
-            <ActivityCapsule
-              accent="#FF8A65"
-              badge="线下活动"
-              title="夏日庆典"
-              subtitle="上海陆悦天地"
-              dates={[
-                '活动期间：7月25日 – 8月9日',
-                '转播会抽选登记：6月26日 14:00 – 6月29日 14:00',
-                '转播会抽选确认：6月29日 16:00 – 7月2日 16:00',
-              ]}
-              rows={[
-                { label: '距开始', target: T_SUMMER_START, expired: '进行中', daysOnly: true },
-                { label: '距结束', target: T_SUMMER_END,   expired: '已结束', daysOnly: true },
-              ]}
-              url="https://actff1.web.sdo.com/project/20260615summerfes/index.html#/index"
-              open={openId === 'summer-fest'}
-              onToggle={() => toggle('summer-fest')}
-              onHoverOpen={() => openPanel('summer-fest')}
-              onHoverClose={() => closePanel('summer-fest')}
             />
           </div>
         </div>
