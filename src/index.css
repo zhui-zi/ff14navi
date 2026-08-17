@@ -571,6 +571,11 @@ body {
   display: flex;
   flex-direction: column;
 }
+@media (min-width: 1200px) {
+  .acts-grid > * {
+    flex-basis: 160px;
+  }
+}
 
 /* ── Fortune + Frontline sub-grid ── */
 .bottom-grid {

@@ -605,6 +605,22 @@ export default function DashboardSection() {
               onHoverClose={() => closePanel('next-patch')}
             />
             <ActivityCapsule
+              accent="#58B88A"
+              badge="国服专题"
+              title="国服12周年特辑"
+              subtitle="12周年庆典活动一站汇总"
+              dates={[
+                '周年特别活动、商城促销与消费福利',
+                '同期活动：红莲节与月卡活动',
+              ]}
+              rows={[]}
+              url="https://actff1.web.sdo.com/project/20260803banneranniv/a0jg3fmf4my9/index.html"
+              open={openId === 'cn-12th-anniversary'}
+              onToggle={() => toggle('cn-12th-anniversary')}
+              onHoverOpen={() => openPanel('cn-12th-anniversary')}
+              onHoverClose={() => closePanel('cn-12th-anniversary')}
+            />
+            <ActivityCapsule
               accent="#FFD54F"
               badge="联动活动"
               title="妖怪手表"
