@@ -571,9 +571,10 @@ body {
   display: flex;
   flex-direction: column;
 }
-@media (min-width: 1200px) {
-  .acts-grid > * {
-    flex-basis: 160px;
+@media (min-width: 1024px) {
+  .acts-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
