@@ -12,6 +12,8 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
   new Date(Date.UTC(y, mo - 1, d, h - 8, mi))
 
 const T_PATCH_756         = cst(2026, 9,  8, 18,  0)
+const T_ANNIV_START       = cst(2026, 8, 18,  0,  0)
+const T_ANNIV_END         = cst(2026, 9,  6, 23, 59)
 const T_YOKAI_START       = cst(2026, 8,  4, 16,  0)
 const T_YOKAI_END         = cst(2026, 10, 5, 22, 59)
 const T_MOONFIRE_START    = cst(2026, 8, 12, 16,  0)
@@ -610,10 +612,14 @@ export default function DashboardSection() {
               title="国服12周年特辑"
               subtitle="12周年庆典活动一站汇总"
               dates={[
+                '活动时间：2026年8月18日 00:00 – 2026年9月6日 23:59',
                 '周年特别活动、商城促销与消费福利',
                 '同期活动：红莲节与月卡活动',
               ]}
-              rows={[]}
+              rows={[
+                { label: '距开始', target: T_ANNIV_START, expired: '进行中' },
+                { label: '距结束', target: T_ANNIV_END, expired: '已结束' },
+              ]}
               url="https://actff1.web.sdo.com/project/20260803banneranniv/a0jg3fmf4my9/index.html"
               open={openId === 'cn-12th-anniversary'}
               onToggle={() => toggle('cn-12th-anniversary')}
