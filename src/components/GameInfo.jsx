@@ -288,7 +288,7 @@ export default function GameInfo({ noWrap = false }) {
           dates={[
             '活动时间：2026年8月18日 00:00 – 2026年9月6日 23:59',
             '周年特别活动、商城促销与消费福利',
-            '同期活动：红莲节与月卡活动',
+            '同期活动：月卡活动',
           ]}
           rows={[
             { label: '距开始', target: T_ANNIV_START, expired: '进行中' },
@@ -315,7 +315,7 @@ export default function GameInfo({ noWrap = false }) {
         <ActivityCard
           accent="#E9A84C"
           badge="季节活动"
-          title="新生庆典 2026"
+          title="新生庆典2026"
           subtitle="新生庆典与音乐的轨迹"
           dates={[
             '活动时间：2026年8月27日 15:00 – 2026年9月10日 22:59',
@@ -326,7 +326,7 @@ export default function GameInfo({ noWrap = false }) {
             { label: '距开始', target: T_RISING_START, expired: '进行中' },
             { label: '距结束', target: T_RISING_END, expired: '已结束' },
           ]}
-          url="https://actff1.web.sdo.com/project/20260817The_Rising/7rzrnb48uiw9/mob.html"
+          url="https://actff1.web.sdo.com/project/20260817The_Rising/7rzrnb48uiw9/index.html"
         />
         <ActivityCard
           accent="#6BA4E8"

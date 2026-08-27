@@ -18,8 +18,6 @@ const T_RISING_START      = cst(2026, 8, 27, 15,  0)
 const T_RISING_END        = cst(2026, 9, 10, 22, 59)
 const T_YOKAI_START       = cst(2026, 8,  4, 16,  0)
 const T_YOKAI_END         = cst(2026, 10, 5, 22, 59)
-const T_MOONFIRE_START    = cst(2026, 8, 12, 16,  0)
-const T_MOONFIRE_END      = cst(2026, 8, 26, 22, 59)
 const T_CARD_PLAN_END     = cst(2027, 2,  1, 14,  0)
 const T_CARD_GIFT_END     = cst(2026, 11, 20, 23, 59)
 
@@ -616,7 +614,7 @@ export default function DashboardSection() {
               dates={[
                 '活动时间：2026年8月18日 00:00 – 2026年9月6日 23:59',
                 '周年特别活动、商城促销与消费福利',
-                '同期活动：红莲节与月卡活动',
+                '同期活动：月卡活动',
               ]}
               rows={[
                 { label: '距开始', target: T_ANNIV_START, expired: '进行中' },
@@ -651,7 +649,7 @@ export default function DashboardSection() {
             <ActivityCapsule
               accent="#E9A84C"
               badge="季节活动"
-              title="新生庆典 2026"
+              title="新生庆典2026"
               subtitle="新生庆典与音乐的轨迹"
               dates={[
                 '活动时间：2026年8月27日 15:00 – 2026年9月10日 22:59',
@@ -662,30 +660,11 @@ export default function DashboardSection() {
                 { label: '距开始', target: T_RISING_START, expired: '进行中' },
                 { label: '距结束', target: T_RISING_END, expired: '已结束' },
               ]}
-              url="https://actff1.web.sdo.com/project/20260817The_Rising/7rzrnb48uiw9/mob.html"
+              url="https://actff1.web.sdo.com/project/20260817The_Rising/7rzrnb48uiw9/index.html"
               open={openId === 'the-rising-2026'}
               onToggle={() => toggle('the-rising-2026')}
               onHoverOpen={() => openPanel('the-rising-2026')}
               onHoverClose={() => closePanel('the-rising-2026')}
-            />
-            <ActivityCapsule
-              accent="#EF5350"
-              badge="季节活动"
-              title="红莲节"
-              subtitle="海滨的火热夏日祭"
-              dates={[
-                '活动时间：2026年8月12日 16:00 – 2026年8月26日 22:59',
-                '奖励：坐骑“莫古力充气浮床”',
-              ]}
-              rows={[
-                { label: '距开始', target: T_MOONFIRE_START, expired: '进行中' },
-                { label: '距结束', target: T_MOONFIRE_END, expired: '已结束' },
-              ]}
-              url="https://actff1.web.sdo.com/project/20260801Moonfire_Faire/4eojmxe6rl2s/index.html"
-              open={openId === 'moonfire'}
-              onToggle={() => toggle('moonfire')}
-              onHoverOpen={() => openPanel('moonfire')}
-              onHoverClose={() => closePanel('moonfire')}
             />
             <ActivityCapsule
               accent="#FFAB76"
