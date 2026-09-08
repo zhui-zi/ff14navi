@@ -189,7 +189,7 @@ function VersionBanner() {
             <div className="text-xs mb-0.5 opacity-55">当前版本</div>
             <div className="font-bold leading-tight"
               style={{ fontFamily: '"Noto Serif SC", serif', fontSize: 'clamp(1.05rem, 2.2vw, 1.35rem)' }}>
-              7.56 大至日
+              7.56 天际的行路
             </div>
           </div>
           <div className="flex-shrink-0 flex items-center gap-3">

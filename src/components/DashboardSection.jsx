@@ -438,7 +438,7 @@ function VersionBanner({ open, onToggle }) {
               CURRENT PATCH
             </div>
             <div className="font-bold" style={{ fontFamily: '"Noto Serif SC", serif', fontSize: 'clamp(1rem, 2vw, 1.2rem)' }}>
-              大至日
+              天际的行路
             </div>
           </div>
           <div className="flex-shrink-0 flex items-center gap-3">
