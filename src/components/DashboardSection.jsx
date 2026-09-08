@@ -11,9 +11,6 @@ import FrontlineSchedule from './FrontlineSchedule'
 const cst = (y, mo, d, h = 0, mi = 0) =>
   new Date(Date.UTC(y, mo - 1, d, h - 8, mi))
 
-const T_PATCH_756         = cst(2026, 9,  8, 18,  0)
-const T_ANNIV_START       = cst(2026, 8, 18,  0,  0)
-const T_ANNIV_END         = cst(2026, 9,  6, 23, 59)
 const T_RISING_START      = cst(2026, 8, 27, 15,  0)
 const T_RISING_END        = cst(2026, 9, 10, 22, 59)
 const T_YOKAI_START       = cst(2026, 8,  4, 16,  0)
@@ -384,26 +381,26 @@ function ActivityCapsule({ accent: rawAccent, badge, title, subtitle, dates, row
 }
 
 // ── Patch notes ───────────────────────────────────────────────────────────────
-const PATCH_755_NOTES = [
+const PATCH_756_NOTES = [
   {
-    category: '新月岛', color: '#4DD0E1',
-    items: ['追加「蜃景幻境新月岛 北征之章」', '知识等级上限提升至40', '追加黑魔法师、青魔法师等新幻影职业', '追加属性弱点、连锁奖励与知识等级同步'],
+    category: '全新内容', color: '#4DD0E1',
+    items: ['追加全新主线任务与特职任务', '设限特职「驯兽师」等级上限为50级', '追加魔兽战斗内容「斗兽奇弈」', '昔日重现追加「金曦之遗辉」章节'],
   },
   {
-    category: '大型战斗', color: '#F87171',
-    items: ['追加两项大型战斗任务', '知识等级40后开放，最多48人参加', '高难度任务需12至48人组成三支团队', '常规与高难度任务采用不同复活规则'],
+    category: '战斗调整', color: '#F87171',
+    items: ['解除「阿卡狄亚零式登天斗技场重量级」每周限制', '超越之力直接生效，效果量提升12%', '「随机任务：团队任务」追加「温达斯：第三巡行」', '「亚拉戈记忆神典石」每周上限调整为900个'],
   },
   {
-    category: '幻境武器', color: '#F4C161',
-    items: ['武器强化任务迎来最终阶段', '通过多种任务完成两阶段强化', '第二阶段可自选武器属性', '后续武器可简化强化流程'],
+    category: 'PvP / 活动', color: '#F4C161',
+    items: ['星里路标第12轮系列赛开始', '追加全新坐骑、宠物、时尚配饰与面部配饰', '追加发型、家具、成就与冒险者铭牌装饰', '追加全新背景音乐、音效、语音与文本指令'],
   },
   {
-    category: '支线剧情', color: '#A78BFA',
-    items: ['追加「非著名调查员 金曦之章」', '追加「友好部族盟友任务 金曦之章」', '相关章节追加至任务回顾', '完成对应前置任务后开放'],
+    category: '系统调整', color: '#A78BFA',
+    items: ['部分服务器调整为优待服务器', '黑衣森林中央林区及7.56新增区域暂时分线', '「图莱尤拉」副本分线功能解除', '修复多项任务、战斗与系统问题'],
   },
   {
-    category: 'PvP / 其他', color: '#81C784',
-    items: ['调整多项PvP技能与纷争前线参数', '水晶冲突开启第21赛季', '追加家具、发型、情感动作与新道具', '修复多项任务、装备与系统问题'],
+    category: '斗兽奇弈', color: '#81C784',
+    items: ['通过奇盘事件构成挑战不同战斗内容', '魔兽可训练成长，最高兽级25级', '开放「兽道」模式与全大区排行榜', '第1赛季自2026年9月24日起举办'],
   },
 ]
 
@@ -433,7 +430,7 @@ function VersionBanner({ open, onToggle }) {
             style={{ background: 'var(--md-primary)', color: 'var(--md-on-primary)' }}
           >
             <span style={{ fontFamily: '"Noto Serif SC", serif', fontWeight: 900, fontSize: '0.8rem', letterSpacing: '-0.02em' }}>
-              7.55
+              7.56
             </span>
           </div>
           <div className="flex-1 min-w-0">
@@ -441,12 +438,12 @@ function VersionBanner({ open, onToggle }) {
               CURRENT PATCH
             </div>
             <div className="font-bold" style={{ fontFamily: '"Noto Serif SC", serif', fontSize: 'clamp(1rem, 2vw, 1.2rem)' }}>
-              天际的行路
+              大至日
             </div>
           </div>
           <div className="flex-shrink-0 flex items-center gap-3">
             <a
-              href="https://ff.web.sdo.com/web8/indexm.html#/newstab/newscont/391284"
+              href="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/392680"
               target="_blank" rel="noopener noreferrer"
               className="text-xs opacity-45 hover:opacity-80"
               style={{ transition: 'opacity 0.15s', whiteSpace: 'nowrap' }}
@@ -481,7 +478,7 @@ function VersionBanner({ open, onToggle }) {
           className="px-5 pt-4 pb-4 grid gap-3"
           style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(185px, 1fr))' }}
         >
-          {PATCH_755_NOTES.map(section => (
+          {PATCH_756_NOTES.map(section => (
             <div key={section.category}>
               <div
                 className="text-xs font-semibold mb-1.5 px-2 py-0.5 rounded-full inline-block"
@@ -506,7 +503,7 @@ function VersionBanner({ open, onToggle }) {
         </div>
         <div className="px-5 pb-3 text-right" style={{ borderTop: '1px solid var(--md-outline-variant)' }}>
           <a
-            href="https://ff.web.sdo.com/web8/indexm.html#/newstab/newscont/391284"
+            href="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/392680"
             target="_blank" rel="noopener noreferrer"
             className="text-xs"
             style={{ color: 'var(--md-primary)', opacity: 0.8 }}
@@ -591,40 +588,18 @@ export default function DashboardSection() {
             <ActivityCapsule
               accent="#4DD0E1"
               badge="下个版本"
-              title="7.56"
-              subtitle="9月8日 18:00"
+              title="8.0"
+              subtitle="预计2027年1月"
               dates={[
-                '全新设限特职「驯兽师」',
-                '金碟游乐场新玩法「魔光键影」',
-                '《FINAL FANTASY VII》联动关卡（10月28日发布）',
+                '预计2027年1月更新',
               ]}
-              rows={[{ label: '距上线', target: T_PATCH_756, expired: '已上线' }]}
+              rows={[]}
               compact
-              url="https://actff1.web.sdo.com/project/20240927dawntrail/patch75/index.html"
+              url="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/392680"
               open={openId === 'next-patch'}
               onToggle={() => toggle('next-patch')}
               onHoverOpen={() => openPanel('next-patch')}
               onHoverClose={() => closePanel('next-patch')}
-            />
-            <ActivityCapsule
-              accent="#58B88A"
-              badge="国服专题"
-              title="国服12周年特辑"
-              subtitle="12周年庆典活动一站汇总"
-              dates={[
-                '活动时间：2026年8月18日 00:00 – 2026年9月6日 23:59',
-                '周年特别活动、商城促销与消费福利',
-                '同期活动：月卡活动',
-              ]}
-              rows={[
-                { label: '距开始', target: T_ANNIV_START, expired: '进行中' },
-                { label: '距结束', target: T_ANNIV_END, expired: '已结束' },
-              ]}
-              url="https://actff1.web.sdo.com/project/20260803banneranniv/a0jg3fmf4my9/index.html"
-              open={openId === 'cn-12th-anniversary'}
-              onToggle={() => toggle('cn-12th-anniversary')}
-              onHoverOpen={() => openPanel('cn-12th-anniversary')}
-              onHoverClose={() => closePanel('cn-12th-anniversary')}
             />
             <ActivityCapsule
               accent="#FFD54F"
