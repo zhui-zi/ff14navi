@@ -595,7 +595,7 @@ export default function DashboardSection() {
               ]}
               rows={[]}
               compact
-              url="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/392680"
+              url="https://actff1.web.sdo.com/project/20260425evercold/"
               open={openId === 'next-patch'}
               onToggle={() => toggle('next-patch')}
               onHoverOpen={() => openPanel('next-patch')}

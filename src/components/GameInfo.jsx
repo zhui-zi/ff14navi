@@ -273,7 +273,7 @@ export default function GameInfo({ noWrap = false }) {
           ]}
           rows={[]}
           compact
-          url="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/392680"
+          url="https://actff1.web.sdo.com/project/20260425evercold/"
         />
         <ActivityCard
           accent="#FFD54F"
