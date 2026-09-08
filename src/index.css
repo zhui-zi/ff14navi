@@ -557,25 +557,18 @@ body {
 }
 
 /* ── Activity capsule row ──
-   Capsules sit side-by-side and wrap naturally.
-   Each capsule manages its own expanded height — siblings are unaffected. */
+   Fill the available width with as many capsules as fit, while keeping a
+   readable minimum width. Each capsule manages its own expanded height. */
 .acts-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
   gap: 8px;
   align-items: stretch;
 }
 .acts-grid > * {
-  flex: 1 1 195px;
   min-width: 0;
   display: flex;
   flex-direction: column;
-}
-@media (min-width: 1024px) {
-  .acts-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
 }
 
 /* ── Fortune + Frontline sub-grid ── */
