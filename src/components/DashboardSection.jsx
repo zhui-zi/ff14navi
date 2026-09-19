@@ -13,6 +13,8 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 
 const T_YOKAI_START       = cst(2026, 8,  4, 16,  0)
 const T_YOKAI_END         = cst(2026, 10, 5, 22, 59)
+const T_FFXV_START         = cst(2026, 9, 24, 16,  0)
+const T_FFXV_END           = cst(2026, 10, 13, 22, 59)
 const T_CARD_PLAN_END     = cst(2027, 2,  1, 14,  0)
 const T_CARD_GIFT_END     = cst(2026, 11, 20, 23, 59)
 
@@ -605,6 +607,23 @@ export default function DashboardSection() {
               onToggle={() => toggle('next-patch')}
               onHoverOpen={() => openPanel('next-patch')}
               onHoverClose={() => closePanel('next-patch')}
+            />
+            <ActivityCapsule
+              accent="#90CAF9"
+              badge="联动活动"
+              title="《最终幻想15》联动"
+              dates={[
+                '活动时间：2026年9月24日 16:00 – 2026年10月13日 22:59',
+              ]}
+              rows={[
+                { label: '距开始', target: T_FFXV_START, expired: '进行中' },
+                { label: '距结束', target: T_FFXV_END, expired: '已结束' },
+              ]}
+              url="https://actff1.web.sdo.com/project/20260915ffxv/index.html"
+              open={openId === 'ffxv-collaboration'}
+              onToggle={() => toggle('ffxv-collaboration')}
+              onHoverOpen={() => openPanel('ffxv-collaboration')}
+              onHoverClose={() => closePanel('ffxv-collaboration')}
             />
             <ActivityCapsule
               accent="#FFD54F"
