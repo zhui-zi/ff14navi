@@ -611,7 +611,7 @@ export default function DashboardSection() {
             <ActivityCapsule
               accent="#90CAF9"
               badge="联动活动"
-              title="《最终幻想15》联动"
+              title="最终幻想15"
               dates={[
                 '活动时间：2026年9月24日 16:00 – 2026年10月13日 22:59',
               ]}
