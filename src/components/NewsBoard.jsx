@@ -5,7 +5,7 @@ const FEEDS = {
   int: { label: '国际服', path: '/rss?feed=int' },
 }
 
-const CN_NEWS_LIST = 'https://ff.sdo.com/web8/index.html#/newstab/newslist'
+const CN_NEWS_LIST = 'https://ff.web.sdo.com/web8/index.html#/newstab/newslist'
 
 const get = (el, tag) => el.getElementsByTagName(tag)[0]?.textContent?.trim() || ''
 
