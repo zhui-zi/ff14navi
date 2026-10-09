@@ -1,6 +1,6 @@
 export default {
   issue: '84',
-  territory: '圣教中枢伊修加德教皇厅',
+  territory: '黑涡传说破舰岛',
   challengeStart: '2026-10-09T05:00:00.000Z',
   challengeEnd: '2026-10-11T15:59:59.000Z',
   registrationStart: '2026-10-09T05:00:00.000Z',
