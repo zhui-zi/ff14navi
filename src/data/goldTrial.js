@@ -1,6 +1,6 @@
 export default {
   issue: '85',
-  territory: '黑涡传说破舰岛',
+  territory: '欧米茄时空狭缝 西格玛幻境3',
   challengeStart: '2026-10-16T05:00:00.000Z',
   challengeEnd: '2026-10-18T15:59:59.000Z',
   registrationStart: '2026-10-16T05:00:00.000Z',
