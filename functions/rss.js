@@ -1,35 +1,23 @@
-const FEED_PATHS = {
-  cn:  '/ff14/zh/all',
-  int: '/ff14/global/na/all',
-}
-
 const CN_API = 'https://cqnews.web.sdo.com/api/news/newsList?gameCode=ff&CategoryCode=7141&pageIndex=0&pageSize=10'
-
-// Ordered by expected reliability from Cloudflare egress IPs.
-// rsshub.app blocks CF-to-CF requests; independent instances are listed first.
-// rss.injahow.cn returns only 3 items with broken ff.sdo.com links — deprioritized.
-const INSTANCES = [
+const FEED_PATHS = { int: '/ff14/global/na/all' }
+const RSSHUB_INSTANCES = [
   'https://rsshub.rssforever.com',
   'https://rss.shab.fun',
   'https://rsshub.fly.dev',
   'https://rsshub.app',
-  'https://rss.injahow.cn',
 ]
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET',
+  'Access-Control-Allow-Methods': 'GET, OPTIONS',
 }
-
-const UA = 'Mozilla/5.0 (compatible; ff14navi-proxy/1.0; +https://ff14.cafe)'
+const UA = 'ff14navi-news/2.0 (+https://github.com/zhui-zi/ff14navi)'
+const CACHE_TTL = 300
 
 function escapeXml(value) {
   return String(value ?? '')
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&apos;')
+    .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;').replaceAll("'", '&apos;')
 }
 
 function toRss(items) {
@@ -37,72 +25,85 @@ function toRss(items) {
     <item>
       <title>${escapeXml(item.Title)}</title>
       <link>${escapeXml(item.OutLink || `https://ff.web.sdo.com/web8/index.html#/newstab/newscont/${item.Id}`)}</link>
-      <guid>${escapeXml(item.Id)}</guid>
+      <guid isPermaLink="false">${escapeXml(item.Id)}</guid>
       <pubDate>${escapeXml(item.PublishDate)}</pubDate>
       <description>${escapeXml(item.Summary)}</description>
     </item>`).join('')
-  return `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>FF14 国服公告</title>${body}</channel></rss>`
+  return `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>FF14 国服公告</title><link>https://ff.web.sdo.com/web8/index.html#/newstab/newslist</link><description>最终幻想14国服官方公告</description>${body}</channel></rss>`
+}
+
+function rssResponse(body, extra = {}) {
+  return new Response(body, {
+    headers: {
+      ...CORS,
+      'Content-Type': 'application/rss+xml; charset=utf-8',
+      'Cache-Control': `public, s-maxage=${CACHE_TTL}, max-age=${CACHE_TTL}`,
+      ...extra,
+    },
+  })
+}
+
+async function cachedCnFeed(request) {
+  const cache = typeof caches === 'undefined' || !caches.default ? null : caches.default
+  const cacheKey = new Request(new URL('/rss?feed=cn', request.url), request)
+  const cached = cache ? await cache.match(cacheKey) : null
+
+  try {
+    const response = await fetch(CN_API, {
+      headers: { 'User-Agent': UA, Accept: 'application/json' },
+      signal: AbortSignal.timeout(8000),
+    })
+    if (!response.ok) throw new Error(`official API HTTP ${response.status}`)
+    const data = await response.json()
+    if (data.Code !== '0' || !Array.isArray(data.Data) || data.Data.length === 0) {
+      throw new Error('official API returned no news')
+    }
+    const fresh = rssResponse(toRss(data.Data), { 'X-Feed-Source': 'official-cqnews' })
+    if (cache) await cache.put(cacheKey, fresh.clone())
+    return fresh
+  } catch (error) {
+    if (cached) {
+      return new Response(cached.body, {
+        headers: { ...Object.fromEntries(cached.headers), 'X-Feed-Source': 'edge-cache-stale' },
+      })
+    }
+    throw error
+  }
 }
 
 export async function onRequest(context) {
-  if (context.request.method === 'OPTIONS') {
-    return new Response(null, { headers: CORS })
-  }
+  if (context.request.method === 'OPTIONS') return new Response(null, { headers: CORS })
+  if (context.request.method !== 'GET') return new Response('Method Not Allowed', { status: 405, headers: CORS })
 
   const feed = new URL(context.request.url).searchParams.get('feed') || 'cn'
-  const path = FEED_PATHS[feed] ?? FEED_PATHS.cn
-  let lastErr = 'no instances tried'
-
-  // RSSHub's CN route is no longer reliable. The official site exposes the
-  // same announcements through this JSON endpoint.
   if (feed === 'cn') {
     try {
-      const resp = await fetch(CN_API, { headers: { 'User-Agent': UA, Accept: 'application/json' } })
-      if (resp.ok) {
-        const data = await resp.json()
-        if (data.Code === '0' && Array.isArray(data.Data)) {
-          return new Response(toRss(data.Data), {
-            headers: {
-              ...CORS,
-              'Content-Type': 'application/rss+xml; charset=utf-8',
-              'Cache-Control': 'public, s-maxage=300, max-age=300',
-              'X-Served-By': 'cqnews.web.sdo.com',
-            },
-          })
-        }
-        lastErr = `cqnews.web.sdo.com → invalid response`
-      } else {
-        lastErr = `cqnews.web.sdo.com → HTTP ${resp.status}`
-      }
-    } catch (e) {
-      lastErr = `cqnews.web.sdo.com → ${e.message}`
-    }
-  }
-
-  for (const base of INSTANCES) {
-    try {
-      const resp = await fetch(base + path, {
-        headers: { 'User-Agent': UA, 'Accept': 'application/rss+xml, application/xml, */*' },
+      return await cachedCnFeed(context.request)
+    } catch (error) {
+      return new Response(`国服公告暂时不可用：${error.message}`, {
+        status: 502,
+        headers: { ...CORS, 'Content-Type': 'text/plain; charset=utf-8' },
       })
-      if (resp.ok) {
-        const text = await resp.text()
-        return new Response(text, {
-          headers: {
-            ...CORS,
-            'Content-Type': 'application/rss+xml; charset=utf-8',
-            'Cache-Control': 'public, s-maxage=300, max-age=300',
-            'X-Served-By': base,
-          },
-        })
-      }
-      lastErr = `${base} → HTTP ${resp.status}`
-    } catch (e) {
-      lastErr = `${base} → ${e.message}`
     }
   }
 
-  return new Response(`All RSS instances failed. Last: ${lastErr}`, {
+  const path = FEED_PATHS[feed]
+  if (!path) return new Response('Unknown feed', { status: 404, headers: CORS })
+  let lastError = 'no instances tried'
+  for (const base of RSSHUB_INSTANCES) {
+    try {
+      const response = await fetch(base + path, {
+        headers: { 'User-Agent': UA, Accept: 'application/rss+xml, application/xml, */*' },
+        signal: AbortSignal.timeout(8000),
+      })
+      if (response.ok) return rssResponse(await response.text(), { 'X-Feed-Source': base })
+      lastError = `${base} → HTTP ${response.status}`
+    } catch (error) {
+      lastError = `${base} → ${error.message}`
+    }
+  }
+  return new Response(`International RSS unavailable. Last: ${lastError}`, {
     status: 502,
-    headers: { ...CORS, 'Content-Type': 'text/plain' },
+    headers: { ...CORS, 'Content-Type': 'text/plain; charset=utf-8' },
   })
 }
