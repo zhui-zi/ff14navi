@@ -14,6 +14,7 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 const T_CARD_PLAN_END     = cst(2027, 2,  1, 14,  0)
 const T_CARD_GIFT_END     = cst(2026, 11, 20, 23, 59)
 const T_NEXT_PATCH_START   = cst(2026, 11, 10, 16, 0)
+const T_MAGIC_KEY_END      = T_NEXT_PATCH_START
 
 const SPRING = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
 const EASE   = 'cubic-bezier(0.4, 0, 0.2, 1)'
@@ -602,8 +603,9 @@ export default function DashboardSection() {
               accent="#81C784"
               badge="联动活动"
               title="魔光键影"
-              dates={['活动详情请查看官方页面']}
-              rows={[]}
+              subtitle="键影联动"
+              dates={['活动时间：2026年10月28日 16:00 – 8.0版本维护开始前']}
+              rows={[{ label: '距结束', target: T_MAGIC_KEY_END, expired: '已结束' }]}
               url="https://actff1.web.sdo.com/project/20261014keybound_brawler/o48khqshmn6e/index.html"
               open={openId === 'magic-key'}
               onToggle={() => toggle('magic-key')}
