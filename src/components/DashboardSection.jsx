@@ -1,11 +1,18 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { useCountdown } from '../hooks/useCountdown'
-import { useWikiActivities } from '../hooks/useWikiActivities'
+import { useGoldTrial } from '../hooks/useGoldTrial'
 import { useTheme } from '../hooks/useTheme'
 import { adaptForLight } from '../utils/color'
 import NewsBoard from './NewsBoard'
 import DailyFortune from './DailyFortune'
 import FrontlineSchedule from './FrontlineSchedule'
+
+// ── CST time helpers ──────────────────────────────────────────────────────────
+const cst = (y, mo, d, h = 0, mi = 0) =>
+  new Date(Date.UTC(y, mo - 1, d, h - 8, mi))
+
+const T_CARD_PLAN_END     = cst(2027, 2,  1, 14,  0)
+const T_CARD_GIFT_END     = cst(2026, 11, 20, 23, 59)
 
 const SPRING = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
 const EASE   = 'cubic-bezier(0.4, 0, 0.2, 1)'
@@ -507,7 +514,7 @@ function VersionBanner({ open, onToggle }) {
 
 // ── Dashboard ─────────────────────────────────────────────────────────────────
 export default function DashboardSection() {
-  const wikiActivities = useWikiActivities()
+  const goldTrial = useGoldTrial()
   const [openId,     setOpenId]     = useState(null)
   const [bannerOpen, setBannerOpen] = useState(false)
   const [actsZ,   setActsZ]   = useState(false)
@@ -574,17 +581,76 @@ export default function DashboardSection() {
         {/* ① Activity capsule row — z-index 60 > banner's 50, delayed so closing panels don't clip */}
         <div className="bento-cell bento-acts" style={{ zIndex: actsZ ? 60 : 0 }}>
           <div className="acts-grid">
-            {wikiActivities.map(activity => (
-              <ActivityCapsule
-                key={activity.id}
-                {...activity}
-                compact={activity.id === 'next-patch'}
-                open={openId === activity.id}
-                onToggle={() => toggle(activity.id)}
-                onHoverOpen={() => openPanel(activity.id)}
-                onHoverClose={() => closePanel(activity.id)}
-              />
-            ))}
+            <ActivityCapsule
+              accent="#4DD0E1"
+              badge="下个版本"
+              title="8.0"
+              subtitle="预计2027年1月"
+              dates={[
+                '《银海之天舟》：预计2027年1月更新',
+                '全新系统：赛季制、战斗职业系统与扩展兵装系统',
+                '角色自定义：色彩选择器、精细妆容与角色技能皮肤',
+                '主线与野外：区域攻略顺序选择及自动平衡系统',
+                '等级上限：100级→110级；追加防护职业坚城卫与远程物理职业',
+                '全新舞台：第四世界、飞空艇区域与玩家主城法尔加斯',
+                '战斗内容：全新迷宫、团队任务、绝境战、PvP与大型任务系列',
+                '系统进化：陆行鸟搭档可加入小队挑战迷宫，并重做饲养系统',
+              ]}
+              rows={[]}
+              compact
+              url="https://actff1.web.sdo.com/project/20260425evercold/"
+              open={openId === 'next-patch'}
+              onToggle={() => toggle('next-patch')}
+              onHoverOpen={() => openPanel('next-patch')}
+              onHoverClose={() => closePanel('next-patch')}
+            />
+            <ActivityCapsule
+              accent="#FFAB76"
+              badge="运营活动"
+              title={goldTrial.title}
+              subtitle={goldTrial.subtitle}
+              dates={goldTrial.dates}
+              rows={goldTrial.rows}
+              url="https://actff1.web.sdo.com/20241130_GoldTrial/#/index"
+              open={openId === 'gold-trial'}
+              onToggle={() => toggle('gold-trial')}
+              onHoverOpen={() => openPanel('gold-trial')}
+              onHoverClose={() => closePanel('gold-trial')}
+            />
+            <ActivityCapsule
+              accent="#F06292"
+              badge="国服运营活动"
+              title="月卡启航计划"
+              subtitle="首次购买月卡限时特惠"
+              dates={[
+                '活动时间：2026年7月25日 18:00 – 2027年2月1日 14:00',
+                '首次购买：30天月卡时长仅需4500点券',
+                '持有月卡：活动期间可折扣购买月卡',
+              ]}
+              rows={[{ label: '距结束', target: T_CARD_PLAN_END, expired: '已结束' }]}
+              url="https://actff1.web.sdo.com/20260704_CardBill/index.html#/index"
+              open={openId === 'card-plan'}
+              onToggle={() => toggle('card-plan')}
+              onHoverOpen={() => openPanel('card-plan')}
+              onHoverClose={() => closePanel('card-plan')}
+            />
+            <ActivityCapsule
+              accent="#AB80D7"
+              badge="国服运营活动"
+              title="月卡礼赠"
+              subtitle="累计月卡天数领取奖励"
+              dates={[
+                '活动时间：2026年7月25日 18:00 – 2026年11月20日 23:59',
+                '参与条件：已消耗与剩余月卡天数之和达到要求',
+                '奖励：肖像教材：随身神典石1&2',
+              ]}
+              rows={[{ label: '距结束', target: T_CARD_GIFT_END, expired: '已结束' }]}
+              url="https://actff1.web.sdo.com/20260704_CardBill/gift/index.html#/index"
+              open={openId === 'card-gift'}
+              onToggle={() => toggle('card-gift')}
+              onHoverOpen={() => openPanel('card-gift')}
+              onHoverClose={() => closePanel('card-gift')}
+            />
           </div>
         </div>
 
