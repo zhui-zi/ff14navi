@@ -14,6 +14,7 @@ const CORS = {
 }
 const UA = 'ff14navi-news/2.0 (+https://github.com/zhui-zi/ff14navi)'
 const CACHE_TTL = 300
+const CACHE_KEY_VERSION = 'rsshub-compatible-v2'
 
 function escapeXml(value) {
   return String(value ?? '')
@@ -46,7 +47,7 @@ function rssResponse(body, extra = {}) {
 
 async function cachedCnFeed(request) {
   const cache = typeof caches === 'undefined' || !caches.default ? null : caches.default
-  const cacheKey = new Request(new URL('/rss?feed=cn', request.url), request)
+  const cacheKey = new Request(new URL(`/rss?feed=cn&cache=${CACHE_KEY_VERSION}`, request.url), request)
   const cached = cache ? await cache.match(cacheKey) : null
 
   try {
