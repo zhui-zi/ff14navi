@@ -11,6 +11,7 @@ const cst = (y, mo, d, h = 0, mi = 0) =>
 const T_DQX_END       = cst(2026, 7, 13, 22, 59)
 const T_CARD_PLAN_END = cst(2027, 2,  1, 14,  0)
 const T_CARD_GIFT_END = cst(2026, 11, 20, 23, 59)
+const T_NEXT_PATCH_START = cst(2026, 11, 10, 16, 0)
 // ── Shared countdown display ─────────────────────────────────────────────────
 function Countdown({ target, expired, accentColor }) {
   const t = useCountdown(target)
@@ -262,21 +263,22 @@ export default function GameInfo({ noWrap = false }) {
         <ActivityCard
           accent="#4DD0E1"
           badge="下个版本"
-          title="8.0"
-          subtitle="预计2027年1月"
+          title="7.58"
+          subtitle="11月10日"
           dates={[
-            '《银海之天舟》：预计2027年1月更新',
-            '全新系统：赛季制、战斗职业系统与扩展兵装系统',
-            '角色自定义：色彩选择器、精细妆容与角色技能皮肤',
-            '主线与野外：区域攻略顺序选择及自动平衡系统',
-            '等级上限：100级→110级；追加防护职业坚城卫与远程物理职业',
-            '全新舞台：第四世界、飞空艇区域与玩家主城法尔加斯',
-            '战斗内容：全新迷宫、团队任务、绝境战、PvP与大型任务系列',
-            '系统进化：陆行鸟搭档可加入小队挑战迷宫，并重做饲养系统',
+            '维护更新：2026年11月10日',
           ]}
-          rows={[]}
+          rows={[{ label: '距开始', target: T_NEXT_PATCH_START, expired: '已开始' }]}
           compact
-          url="https://actff1.web.sdo.com/project/20260425evercold/"
+          url="https://ff.web.sdo.com/web8/index.html#/newstab/newscont/394876"
+        />
+        <ActivityCard
+          accent="#81C784"
+          badge="联动活动"
+          title="魔光键影"
+          dates={['活动详情请查看官方页面']}
+          rows={[]}
+          url="https://actff1.web.sdo.com/project/20261014keybound_brawler/o48khqshmn6e/index.html"
         />
         <ActivityCard
           accent="#6BA4E8"
