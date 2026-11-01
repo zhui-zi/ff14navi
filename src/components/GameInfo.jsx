@@ -12,7 +12,6 @@ const T_DQX_END       = cst(2026, 7, 13, 22, 59)
 const T_CARD_PLAN_END = cst(2027, 2,  1, 14,  0)
 const T_CARD_GIFT_END = cst(2026, 11, 20, 23, 59)
 const T_NEXT_PATCH_START = cst(2026, 11, 10, 16, 0)
-const T_MAGIC_KEY_END = T_NEXT_PATCH_START
 // ── Shared countdown display ─────────────────────────────────────────────────
 function Countdown({ target, expired, accentColor }) {
   const t = useCountdown(target)
@@ -279,7 +278,7 @@ export default function GameInfo({ noWrap = false }) {
           title="魔光键影"
           subtitle="键影联动"
           dates={['活动时间：2026年10月28日 16:00 – 8.0版本维护开始前']}
-          rows={[{ label: '距结束', target: T_MAGIC_KEY_END, expired: '已结束' }]}
+          rows={[]}
           url="https://actff1.web.sdo.com/project/20261014keybound_brawler/o48khqshmn6e/index.html"
         />
         <ActivityCard
