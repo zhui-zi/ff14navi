@@ -1,4 +1,5 @@
-const CN_API = 'https://cqnews.web.sdo.com/api/news/newsList?gameCode=ff&CategoryCode=7141&pageIndex=0&pageSize=10'
+// Mirrors RSSHub's /ff14/zh/all route categories while keeping the feed on our own edge function.
+const CN_API = 'https://cqnews.web.sdo.com/api/news/newsList?gameCode=ff&CategoryCode=5309,5310,5312,8324,8325,8326,8327,5311,5313&pageIndex=0&pageSize=50'
 const FEED_PATHS = { int: '/ff14/global/na/all' }
 const RSSHUB_INSTANCES = [
   'https://rsshub.rssforever.com',
@@ -29,7 +30,7 @@ function toRss(items) {
       <pubDate>${escapeXml(item.PublishDate)}</pubDate>
       <description>${escapeXml(item.Summary)}</description>
     </item>`).join('')
-  return `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>FF14 国服公告</title><link>https://ff.web.sdo.com/web8/index.html#/newstab/newslist</link><description>最终幻想14国服官方公告</description>${body}</channel></rss>`
+  return `<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>最终幻想14（国服）新闻中心</title><link>https://ff.web.sdo.com/web8/index.html#/newstab/newslist</link><description>《最终幻想14》国服新闻、公告、活动与广告</description><language>zh-CN</language>${body}</channel></rss>`
 }
 
 function rssResponse(body, extra = {}) {
@@ -58,7 +59,8 @@ async function cachedCnFeed(request) {
     if (data.Code !== '0' || !Array.isArray(data.Data) || data.Data.length === 0) {
       throw new Error('official API returned no news')
     }
-    const fresh = rssResponse(toRss(data.Data), { 'X-Feed-Source': 'official-cqnews' })
+    const items = [...data.Data].sort((a, b) => new Date(b.PublishDate) - new Date(a.PublishDate))
+    const fresh = rssResponse(toRss(items), { 'X-Feed-Source': 'official-cqnews-rsshub-compatible' })
     if (cache) await cache.put(cacheKey, fresh.clone())
     return fresh
   } catch (error) {
